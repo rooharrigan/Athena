@@ -1,9 +1,9 @@
 from flask import Flask, request, render_template
 from random import choice, sample
-import requests
-import wikipedia
-import mwparserfromhell
 from pprint import pprint
+# from string import strip
+import requests, wikipedia, mwparserfromhell, string
+
 
 app = Flask(__name__)
 
@@ -47,26 +47,28 @@ def get_country_infobox(country):
         template = country_dict.name
         template = template.strip()
         if template.find("Infobox") != -1:
-            print "Got the infobox"
-            country_dict = mwparserfromhell.parse(country_dict)
-            pprint(country_dict[1900:3000])
+            print "Got the infobox!\n"
+            template_list = mwparserfromhell.parse(country_dict).filter_templates()
+            infobox_template = template_list[0]
+            parse_for_capital(infobox_template)
         j += 1
+        
 
 
-
-
-def parse_for_capital(info_file):
-    """ docstring holder"""
-    # for 'revisions' in r:
-    pass
-
-
-
-
-
+def parse_for_capital(infobox_template):
+    """ Isolate the infobox template, grab the capital parameter out, and return it"""
+    capital = str(infobox_template.get("capital").value)
+    capital = capital.strip('\n')                    #can't strip \newline
+    capital = string.translate(capital, None, '[]')
+    
+    print capital
+  
 
 
 get_country_infobox('kenya')
+get_country_infobox('nigeria')
+get_country_infobox('canada')
+get_country_infobox('england')
 
 
 
