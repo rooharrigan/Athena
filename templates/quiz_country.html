@@ -1,0 +1,20 @@
+<!-- Gathers the country from the user -->
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>Quiz</h1>
+
+<h3> Enter a country </h3>
+
+<div class="input-group input-group-lg">
+  <span class="input-group-addon" id="sizing-addon1">@</span>
+  <form action="/quiz">
+        <input type="text" class="form-control" name="country" placeholder="Enter a country here" aria-describedby="sizing-addon1">
+    </form>
+</div>
+
+
+
+
+
+{% endblock %}
