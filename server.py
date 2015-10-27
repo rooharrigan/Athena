@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template
 from random import choice, sample
 from pprint import pprint
+from string import translate
 # from string import strip
-import requests, wikipedia, mwparserfromhell, string
+import requests, wikipedia, mwparserfromhell
 
 
 app = Flask(__name__)
@@ -22,9 +23,8 @@ query_params = {
     }
 
 def get_country_infobox(country):
-    """ API call to wikipedia to grab the string of JSON for the requested country.
-    Uses requests to turn the string into a python dictionary and return a
-    dictionary that begins at the key 'Infobox country'
+    """ API call to wikipedia to grab the string of JSON for the requested country
+    and return a dictionary that begins at the template/key 'Infobox country'
 
     """ 
     #Query the wikipedia API for the JSON object, convert to Python dictionary
@@ -54,21 +54,24 @@ def get_country_infobox(country):
         j += 1
         
 
-
 def parse_for_capital(infobox_template):
     """ Isolate the infobox template, grab the capital parameter out, and return it"""
     capital = str(infobox_template.get("capital").value)
-    capital = capital.strip('\n')                    #can't strip \newline
-    capital = string.translate(capital, None, '[]')
-    
+    capital = capital[:-2]                                  #come back to this, it's icky
+    capital = translate(capital, None, '[]')    
+
+    #TODO: Figure out a less brittle way to strip the \n character out.  
+    #\n is not being treated as a newline, but rather 2 separate characters
     print capital
+
+   
   
 
 
 get_country_infobox('kenya')
-get_country_infobox('nigeria')
-get_country_infobox('canada')
-get_country_infobox('england')
+# get_country_infobox('nigeria')
+# get_country_infobox('canada')
+# get_country_infobox('england')
 
 
 
