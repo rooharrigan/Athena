@@ -3,6 +3,8 @@ from functools import wraps
 from random import choice, sample
 from pprint import pprint
 from string import translate, lower
+
+from model import connect_to_db, db, Country, User
 # from string import strip
 import requests, wikipedia, mwparserfromhell
 
@@ -179,7 +181,13 @@ def compare_score_to_others():
 
 if __name__ == "__main__":
     app.run(debug=True)
-    pass
+    
+    connect_to_db(app)
+
+    #Use the DebugToolbar
+    DebugToolbarExtension(app)
+
+    app.run()
     
 
 
