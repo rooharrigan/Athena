@@ -44,12 +44,10 @@ app.secret_key = "Get up, get up, get up, it's the first of the month."
 
 def get_capital(infobox_template, country):
     """ Isolate the infobox template, grab the capital parameter out, and return it"""
-    capital = str(infobox_template.get("capital").value)
-    capital = capital[:-2]                                  #come back to this, it's icky
+    capital = str(infobox_template.get("capital").value)  
+    capital = capital.strip('\\n')
     capital = translate(capital, None, '[]')    
 
-    #TODO: Figure out a less brittle way to strip the \n character out.  
-    #\n is not being treated as a newline, but rather 2 separate characters
     print country + ": " + capital
     return capital
 
