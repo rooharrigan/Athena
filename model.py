@@ -9,8 +9,13 @@ db = SQLAlchemy()
 ##############################################################################
 # Model definitions
 
-class User(db.Model):
-    """User of ratings website."""
+class Country(db.Model):
+    """Stores countries and their attributes, seeded from Wikipedia"""
+
+
+
+
+
 
 
 
