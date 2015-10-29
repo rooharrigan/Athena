@@ -11,7 +11,7 @@ from server import app
 ##############################################################################
 # Seed the database with country information
 
-country_list = ['Kenya', 'Nigeria', 'Ethiopia', 'Somalia']
+country_list = ['Kenya', 'Nigeria', 'Ethiopia', 'Somalia', 'Egypt', 'Botswana', 'South Sudan']
 
 def load_country(country_name, capital):
     """Loads countries into posgreSQL Athena database"""
@@ -70,6 +70,7 @@ def get_country_infobox(country_name):
             template_list = mwparserfromhell.parse(country_dict).filter_templates()
             infobox_template = template_list[0]
             capital = get_capital(infobox_template, country_name)
+            print capital
 
             load_country(country_name, capital)
         j += 1

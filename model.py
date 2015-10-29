@@ -14,7 +14,8 @@ class Country(db.Model):
 
     __tablename__ = "countries"
 
-    country_name = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    country_name = db.Column(db.String, nullable=False)
     capital = db.Column(db.String, nullable=True)
 
     def __repr__(self):

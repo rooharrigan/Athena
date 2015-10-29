@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, session, redirect, url_for, e
 from flask_debugtoolbar import DebugToolbarExtension
 from pprint import pprint
 from string import translate, lower
+from random import randint
 
 from model import connect_to_db, db, Country, User
 
@@ -54,6 +55,7 @@ def get_quiz_questions():
 
     return render_template("quiz_country.html")
 
+
 @app.route('/login', methods=["POST"])
 def login():
     print "login is running!"
@@ -82,15 +84,22 @@ def logout():
 
 @app.route('/quiz')
 def generate_quiz():
+    """Makes the capital quiz question by querying the database 
+    for the right answer and using make_wrong_answers for the others."""
     country_name = request.args.get("country")
     country_name = country_name.title()
 
-    capital = db.session.query(Country.capital).filter(Country.country_name == country_name).all()
+    tup = db.session.query(Country.capital).filter(Country.country_name == country_name).first()
+    capital = tup.capital
 
-    # wrong1, wrong2, wrong3 = 
-    # , wrong1=wrong1, wrong2=wrong2, wrong3=wrong3
+    wrong1, wrong2, wrong3 = make_wrong_answers(country_name)
 
-    return render_template('quiz_questions.html', country_name=country_name, capital=capital)
+    return render_template('quiz_questions.html', 
+        country_name=country_name, 
+        capital=capital, 
+        wrong1=wrong1,
+        wrong2=wrong2,
+        wrong3=wrong3)
 
 
 @app.route('/quiz_score')
@@ -103,6 +112,41 @@ def compare_score_to_others():
     pass
 
  
+def make_wrong_answers(country_name):
+    """Generates wrong answers for the capital quiz question"""
+    #Count the number of countries in table
+    number_of_countries = Country.query.count()
+    answer_ids = []
+    answers = []
+
+    #Get the right answer's id
+    country_object = db.session.query(Country.id).filter(Country.country_name == country_name).first()
+    right_id = country_object.id
+    answer_ids.append(right_id)
+
+    #Pick random id's and make wrong answer ids
+    wrong_id = randint(1, number_of_countries)
+    while len(answer_ids) < 4:
+        if wrong_id in answer_ids:
+            wrong_id = randint(1, number_of_countries)
+        else:
+            answer_ids.append(wrong_id)
+    else: 
+        answer_ids = answer_ids[1:]
+        print answer_ids
+        for i in answer_ids:
+            country_object = db.session.query(Country.capital).filter(Country.id == i).first()
+            answer = country_object.capital
+            answers.append(answer)
+        print "###HERE ARE THE ANSWERS"
+        print answers
+        return answers
+
+
+
+
+
+
 
 
 ##############################################################################
