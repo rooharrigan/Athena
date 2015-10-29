@@ -91,7 +91,7 @@ def generate_quiz():
 
     tup = db.session.query(Country.capital).filter(Country.country_name == country_name).first()
     capital = tup.capital
-
+    
     wrong1, wrong2, wrong3 = make_wrong_answers(country_name)
 
     return render_template('quiz_questions.html', 
