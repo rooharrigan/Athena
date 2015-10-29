@@ -1,12 +1,11 @@
+
 from flask import Flask, request, render_template, session, redirect, url_for, escape, flash
-from functools import wraps
-from random import choice, sample
+from flask_debugtoolbar import DebugToolbarExtension
 from pprint import pprint
 from string import translate, lower
 
 from model import connect_to_db, db, Country, User
-# from string import strip
-import requests, wikipedia, mwparserfromhell
+
 
 
 app = Flask(__name__)
@@ -41,17 +40,6 @@ app.secret_key = "Get up, get up, get up, it's the first of the month."
 #     print "##############################################"
 #     print templates
      
-
-
-
-def get_capital(infobox_template, country):
-    """ Isolate the infobox template, grab the capital parameter out, and return it"""
-    capital = str(infobox_template.get("capital").value)  
-    capital = capital.strip('\\n')
-    capital = translate(capital, None, '[]')    
-
-    print country + ": " + capital
-    return capital
 
 ##############################################################################
 #App Routes
@@ -93,53 +81,16 @@ def logout():
 
 
 @app.route('/quiz')
-def get_country_infobox():
-    """ API call to wikipedia to grab the string of JSON for the requested country
-    and return a dictionary that begins at the template/key 'Infobox country'
+def generate_quiz():
+    country_name = request.args.get("country")
+    country_name = country_name.title()
 
-    """ 
-    #Get country from the form and check that it's a country, and uppercase the first letter:
-    country = request.args.get("country")
-    country = country.title()
+    capital = db.session.query(Country.capital).filter(Country.country_name == country_name).all()
 
+    # wrong1, wrong2, wrong3 = 
+    # , wrong1=wrong1, wrong2=wrong2, wrong3=wrong3
 
-    #Define query params
-    query_params = {
-    "action": "query",
-    "titles": country,
-    "prop": "revisions",
-    "rvprop": "content",
-    "format": "json",
-    "formatverson": 2
-    }
-
-    #Query the wikipedia API for the JSON object, convert to Python dictionary
-    r = requests.get("https://en.wikipedia.org/w/api.php?", params=query_params)
-    info = r.json()
-
-    #Key into the dictionary to the Infobox level
-    infobox_json = str(info["query"]["pages"].values()[0]["revisions"][0])
-
-    #Parse the dictionary and filter it by wiki template names
-    wikicode = mwparserfromhell.parse(infobox_json)
-    templates = wikicode.filter_templates()
-
-    #Find the template with the string "infobox" in the name and return new dictionary
-    #starting at the Infobox level, parsed again
-    j = 0
-    for i in templates:
-        country_dict = templates[j]
-        template = country_dict.name
-        template = template.strip()
-        if template.find("Infobox") != -1:
-            print "Got the infobox!\n"
-            template_list = mwparserfromhell.parse(country_dict).filter_templates()
-            infobox_template = template_list[0]
-            capital = get_capital(infobox_template, country)
-            return render_template("quiz_questions.html", country=country)
-        else:
-            print "No infobox yet."
-        j += 1
+    return render_template('quiz_questions.html', country_name=country_name, capital=capital)
 
 
 @app.route('/quiz_score')
@@ -151,43 +102,19 @@ def grade_quiz():
 def compare_score_to_others():
     pass
 
-
-
-   
-  
-
-
-# get_country_infobox('kenya')
-# get_country_infobox('nigeria')
-# get_country_infobox('canada')
-# get_country_infobox('england')
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 
 
 ##############################################################################
 #Helper Functions
 
-if __name__ == "__main__":
-    app.run(debug=True)
-    
+if __name__ == "__main__":    
     connect_to_db(app)
 
     #Use the DebugToolbar
     DebugToolbarExtension(app)
 
-    app.run()
+    app.run(debug=True)
     
 
 

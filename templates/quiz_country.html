@@ -2,18 +2,22 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<h1>Quiz</h1>
 
-<h3> Enter a country </h3>
-
-<div class="input-group input-group-lg">
-  <span class="input-group-addon" id="sizing-addon1">@</span>
-  <form action="/quiz">
-        <input type="text" class="form-control" name="country" placeholder="Enter a country here" aria-describedby="sizing-addon1">
-    </form>
+<br>
+<br>
+<div class="container-fluid">
+        <div class="row">
+        <div class="col-xs-12 col-md-9 col-lg-9">
+        <h3> Which country would you like to learn about? </h3>
+            <form action="/quiz">
+            <div class="input-group">
+              <input type="text" class="form-control" name="country" placeholder="Enter a country name" aria-describedby="basic-addon2">
+              <span class="input-group-addon" id="basic-addon2">Quiz Me!</span>
+            </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-
 
 
 

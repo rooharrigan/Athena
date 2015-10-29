@@ -14,11 +14,11 @@ class Country(db.Model):
 
     __tablename__ = "countries"
 
-    name = db.Column(db.String, primary_key=True)
-    capital = db.Column(db.String, nullable=False)
+    country_name = db.Column(db.String, primary_key=True)
+    capital = db.Column(db.String, nullable=True)
 
     def __repr__(self):
-        return "<Country name=%s>" % (self.name)
+        return "<Country country_name=%s>" % (self.name)
 
 
 class User(db.Model):
@@ -62,3 +62,4 @@ if __name__ == "__main__":
     print "Connected to DB."
 
     db.create_all()
+
