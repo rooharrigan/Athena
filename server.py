@@ -1,38 +1,27 @@
 
+"""This is the server file for the Athena Wikipedia Quiz game. Running this file without
+making changes will run the server for this game with the debugger on."""
+
+##############################################################################
+#App Routes
+
 from flask import Flask, request, render_template, session, redirect, url_for, escape, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from pprint import pprint
 from string import translate, lower
 from random import randint, sample
 
-from model import connect_to_db, db, Country, User
+from model import connect_to_db, db, Country, User, Quizevent
 
 
 
 app = Flask(__name__)
-app.secret_key = "Get up, get up, get up, it's the first of the month."
-
-#Imports and flask app call
-
-##############################################################################
-#Static Functions
-
+app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
 
      
 
 ##############################################################################
 #App Routes
-
-@app.route('/')
-def get_quiz_questions():
-    """Handles login and returns the homepage"""
-    if 'username' in session:
-        print 'Logged in as {}'.format(escape(session['username']))
-    else:
-        print "User is not logged in"
-
-    return render_template("quiz_country.html")
-
 
 @app.route('/login', methods=["POST"])
 def login():
@@ -60,10 +49,21 @@ def logout():
     return redirect("/")
 
 
+@app.route('/')
+def get_quiz_questions():
+    """Handles login and returns the homepage"""
+    if 'username' in session:
+        print 'Logged in as {}'.format(escape(session['username']))
+    else:
+        print "User is not logged in"
+
+    return render_template("quiz_country.html")
+
+
 @app.route('/quiz')
 def generate_quiz():
-    """Makes the capital quiz question by querying the database 
-    for the right answer and using make_wrong_answers for the others."""
+    """Makes the capital quiz question. Queries database for the right answer,
+    users make_wrong_answers for the other three."""
     #Get the country, right capital and three wrong capitals from the database
     country_name = request.args.get("country")
     country_name = country_name.title()
@@ -71,6 +71,10 @@ def generate_quiz():
     capital = tup.capital
     wrong1, wrong2, wrong3 = make_wrong_answers(country_name)
     answers = (capital, wrong1, wrong2, wrong3)
+
+    #Store user and country in Quizevents table in db
+
+
 
     #Randomize into four answers and pass to the user
     answer1, answer2, answer3, answer4 = sample(answers, 4)
@@ -82,7 +86,36 @@ def generate_quiz():
         answer3=answer3,
         answer4=answer4)
 
- 
+
+@app.route('/quiz_score', methods=['POST'])
+def grade_quiz():
+    user_score = '0%'
+
+    if request.form.get == capital:
+        user_score = '100%'
+    else:
+        user_score = '0%'
+
+
+    nicety = "Great work!"
+    score = user_score
+    return render_template (quiz_score, score=score, nicety=nicety)
+
+
+
+
+
+@app.route('/percentile')
+def compare_score_to_others():
+    pass
+
+
+
+##############################################################################
+#Static Functions
+
+
+
 def make_wrong_answers(country_name):
     """Generates wrong answers for the capital quiz question"""
     #Count the number of countries in table
@@ -111,18 +144,14 @@ def make_wrong_answers(country_name):
         return answers
 
 
-@app.route('/quiz_score')
-def grade_quiz():
-    nicey = "Great work!"
-    score = 100
-    return render_template (quiz_score, score=score, nicety=nicety)
-
-
-@app.route('/percentile')
-def compare_score_to_others():
-    pass
-
-
+def add_quizevent(country_name):
+    # if session['username']:
+    #     email = session['username']
+    #     user_id = db.session.query(User.id).filter(email == email).first()
+    
+    country_id_tuple = db.session.query(Country.id).filter(Country.country_name == country_name).first()
+    country_id = country_id_tuple[0]
+    print country_id
 
 
 
@@ -133,9 +162,9 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     #Use the DebugToolbar
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
-    app.run(debug=True)
+    # app.run(debug=True)
     
 
 

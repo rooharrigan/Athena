@@ -10,12 +10,14 @@
     <div class="col-xs-12 col-md-9 col-lg-9">
         <h3>What is the capital of {{ country_name }}?</h3>
         <br>
+        <form action="/quiz_score" method="POST">
         <div class="btn-group" role="group" aria-label="...">
           <button type="button" name="answer1" class="btn btn-default">{{ answer1 }}</button>
           <button type="button" name="answer2" class="btn btn-default">{{ answer2 }}</button>
           <button type="button" name="answer3" class="btn btn-default">{{ answer3 }}</button>
           <button type="button" name="answer4" class="btn btn-default">{{ answer4 }}</button>
         </div>
+      </form>
     </div>
     </div>
 </div>

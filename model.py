@@ -29,13 +29,41 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String, nullable=False)
+    avg_score = db.Column(db.Integer, nullable=True)
+    quizzes_taken = db.Column(db.Integer, nullable=True)
+
 
     def __repr__(self):
-        return "<User id=%d name=%s>" % (self.id, self.name)
+        return "<User id=%d email=%s>" % (self.id, self.email)
+
+
+    def add_quiz_taken(self):
+        """"""
+        self.quizzes_taken += 1
+
+
+    def update_average(self, new_score):
+        """Updates the user's overall average score."""
+        new_avg = (self.avg_score * (self.quizzes_taken - 1) + new_score)/(self.quizzes_taken)
+        self.avg_score = new_avg
 
 
 
+class Quizevent(db.Model):
+    """Stores individual quiz event information."""
 
+    __tablename__ = "quizevents"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    country_id = db.Column(db.Integer, db.ForeignKey('countries.id'), nullable=False)
+    score = db.Column(db.String, nullable=True)
+
+    user = db.relationship('User', backref='quizzes')
+    country = db.relationship('Country', backref='quizzes')
+
+    def __repr__(self):
+        return "<Quizevent id=%d country_id=%s>" % (self.id, self.country_id)
 
 
 
