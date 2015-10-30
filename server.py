@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, session, redirect, url_for, e
 from flask_debugtoolbar import DebugToolbarExtension
 from pprint import pprint
 from string import translate, lower
-from random import randint
+from random import randint, sample
 
 from model import connect_to_db, db, Country, User
 
@@ -17,29 +17,7 @@ app.secret_key = "Get up, get up, get up, it's the first of the month."
 ##############################################################################
 #Static Functions
 
-# def get_all_countries():
-#     #Define query params where titles = "list of sovereign states"
-#     query_params = {
-#     "action": "query",
-#     "titles": "list of sovereign states",
-#     "prop": "revisions",
-#     "rvprop": "content",
-#     "format": "json",
-#     "formatverson": 2
-#     }
 
-#     #Query the wikipedia API for the JSON object, convert to Python dictionary
-#     r = requests.get("https://en.wikipedia.org/w/api.php?", params=query_params)
-#     country_info = r.json()
-
-#     #Search the templates named flag for the country name, store in dictionary
-#     countries = {}
-
-#     wikicode = mwparserfromhell.parse(country_info)
-#     templates = wikicode.filter_templates()
-#     print wikicode
-#     print "##############################################"
-#     print templates
      
 
 ##############################################################################
@@ -86,36 +64,29 @@ def logout():
 def generate_quiz():
     """Makes the capital quiz question by querying the database 
     for the right answer and using make_wrong_answers for the others."""
+    #Get the country, right capital and three wrong capitals from the database
     country_name = request.args.get("country")
     country_name = country_name.title()
-
     tup = db.session.query(Country.capital).filter(Country.country_name == country_name).first()
     capital = tup.capital
-    
     wrong1, wrong2, wrong3 = make_wrong_answers(country_name)
+    answers = (capital, wrong1, wrong2, wrong3)
+
+    #Randomize into four answers and pass to the user
+    answer1, answer2, answer3, answer4 = sample(answers, 4)
 
     return render_template('quiz_questions.html', 
         country_name=country_name, 
-        capital=capital, 
-        wrong1=wrong1,
-        wrong2=wrong2,
-        wrong3=wrong3)
-
-
-@app.route('/quiz_score')
-def grade_quiz():
-    pass
-
-
-@app.route('/percentile')
-def compare_score_to_others():
-    pass
+        answer1=answer1, 
+        answer2=answer2,
+        answer3=answer3,
+        answer4=answer4)
 
  
 def make_wrong_answers(country_name):
     """Generates wrong answers for the capital quiz question"""
     #Count the number of countries in table
-    number_of_countries = Country.query.count()
+    number_of_countries = Country.query.count()     #192 seeded as of October 30, 2015
     answer_ids = []
     answers = []
 
@@ -133,17 +104,23 @@ def make_wrong_answers(country_name):
             answer_ids.append(wrong_id)
     else: 
         answer_ids = answer_ids[1:]
-        print answer_ids
         for i in answer_ids:
             country_object = db.session.query(Country.capital).filter(Country.id == i).first()
             answer = country_object.capital
             answers.append(answer)
-        print "###HERE ARE THE ANSWERS"
-        print answers
         return answers
 
 
+@app.route('/quiz_score')
+def grade_quiz():
+    nicey = "Great work!"
+    score = 100
+    return render_template (quiz_score, score=score, nicety=nicety)
 
+
+@app.route('/percentile')
+def compare_score_to_others():
+    pass
 
 
 
