@@ -72,10 +72,6 @@ def generate_quiz():
     wrong1, wrong2, wrong3 = make_wrong_answers(country_name)
     answers = (capital, wrong1, wrong2, wrong3)
 
-    #Store user and country in Quizevents table in db
-
-
-
     #Randomize into four answers and pass to the user
     answer1, answer2, answer3, answer4 = sample(answers, 4)
 
@@ -84,31 +80,47 @@ def generate_quiz():
         answer1=answer1, 
         answer2=answer2,
         answer3=answer3,
-        answer4=answer4)
+        answer4=answer4,
+        )
 
 
 @app.route('/quiz_score', methods=['POST'])
 def grade_quiz():
-    user_score = '0%'
-
-    if request.form.get == capital:
-        user_score = '100%'
-    else:
-        user_score = '0%'
-
-
-    nicety = "Great work!"
-    score = user_score
-    return render_template (quiz_score, score=score, nicety=nicety)
+    """Grade the quiz and update the database with a quizevent"""
+    #It's the name that matters
+    print "we're in the quiz_score route!"
+    print "##############################"
+    guess = request.form.get("site")
+    print type(guess)
+    print guess
 
 
 
+    # guess2 = request.form.get("button2")
+    # guess3 = request.form.get("button3")
+    # guess4 = request.form.get("button4")
 
 
-@app.route('/percentile')
-def compare_score_to_others():
-    pass
 
+
+    # user_score = '0%'
+
+    # if request.form.get("quiz-score") == capital:
+    #     user_score = '100%'
+    # else:
+    #     user_score = '0%'
+
+
+    # nicety = "Great work!"
+    # score = user_score
+    # return render_template (quiz_score, score=score, nicety=nicety)
+
+
+
+# @app.route('/name', methods=['POST'])
+
+# button clicked = requiest.form.get()
+# return 
 
 
 ##############################################################################
@@ -145,13 +157,18 @@ def make_wrong_answers(country_name):
 
 
 def add_quizevent(country_name):
-    # if session['username']:
-    #     email = session['username']
-    #     user_id = db.session.query(User.id).filter(email == email).first()
-    
+    if session['username']:
+        email = session['username']
+        user_id = db.session.query(User.id).filter(email == email).first()
+    else:
+        user_id = 1
+
     country_id_tuple = db.session.query(Country.id).filter(Country.country_name == country_name).first()
     country_id = country_id_tuple[0]
     print country_id
+
+    new_quiz = Quizevent(user_id=user_id, country_id=country_id)
+    print new_quiz
 
 
 
@@ -162,9 +179,9 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     #Use the DebugToolbar
-    # DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
 
-    # app.run(debug=True)
+    app.run(debug=True)
     
 
 

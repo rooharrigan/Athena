@@ -57,7 +57,7 @@ class Quizevent(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     country_id = db.Column(db.Integer, db.ForeignKey('countries.id'), nullable=False)
-    score = db.Column(db.String, nullable=True)
+    score = db.Column(db.String, nullable=True)             #not sure how to get the quiz ID in there becase it happens in a separate route
 
     user = db.relationship('User', backref='quizzes')
     country = db.relationship('Country', backref='quizzes')

@@ -10,18 +10,40 @@
     <div class="col-xs-12 col-md-9 col-lg-9">
         <h3>What is the capital of {{ country_name }}?</h3>
         <br>
-        <form action="/quiz_score" method="POST">
-        <div class="btn-group" role="group" aria-label="...">
-          <button type="button" name="answer1" class="btn btn-default">{{ answer1 }}</button>
-          <button type="button" name="answer2" class="btn btn-default">{{ answer2 }}</button>
-          <button type="button" name="answer3" class="btn btn-default">{{ answer3 }}</button>
-          <button type="button" name="answer4" class="btn btn-default">{{ answer4 }}</button>
+        <br>
+        <div>
+          <form action="/quiz_score" method='POST'>
+            <label><input type="radio" name"button" value"answer1">{{ answer1 }}</label><br>
+            <label><input type="radio" name"button" value"answer2">{{ answer2 }}</label><br>
+            <label><input type="radio" name"button" value"answer3">{{ answer3 }}</label><br>
+            <label><input type="radio" name"button" value"answer4">{{ answer4 }}</label><br>
+            <br>
+            <br>
+              <button type="submit" class="btn btn-default">Grade my quiz</button>
+          </form>
         </div>
+<!-- 
+can't pass in the jinja variable back to my flask route -->
+
+
+
+
       </form>
     </div>
     </div>
 </div>
 
+
+<script>
+function
+do nothing
+
+funtion from below
+$.post("\route", "button1", functon(){})
+
+$(button1).on(click,funciont)
+
+</script>
 
 
 
