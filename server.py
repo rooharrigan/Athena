@@ -3,7 +3,7 @@
 making changes will run the server for this game with the debugger on."""
 
 ##############################################################################
-#App Routes
+#External Imports
 
 from flask import Flask, request, render_template, session, redirect, url_for, escape, flash
 from flask_debugtoolbar import DebugToolbarExtension
@@ -11,7 +11,9 @@ from pprint import pprint
 from string import translate, lower
 from random import randint, sample
 
+#Internal Imports
 from model import connect_to_db, db, Country, User, Quizevent
+from compliments import compliments
 
 
 
@@ -52,8 +54,8 @@ def logout():
 @app.route('/')
 def get_quiz_questions():
     """Handles login and returns the homepage"""
-    if 'username' in session:
-        print 'Logged in as {}'.format(escape(session['username']))
+    if 'email' in session:
+        print 'Logged in as {}'.format(escape(session['email']))
     else:
         print "User is not logged in"
 
@@ -65,10 +67,9 @@ def generate_quiz():
     """Makes the capital quiz question. Queries database for the right answer,
     users make_wrong_answers for the other three."""
     #Get the country, right capital and three wrong capitals from the database
-    country_name = request.args.get("country")
-    country_name = country_name.title()
-    tup = db.session.query(Country.capital).filter(Country.country_name == country_name).first()
-    capital = tup.capital
+    country_name = (request.args.get("country")).title()
+    capital = get_country_capital(country_name)
+    
     wrong1, wrong2, wrong3 = make_wrong_answers(country_name)
     answers = (capital, wrong1, wrong2, wrong3)
 
@@ -87,33 +88,20 @@ def generate_quiz():
 @app.route('/quiz_score', methods=['POST'])
 def grade_quiz():
     """Grade the quiz and update the database with a quizevent"""
-    #It's the name that matters
-    print "we're in the quiz_score route!"
-    print "##############################"
-    guess = request.form.get("site")
-    print type(guess)
-    print guess
+    guess = request.form.get("button")
+    country_name = request.form.get("country_name")
+    right_answer = get_country_capital(country_name)
+
+    if guess == right_answer:
+        print "That's correct!"
+        score = 100
+    else:
+        print "That's incorrect!"
+        score = 0
 
 
-
-    # guess2 = request.form.get("button2")
-    # guess3 = request.form.get("button3")
-    # guess4 = request.form.get("button4")
-
-
-
-
-    # user_score = '0%'
-
-    # if request.form.get("quiz-score") == capital:
-    #     user_score = '100%'
-    # else:
-    #     user_score = '0%'
-
-
-    # nicety = "Great work!"
-    # score = user_score
-    # return render_template (quiz_score, score=score, nicety=nicety)
+    nicety = (sample(compliments, 1))[0]
+    return render_template ("quiz_score.html", score=score, nicety=nicety)
 
 
 
@@ -170,6 +158,16 @@ def add_quizevent(country_name):
     new_quiz = Quizevent(user_id=user_id, country_id=country_id)
     print new_quiz
 
+
+def get_country_capital(country_name):
+    """Given a country name string, returns the country's capital or error message."""
+    tup = db.session.query(Country.capital).filter(Country.country_name == country_name).first()
+    capital = tup.capital
+    if capital:
+        print capital
+        return capital
+    else:
+        print "Couldn't find the capital of" + country_name
 
 
 ##############################################################################

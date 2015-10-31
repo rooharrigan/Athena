@@ -13,18 +13,16 @@
         <br>
         <div>
           <form action="/quiz_score" method='POST'>
-            <label><input type="radio" name"button" value"answer1">{{ answer1 }}</label><br>
-            <label><input type="radio" name"button" value"answer2">{{ answer2 }}</label><br>
-            <label><input type="radio" name"button" value"answer3">{{ answer3 }}</label><br>
-            <label><input type="radio" name"button" value"answer4">{{ answer4 }}</label><br>
+            <input type="hidden" name="country_name" value="{{country_name}}"> 
+            <label><input type="radio" name="button" value="{{answer1}}">    {{ answer1 }}</label><br>
+            <label><input type="radio" name="button" value="{{answer2}}">    {{ answer2 }}</label><br>
+            <label><input type="radio" name="button" value="{{answer3}}">    {{ answer3 }}</label><br>
+            <label><input type="radio" name="button" value="{{answer4}}">    {{ answer4 }}</label><br>
             <br>
             <br>
               <button type="submit" class="btn btn-default">Grade my quiz</button>
           </form>
         </div>
-<!-- 
-can't pass in the jinja variable back to my flask route -->
-
 
 
 

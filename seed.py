@@ -22,7 +22,7 @@ def get_all_countries():
     countries_to_exclude = ["Hong Kong", "Macau", 
         "Christmas Island", "Cocos (Keeling) Islands", "Norfolk Island", "Greenland",
         "Republika Srpska", "Federation of Bosnia and Herzegovina", "Tokelau", 
-        "\xc5land", "Aland", "Faroe Islands", "New Caledonia", "Saint Pierre and Miquelon",
+         "Aland", "Faroe Islands", "New Caledonia", "Saint Pierre and Miquelon",
         "Cyrenaica", "French Polynesia", "Wallis and Futuna", "French Southern and Antarctic Lands",
         "Azad Kashmir", "British Indian Ocean Territory", "Saint Helena, Ascension and Tristan da Cunhan",
         "Aruba", "Cook Islands", "Niue", "Akrotiri and Dhekelia", "Vatican City",
