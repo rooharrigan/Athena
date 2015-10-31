@@ -1,7 +1,11 @@
+##############################################################################
+#Externals
+from flask import Flask, Response
+from flask.ext.login import LoginManager, UserMixin, login_required
 from flask_sqlalchemy import SQLAlchemy
 
-# This is the connection to the SQLite database; we're getting this through
-# the Flask-SQLAlchemy helper library. On this, we can find the `session`
+# This is the connection to the postgreSQL database; we get it from the 
+# Flask-SQLAlchemy helper library. On this, we can find the `session`
 # object, where we do most of our interactions (like committing, etc.)
 
 db = SQLAlchemy()
@@ -22,7 +26,7 @@ class Country(db.Model):
         return "<Country country_name=%s>" % (self.name)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """Stores user id and email information."""
 
     __tablename__ = "users"

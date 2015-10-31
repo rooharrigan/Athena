@@ -3,59 +3,96 @@
 making changes will run the server for this game with the debugger on."""
 
 ##############################################################################
-#External Imports
-
+#Externals
 from flask import Flask, request, render_template, session, redirect, url_for, escape, flash
+from flask.ext.login import LoginManager, UserMixin, login_required, login_user, current_user
 from flask_debugtoolbar import DebugToolbarExtension
 from pprint import pprint
 from string import translate, lower
 from random import randint, sample
 
-#Internal Imports
+#Internals
 from model import connect_to_db, db, Country, User, Quizevent
 from compliments import compliments
 
-
-
 app = Flask(__name__)
 app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
-
-     
-
 ##############################################################################
 #App Routes
 
-@app.route('/login', methods=["POST"])
-def login():
-    print "login is running!"
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter(User.id == user_id).first()
+
+
+@app.route('/login_check', methods=['POST'])
+def login_check():
+    # check that a username and password were entered on form
     email = request.form.get("email")
-    password = request.form.get("password")
     print "email: ", email
     password = request.form.get("password")
     print "password ", password
 
-    if email:
-        session['username'] = email
-        session['password'] = password
-        print session
-        print "user is logged in"
-        return  redirect("/")
+    # check database for user with username
+    user = User.query.filter(User.email == email).first()
+    print user
+    if user:
+        print "got user"
+        # TODO: check password
+        if True:
+            login_user(user)
+            print session
+        else:
+            print "bad password"
+
+    else:
+        print "bad user"
 
 
-@app.route('/logout', methods=["POST"])
+    # if email:
+    #     login_user(user)
+    #     print session
+
+    return  redirect("/")
+
+
+# check that a username and password were entered on form
+# check database for user with username
+#     if user
+#         check password
+#             if password matches user.password
+#                 login(user)
+#             else
+#                 flash error
+#     else
+#         flash error
+
+
+
+
+
+
+
+@app.route('/logout')
+@login_required
 def logout():
-    logout = request.form.get("logout")
-    if logout:
-        print "Log the user out!"
-
+    #Even listener on the logout button
+    #Hide logout button and show login button
+    logout_user()
     return redirect("/")
 
 
 @app.route('/')
 def get_quiz_questions():
     """Handles login and returns the homepage"""
-    if 'email' in session:
-        print 'Logged in as {}'.format(escape(session['email']))
+    if current_user:
+        print "logged in as"
+        print current_user
+        # print 'Logged in as {}'.format(escape(session['email']))
     else:
         print "User is not logged in"
 
@@ -103,6 +140,10 @@ def grade_quiz():
     nicety = (sample(compliments, 1))[0]
     return render_template ("quiz_score.html", score=score, nicety=nicety)
 
+@app.route('/scores_data')
+@login_required
+def settings(): 
+    pass
 
 
 # @app.route('/name', methods=['POST'])
