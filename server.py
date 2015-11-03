@@ -5,96 +5,92 @@ making changes will run the server for this game with the debugger on."""
 ##############################################################################
 #Externals
 from flask import Flask, request, render_template, session, redirect, url_for, escape, flash
-from flask.ext.login import LoginManager, UserMixin, login_required, login_user, current_user
 from flask_debugtoolbar import DebugToolbarExtension
+#Login Checks and Forms
+from flask_wtf import Form
+from wtforms import BooleanField, TextField, validators, PasswordField
+from itsdangerous import URLSafeTimedSerializer
+from flask.ext.login import LoginManager
+#Python Libraries
 from pprint import pprint
 from string import translate, lower
 from random import randint, sample
 
 #Internals
 from model import connect_to_db, db, Country, User, Quizevent
+from forms import SignupForm, LoginForm
 from compliments import compliments
+
 
 app = Flask(__name__)
 app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
 ##############################################################################
-#App Routes
-
-
+#Defin the login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
-
+login_manager.login_view = "/login-form"
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter(User.id == user_id).first()
+def user_loader(userid):
+    return User.query.get(userid)
 
 
-@app.route('/login_check', methods=['POST'])
-def login_check():
-    # check that a username and password were entered on form
-    email = request.form.get("email")
-    print "email: ", email
-    password = request.form.get("password")
-    print "password ", password
+#App Routes
+@app.route('/login-signup-form', methods=(["GET"]))
+def show_form():
+    print "we're in the login-signup form"
+    signup_form = SignupForm()
+    login_form = LoginForm()
+    return render_template("login.html", signup_form=signup_form, login_form=login_form)
 
-    # check database for user with username
-    user = User.query.filter(User.email == email).first()
-    print user
-    if user:
-        print "got user"
-        # TODO: check password
-        if True:
-            login_user(user)
-            print session
-        else:
-            print "bad password"
 
+@app.route('/signup-form', methods=(["POST"]))
+def signup():
+    """For GET requests, display the signup form. For POST requests, process the signup form."""
+    print "we're in the signup form"
+    form = SignupForm(request.form)
+    if form.validate_on_submit():
+        try:
+            password = str(form.password.data)
+            print password
+        except:
+            raise "WAT SOMETHING HAPPENED BECAUSE UNICODE WEIRDNESS IN PASSWORD"
+        user = User(email=form.email.data, password=password)
+        db.session.add(user)
+        db.session.commit()
+        return redirect("/")
     else:
-        print "bad user"
+        print "not valid on submission"
+        return redirect("/login-signup-form")
 
 
-    # if email:
-    #     login_user(user)
-    #     print session
-
-    return  redirect("/")
-
-
-# check that a username and password were entered on form
-# check database for user with username
-#     if user
-#         check password
-#             if password matches user.password
-#                 login(user)
-#             else
-#                 flash error
-#     else
-#         flash error
-
-
-
-
-
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    #Even listener on the logout button
-    #Hide logout button and show login button
-    logout_user()
-    return redirect("/")
+@app.route('/login-form', methods=(["POST"]))
+def login():
+    print "we're in the login form"
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        email = form.email.data
+        print "\n\nemail: "
+        print email
+        password = form.password.data
+        print "\n\npassword: "
+        print password
+        user = User.query.filter(User.email == form.email.data).first()
+        print user
+        #If user is in the database and password matches, log them into the session
+        if user and user.check_password(password):
+            print "\n\nValid user!\n\n\n"
+            session['username'] = email
+            return redirect('/')
+        else:
+            print "\n\nwrong password\n\n"
+            flash("Password wrong")
+            return redirect("/login-signup-form")
+    return redirect("/login-signup-form")        
 
 
 @app.route('/')
 def get_quiz_questions():
     """Handles login and returns the homepage"""
-    if current_user:
-        print "logged in as"
-        print current_user
-        # print 'Logged in as {}'.format(escape(session['email']))
-    else:
-        print "User is not logged in"
 
     return render_template("quiz_country.html")
 
@@ -139,11 +135,6 @@ def grade_quiz():
 
     nicety = (sample(compliments, 1))[0]
     return render_template ("quiz_score.html", score=score, nicety=nicety)
-
-@app.route('/scores_data')
-@login_required
-def settings(): 
-    pass
 
 
 # @app.route('/name', methods=['POST'])
@@ -217,7 +208,7 @@ def get_country_capital(country_name):
 if __name__ == "__main__":    
     connect_to_db(app)
 
-    #Use the DebugToolbar
+    # #Use the DebugToolbar
     DebugToolbarExtension(app)
 
     app.run(debug=True)
