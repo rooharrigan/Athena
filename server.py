@@ -10,7 +10,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf import Form
 from wtforms import BooleanField, TextField, validators, PasswordField
 from itsdangerous import URLSafeTimedSerializer
-from flask.ext.login import LoginManager
+from flask.ext.login import LoginManager, login_user, logout_user
+import bcrypt
 #Python Libraries
 from pprint import pprint
 from string import translate, lower
@@ -28,10 +29,10 @@ app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
 #Defin the login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "/login-form"
+login_manager.login_view = "signin"
 @login_manager.user_loader
 def user_loader(userid):
-    return User.query.get(userid)
+    return User.query.filter(User.id == userid).first()
 
 
 #App Routes
@@ -43,18 +44,20 @@ def show_form():
     return render_template("login.html", signup_form=signup_form, login_form=login_form)
 
 
-@app.route('/signup-form', methods=(["POST"]))
+@app.route('/signup', methods=(["POST"]))
 def signup():
-    """For GET requests, display the signup form. For POST requests, process the signup form."""
-    print "we're in the signup form"
+    """Process the signup form, check if the user already exists, and if not create them."""
+    print "we're in the signup action"
     form = SignupForm(request.form)
     if form.validate_on_submit():
         try:
             password = str(form.password.data)
             print password
         except:
-            raise "WAT SOMETHING HAPPENED BECAUSE UNICODE WEIRDNESS IN PASSWORD"
+            raise "WAT UNICODE WEIRDNESS IN PASSWORD"
         user = User(email=form.email.data, password=password)
+        print user.email
+        print user.password_hash
         db.session.add(user)
         db.session.commit()
         return redirect("/")
@@ -63,36 +66,51 @@ def signup():
         return redirect("/login-signup-form")
 
 
-@app.route('/login-form', methods=(["POST"]))
+@app.route('/login', methods=(["POST"]))
 def login():
-    print "we're in the login form"
+    """Process the login form.  Check that password and username are right and store user in session"""
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        email = form.email.data
-        print "\n\nemail: "
-        print email
-        password = form.password.data
-        print "\n\npassword: "
-        print password
+        password = str(form.password.data)
         user = User.query.filter(User.email == form.email.data).first()
-        print user
-        #If user is in the database and password matches, log them into the session
-        if user and user.check_password(password):
-            print "\n\nValid user!\n\n\n"
-            session['username'] = email
-            return redirect('/')
+        if user:
+            if user.check_password(password):
+                print "\n\nValid user!\n\n\n"
+                login_user(user, remember=True)
+                print "session: "
+                print session
+                return redirect('/')
+            else:
+                print "Invalid password"
+                flash("Username or password incorrect")
         else:
-            print "\n\nwrong password\n\n"
-            flash("Password wrong")
+            print "\n\nInvalid email\n\n"
+            flash("Username or password incorrect")
             return redirect("/login-signup-form")
     return redirect("/login-signup-form")        
 
 
+@app.route('/logout', methods=(["GET", "POST"]))
+def logout():
+    logout_user()
+    print "session: "
+    print session
+    return redirect('/')
+
+
 @app.route('/')
+def index():
+    """Landing page"""
+
+    return render_template("index.html")
+
+
+@app.route('/choose_country')
 def get_quiz_questions():
-    """Handles login and returns the homepage"""
+    """Choose country you want to learn about."""
 
     return render_template("quiz_country.html")
+
 
 
 @app.route('/quiz')
