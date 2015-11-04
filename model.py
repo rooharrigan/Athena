@@ -13,20 +13,6 @@ db = SQLAlchemy()
 
 ##############################################################################
 # Model definitions
-
-class Country(db.Model):
-    """Stores countries and their attributes, seeded from Wikipedia"""
-
-    __tablename__ = "countries"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    country_name = db.Column(db.String, nullable=False)
-    capital = db.Column(db.String, nullable=True)
-
-    def __repr__(self):
-        return "<Country country_name=%s>" % (self.name)
-
-
 class User(db.Model, UserMixin):
     """Stores user id and email information."""
 
@@ -70,6 +56,33 @@ class User(db.Model, UserMixin):
         new_avg = (self.avg_score * (self.quizzes_taken - 1) + new_score)/(self.quizzes_taken)
         self.avg_score = new_avg
 
+
+class Continent(db.Model):
+    """Stores continent id and name, manually seeded from seed.py"""
+
+    __tablename__ = "continents"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String, nullable=False)
+
+    def __repr__(self):
+        return "<Continent name=%s>" % (self.name)
+
+
+class Country(db.Model):
+    """Stores countries and their attributes, seeded from Wikipedia in seed.py"""
+
+    __tablename__ = "countries"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    country_name = db.Column(db.String, nullable=False)
+    on_continent = db.Column(db.Integer, db.ForeignKey('continents.id'), nullable=True)
+    capital = db.Column(db.String, nullable=True)
+
+    continent = db.relationship('Continent', backref='countries')
+
+    def __repr__(self):
+        return "<Country country_name=%s>" % (self.country_name)
 
 
 class Quizevent(db.Model):

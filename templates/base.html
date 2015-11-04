@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/owl_fav.ico') }}">
@@ -36,14 +37,13 @@
         <li><a href="/small_data">Small Data</a></li>
         {% endif %}
       </ul>
-        <!-- Login/Logout Modal Form -->
        <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated %}
-          <a href="/logout" type="login" id="login"><button class="btn btn-default">Logout</button></a>
+          <a href="/logout" type="logout" id="login"><button class="btn btn-default">Logout</button></a>
         {% else %}
-<!--         TODO: Make this gray out if you're actually in the business of signinf up -->
-          <a href="/login-signup-form" type="login" id="login"><button class="btn btn-default">Signup/Login</button></a>
+        <a href="login-signup-form"><button type="submit" class="btn btn-default">Signup/Login</button></a>
         {% endif %}
+
 
         </ul>
     </div><!-- /.navbar-collapse -->

@@ -4,7 +4,9 @@
 {% block body %}
 {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
 
-  <h2>Sign up</h2>
+        
+<!-- signup  -->
+<h1> Sign up! </h1>
   <form action="/signup" id="signup-form" method="POST">
       {{signup_form.csrf_token}}
     <div class="col-xs-6 col-md-6">
@@ -20,7 +22,8 @@
 
   </form>
 
-  <h2>Log in</h2>
+<!-- login -->
+<h1> Log in! </h1>
   <form action="/login" id="login-form" method="POST">
       {{login_form.csrf_token}}
     <div class="col-xs-6 col-md-6">
@@ -31,7 +34,7 @@
       <br>
       <br>
       <dd>
-          <input type="submit" class="btn btn-default" value="login" id="login-form"/>
+          <input class="btn btn-default" type="submit" value="Login">
     </dl>
   </div>
   </form>

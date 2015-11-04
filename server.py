@@ -29,8 +29,8 @@ app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
 #Defin the login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_message = "Log in to get started!"
-login_manager.login_view = "/login-signup-form"
+login_manager.login_message = None
+login_manager.login_view = "/"
 @login_manager.user_loader
 def user_loader(userid):
     return User.query.filter(User.id == userid).first()
@@ -94,9 +94,7 @@ def login():
 @app.route('/logout', methods=(["GET", "POST"]))
 def logout():
     logout_user()
-    print "session: "
-    print session
-    return redirect('/')
+    return redirect('/home')
 
 
 @app.route('/')
