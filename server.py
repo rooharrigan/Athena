@@ -10,7 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf import Form
 from wtforms import BooleanField, TextField, validators, PasswordField
 from itsdangerous import URLSafeTimedSerializer
-from flask.ext.login import LoginManager, login_user, logout_user
+from flask.ext.login import LoginManager, login_user, logout_user, login_required
 import bcrypt
 #Python Libraries
 from pprint import pprint
@@ -29,7 +29,8 @@ app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
 #Defin the login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "signin"
+login_manager.login_message = "Log in to get started!"
+login_manager.login_view = "/login-signup-form"
 @login_manager.user_loader
 def user_loader(userid):
     return User.query.filter(User.id == userid).first()
@@ -60,7 +61,7 @@ def signup():
         print user.password_hash
         db.session.add(user)
         db.session.commit()
-        return redirect("/")
+        return redirect("/home")
     else:
         print "not valid on submission"
         return redirect("/login-signup-form")
@@ -79,7 +80,7 @@ def login():
                 login_user(user, remember=True)
                 print "session: "
                 print session
-                return redirect('/')
+                return redirect('/home')
             else:
                 print "Invalid password"
                 flash("Username or password incorrect")
@@ -105,7 +106,16 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/choose_country')
+@app.route('/home')
+@login_required
+def choose_quizes():
+    """Place to choose what you want to learn about"""
+
+    return render_template("quiz_home.html")
+
+
+
+@app.route('/cap-quiz')
 def get_quiz_questions():
     """Choose country you want to learn about."""
 
@@ -155,10 +165,12 @@ def grade_quiz():
     return render_template ("quiz_score.html", score=score, nicety=nicety)
 
 
-# @app.route('/name', methods=['POST'])
-
-# button clicked = requiest.form.get()
-# return 
+@app.route('/small_data')
+def show_small_data():
+    """Show a graph of how users are doing on quizzes"""
+    print "You're in small data!"
+    
+    return render_template("small_data.html")
 
 
 ##############################################################################

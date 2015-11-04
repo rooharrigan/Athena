@@ -26,18 +26,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" id="Athena-logo" href="/">Athena</a>
+      <a class="navbar-brand" id="Athena-logo" href="/home">Athena</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">Small Data</a></li>
+        {%if current_user.is_authenticated %}
+        <li><a href="/small_data">Small Data</a></li>
+        {% endif %}
       </ul>
         <!-- Login/Logout Modal Form -->
        <ul class="nav navbar-nav navbar-right">
-        <a href="/login-signup-form" type="login" id="login"><button class="btn btn-default">Signup/Login</button></a>
-         <a href="/logout" type="login" id="login"><button class="btn btn-default">Logout</button></a>
+        {% if current_user.is_authenticated %}
+          <a href="/logout" type="login" id="login"><button class="btn btn-default">Logout</button></a>
+        {% else %}
+<!--         TODO: Make this gray out if you're actually in the business of signinf up -->
+          <a href="/login-signup-form" type="login" id="login"><button class="btn btn-default">Signup/Login</button></a>
+        {% endif %}
+
         </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
