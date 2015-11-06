@@ -6,6 +6,7 @@ making changes will run the server for this game with the debugger on."""
 #Externals
 from flask import Flask, request, render_template, session, redirect, url_for, escape, flash
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_sqlalchemy import SQLAlchemy
 #Login Checks and Forms
 from flask_wtf import Form
 from wtforms import BooleanField, TextField, validators, PasswordField
@@ -149,19 +150,17 @@ def grade_quiz():
         print "That's incorrect!"
         score = 0
 
+    #Grab components of the quizevent and store it in the database
     user_id = current_user.id
-    print "User Id: "
-    print type(user_id)
     country_obj = Country.query.filter(Country.country_name == country_name).first()
     country_id = country_obj.id
-    print "country id: "
-    print country_id
-    print type(country_id)
+    continent_name = country_obj.continent_name
 
-    quizevent = Quizevent(user_id=user_id, country_id=country_id, score=score)
+    quizevent = Quizevent(user_id=user_id, country_id=country_id, continent_name=continent_name, score=score)
     db.session.add(quizevent)
     db.session.commit()
 
+    #Return the quiz score to the client
     nicety = (sample(compliments, 1))[0]
     return render_template ("quiz_score.html", score=score, nicety=nicety)
 
@@ -203,6 +202,7 @@ def make_wrong_answers(country_name):
             answer = country_object.capital
             answers.append(answer)
         return answers
+
 
 
 def add_quizevent(country_name):
