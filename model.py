@@ -21,7 +21,13 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String, nullable=False)
     password_hash = db.Column(db.String, nullable=False)           #previously using db.String, hashed as numbers
-    avg_score = db.Column(db.Integer, nullable=True)
+    avg_score_africa = db.Column(db.Integer, nullable=True)
+    avg_score_asia = db.Column(db.Integer, nullable=True)
+    avg_score_europe = db.Column(db.Integer, nullable=True)
+    avg_score_namerica = db.Column(db.Integer, nullable=True)
+    avg_score_samerica = db.Column(db.Integer, nullable=True)
+    avg_score_camerica = db.Column(db.Integer, nullable=True)
+    avg_score_oceania = db.Column(db.Integer, nullable=True)
     quizzes_taken = db.Column(db.Integer, nullable=True)
     #Inheriting from UserMixin gives you defaults of is_authenticated(), is_active(), is_anonymous(), and get_id() functions required by Flask-Login
 
@@ -74,11 +80,11 @@ class Country(db.Model):
     __tablename__ = "countries"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    country_name = db.Column(db.String, nullable=False)
+    country_name = db.Column(db.String, nullable=False, unique=True)
     alpha_code = db.Column(db.String(3), nullable=False)
     demonym = db.Column(db.String, nullable=True)
-    continent_name = db.Column(db.Integer, db.ForeignKey('continents.name'))
-    languages = db.Column(db.Unicode, nullable=True)
+    continent_name = db.Column(db.String, db.ForeignKey('continents.name'))
+    languages = db.Column(db.String, nullable=True)
     capital = db.Column(db.String, nullable=True)
 
     continent = db.relationship('Continent', backref='countries')
@@ -87,21 +93,18 @@ class Country(db.Model):
         return "<Country country_name=%s>" % (self.country_name)
 
 
-# class Quizevent(db.Model):
-#     """Stores individual quiz event information."""
+class Quizevent(db.Model):
+    """Stores individual quiz event information."""
 
-#     __tablename__ = "quizevents"
+    __tablename__ = "quizevents"
 
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-#     country_id = db.Column(db.Integer, db.ForeignKey('countries.id'), nullable=False)
-#     score = db.Column(db.String, nullable=True)             #not sure how to get the quiz ID in there becase it happens in a separate route
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    country_id = db.Column(db.Integer, db.ForeignKey('countries.id'))
+    score = db.Column(db.Integer, nullable=True)
 
-#     user = db.relationship('User', backref='quizzes')
-#     country = db.relationship('Country', backref='quizzes')
-
-#     def __repr__(self):
-#         return "<Quizevent id=%d country_id=%s>" % (self.id, self.country_id)
+    user = db.relationship('User', backref='quizzes')
+    country = db.relationship('Country', backref='quizzes')
 
 
 

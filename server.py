@@ -10,7 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf import Form
 from wtforms import BooleanField, TextField, validators, PasswordField
 from itsdangerous import URLSafeTimedSerializer
-from flask.ext.login import LoginManager, login_user, logout_user, login_required
+from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user
 import bcrypt
 #Python Libraries
 from pprint import pprint
@@ -18,7 +18,7 @@ from string import translate, lower
 from random import randint, sample
 
 #Internals
-from model import connect_to_db, db, User, Continent
+from model import connect_to_db, db, User, Continent, Country, Quizevent
 from forms import SignupForm, LoginForm
 from compliments import compliments
 
@@ -72,16 +72,14 @@ def login():
         user = User.query.filter(User.email == form.email.data).first()
         if user:
             if user.check_password(password):
-                print "\n\nValid user!\n\n\n"
+                print "\nValid user!"
                 login_user(user, remember=True)
-                print "session: "
-                print session
                 return redirect('/home')
             else:
                 print "Invalid password"
                 flash("Username or password incorrect")
         else:
-            print "\n\nInvalid email\n\n"
+            print "\nInvalid email"
             flash("Username or password incorrect")
             return redirect("/login-signup-form")
     return redirect("/login-signup-form")        
@@ -107,13 +105,11 @@ def choose_quizes():
     return render_template("quiz_home.html")
 
 
-
 @app.route('/cap-quiz')
 def get_quiz_questions():
     """Choose country you want to learn about."""
 
     return render_template("quiz_country.html")
-
 
 
 @app.route('/quiz')
@@ -142,13 +138,10 @@ def generate_quiz():
 @app.route('/quiz_score', methods=['POST'])
 def grade_quiz():
     """Grade the quiz and update the database with a quizevent"""
-    guess = "Cairo"
-    country_name = "Cairo"
-    # guess = request.form.get("button")
-    # country_name = request.form.get("country_name")
+    guess = request.form.get("button")
+    country_name = request.form.get("country_name")
     right_answer = get_country_capital(country_name)
-    print right_answer
-
+    #Grade the quiz
     if guess == right_answer:
         print "That's correct!"
         score = 100
@@ -156,16 +149,21 @@ def grade_quiz():
         print "That's incorrect!"
         score = 0
 
-    # user_id = 
-    country_id = db.session.query(Country.id).filter(Country.country_name == country_name).first()
+    user_id = current_user.id
+    print "User Id: "
+    print type(user_id)
+    country_obj = Country.query.filter(Country.country_name == country_name).first()
+    country_id = country_obj.id
+    print "country id: "
     print country_id
-    return
+    print type(country_id)
 
-    # quizevent = Quizevent(user_id=user_id, country_id=country_id, score=score)
+    quizevent = Quizevent(user_id=user_id, country_id=country_id, score=score)
+    db.session.add(quizevent)
+    db.session.commit()
 
-
-    # nicety = (sample(compliments, 1))[0]
-    # return render_template ("quiz_score.html", score=score, nicety=nicety)
+    nicety = (sample(compliments, 1))[0]
+    return render_template ("quiz_score.html", score=score, nicety=nicety)
 
 
 @app.route('/small_data')
@@ -178,8 +176,6 @@ def show_small_data():
 
 ##############################################################################
 #Static Functions
-
-
 
 def make_wrong_answers(country_name):
     """Generates wrong answers for the capital quiz question"""
@@ -228,8 +224,6 @@ def get_country_capital(country_name):
     """Given a country name string, returns the country's capital or error message."""
     country_obj = Country.query.filter(Country.country_name == country_name).first()
     capital = country_obj.capital
-    # tup = db.session.query(Country.capital).filter(Country.country_name == country_name).first()
-    # capital = tup.capital
     if capital:
         print capital
         return capital
