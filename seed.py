@@ -5,7 +5,7 @@ from pprint import pprint
 from lxml import html
 from string import translate, lower
 import requests, wikipedia, mwparserfromhell
-import io
+
 
 #Internal files
 from model import connect_to_db, db, User, Continent, Country
@@ -236,9 +236,35 @@ def get_continents():
     db.session.commit()
 
 
+
+countries_to_exclude = ["Hong Kong", "Macau", "Reunion", "Saint Helena, Ascension and Tristan da Cunha", 
+    "Christmas Island", "Akrotiri and Dhekelia", "S\xe3o Tom\xe9 and Pr\xedncipe", "Cocos (Keeling) Islands", "Norfolk Island", "Greenland",
+    "Republika Srpska", "Federation of Bosnia and Herzegovina", "Tokelau", 
+     "Aland", "Faroe Islands", "New Caledonia", "Saint Pierre and Miquelon",
+    "Cyrenaica", "French Polynesia", "Wallis and Futuna", "French Southern and Antarctic Lands",
+    "Azad Kashmir", "British Indian Ocean Territory", "Saint Helena, Ascension and Tristan da Cunhan",
+    "Aruba", "Cook Islands", "Niue", "Akrotiri and Dhekelia", "Vatican City", "Gibraltar", "Guernsey",
+    "Guernsey", "Alderney", "Herm", "Sark", "Isle of Man", "Jersey", "Montserrat", 
+    "American Samoa", "Guam", "Northern Samoa", "Northern Mariana Islands", "Puerto Rico", "U.S. Virgin Islands",
+    "Marshall Islands", "Micronesia", "Palau", "Falkland Islands", "Pitcairn Islands", "French Southern Territories", 
+    "South Georgia and the SOuth Sandwich Islands", "Heard Island and McDonald Islands", "Wake Island", "Bouvet Island", "British Antarctic Territory", "South Georgia and the South Sandwich Islands",
+    "British Indian Ocean Territory", "Christmas Island", "Cocos (Keeling) Islands", "Timor-Leste",
+    "Nagorno-Karabakh", "Northern Cyprus", "South Ossetia", "Jersey", "Svalbard", "Transnistria", "Anguilla", 
+    "Bermuda", "Bonaire", "British Virgin Islands", "Cayman Islands", "Clipperton Island", "Curacao", "Greenland", "Guadeloupe",
+    "Martinique", "Montserrat", "Navassa Island", "Saint Barthelemy", "Saint Martin", 
+    "Sint Eustatius", "Sint Maarten", "Turks and Caicos Islands", "United States Virgin Islands", "South Georgia and the South Sandwish Islands",
+    "American Samoa", "Ashmore and Cartier Islands", "Cook Islands", "Baker Island", "Coral Sea Islands", 
+    "Guam", "Howland Island", "Jarvis Island", "Johnston Atoll", "Kingman Reef", "Midway Atoll",  
+    "Niue", "Norfolk Island", "Northern Mariana Islands", "Palmyra Atoll", 
+    "French Guiana", "Mayotte", "Sahrawi Arab Democratic Republic",
+    "Bouvet Island", "French Southern and Antarctic Lands", "Heard Island and McDonald Islands"
+    ]
+
 def get_africa():
     """Query the RESTCountries API and get country, capital, primary language ISO code, demonym, and region"""
     #Define query params
+    
+
     r = requests.get("https://restcountries-v1.p.mashape.com/region/africa",
         headers={
             "X-Mashape-Key": "vNDpoJET9amshdFf2U8wswpEdt13p1SPHWDjsnKA9N4uTmIPgu",
@@ -247,7 +273,7 @@ def get_africa():
         )
     info = r.json()
     for country_dict in info:
-        name = country_dict["name"]
+        name = str(country_dict["name"])
         alpha_code = country_dict["alpha3Code"]
         demonym = country_dict["demonym"]
         region = country_dict["region"]
@@ -260,30 +286,32 @@ def get_africa():
             lang = translate_lang(lang)
             lang_list.append(lang)
 
-        country = Country(
-            country_name=name, 
-            alpha_code=alpha_code, 
-            demonym=demonym,
-            continent_name=region,
-            languages=lang_list,
-            capital=capital
-            )
-        print country
-        print country.languages
+        if name not in countries_to_exclude:
+            country = Country(
+                country_name=name, 
+                alpha_code=alpha_code, 
+                demonym=demonym,
+                continent_name=region,
+                languages=lang_list,
+                capital=capital
+                )
+            print country
+            print country.languages
 
 
 def make_iso_lang_dict():
     """Build an ISO language code dictionary."""
     iso_langs = {}
-    iso_txt = io.open("iso_codes.txt", 'w', encoding='utf8')
+    iso_txt = open("iso_codes.txt")
     for line in iso_txt:
         line = line.strip()
         line = line.split("|")
         code = line[2]
-        country = line[3]
-        iso_langs[code] = country
+        lang = line[3]
+        iso_langs[code] = lang
     return iso_langs
 iso_langs = make_iso_lang_dict()
+
 
 
 def translate_lang(code):
