@@ -18,7 +18,7 @@ from string import translate, lower
 from random import randint, sample
 
 #Internals
-from model import connect_to_db, db, Country, User, Quizevent
+from model import connect_to_db, db, User, Continent
 from forms import SignupForm, LoginForm
 from compliments import compliments
 
@@ -51,18 +51,14 @@ def signup():
     print "we're in the signup action"
     form = SignupForm(request.form)
     if form.validate_on_submit():
-        try:
-            password = str(form.password.data)
-            print password
-        except:
-            raise "WAT UNICODE WEIRDNESS IN PASSWORD"
+        password = str(form.password.data)
         user = User(email=form.email.data, password=password)
-        print user.email
-        print user.password_hash
         db.session.add(user)
         db.session.commit()
+        login_user(user, remember=True)
         return redirect("/home")
     else:
+        flash("Please enter a valid email.")
         print "not valid on submission"
         return redirect("/login-signup-form")
 
@@ -94,13 +90,12 @@ def login():
 @app.route('/logout', methods=(["GET", "POST"]))
 def logout():
     logout_user()
-    return redirect('/home')
+    return redirect('/')
 
 
 @app.route('/')
 def index():
-    """Landing page"""
-
+    """Landing page with Santorini.  Modal window should go here."""
     return render_template("index.html")
 
 
@@ -147,9 +142,12 @@ def generate_quiz():
 @app.route('/quiz_score', methods=['POST'])
 def grade_quiz():
     """Grade the quiz and update the database with a quizevent"""
-    guess = request.form.get("button")
-    country_name = request.form.get("country_name")
+    guess = "Cairo"
+    country_name = "Cairo"
+    # guess = request.form.get("button")
+    # country_name = request.form.get("country_name")
     right_answer = get_country_capital(country_name)
+    print right_answer
 
     if guess == right_answer:
         print "That's correct!"
@@ -158,9 +156,16 @@ def grade_quiz():
         print "That's incorrect!"
         score = 0
 
+    # user_id = 
+    country_id = db.session.query(Country.id).filter(Country.country_name == country_name).first()
+    print country_id
+    return
 
-    nicety = (sample(compliments, 1))[0]
-    return render_template ("quiz_score.html", score=score, nicety=nicety)
+    # quizevent = Quizevent(user_id=user_id, country_id=country_id, score=score)
+
+
+    # nicety = (sample(compliments, 1))[0]
+    # return render_template ("quiz_score.html", score=score, nicety=nicety)
 
 
 @app.route('/small_data')
@@ -221,8 +226,10 @@ def add_quizevent(country_name):
 
 def get_country_capital(country_name):
     """Given a country name string, returns the country's capital or error message."""
-    tup = db.session.query(Country.capital).filter(Country.country_name == country_name).first()
-    capital = tup.capital
+    country_obj = Country.query.filter(Country.country_name == country_name).first()
+    capital = country_obj.capital
+    # tup = db.session.query(Country.capital).filter(Country.country_name == country_name).first()
+    # capital = tup.capital
     if capital:
         print capital
         return capital

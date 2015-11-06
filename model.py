@@ -41,7 +41,7 @@ class User(db.Model, UserMixin):
         print self.password_hash
 
 
-    def check_password(self, password): ##AARON
+    def check_password(self, password):
         encoded_pw = self.password_hash.encode('utf-8')
         return bcrypt.hashpw(password, encoded_pw) == encoded_pw
 
@@ -62,8 +62,7 @@ class Continent(db.Model):
 
     __tablename__ = "continents"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, primary_key=True, nullable=False)
 
     def __repr__(self):
         return "<Continent name=%s>" % (self.name)
@@ -76,7 +75,10 @@ class Country(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     country_name = db.Column(db.String, nullable=False)
-    on_continent = db.Column(db.Integer, db.ForeignKey('continents.id'), nullable=True)
+    alpha_code = db.Column(db.String(3), nullable=False)
+    demonym = db.Column(db.String, nullable=True)
+    continent_name = db.Column(db.Integer, db.ForeignKey('continents.name'))
+    languages = db.Column(db.Unicode, nullable=True)
     capital = db.Column(db.String, nullable=True)
 
     continent = db.relationship('Continent', backref='countries')
@@ -85,21 +87,21 @@ class Country(db.Model):
         return "<Country country_name=%s>" % (self.country_name)
 
 
-class Quizevent(db.Model):
-    """Stores individual quiz event information."""
+# class Quizevent(db.Model):
+#     """Stores individual quiz event information."""
 
-    __tablename__ = "quizevents"
+#     __tablename__ = "quizevents"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    country_id = db.Column(db.Integer, db.ForeignKey('countries.id'), nullable=False)
-    score = db.Column(db.String, nullable=True)             #not sure how to get the quiz ID in there becase it happens in a separate route
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+#     country_id = db.Column(db.Integer, db.ForeignKey('countries.id'), nullable=False)
+#     score = db.Column(db.String, nullable=True)             #not sure how to get the quiz ID in there becase it happens in a separate route
 
-    user = db.relationship('User', backref='quizzes')
-    country = db.relationship('Country', backref='quizzes')
+#     user = db.relationship('User', backref='quizzes')
+#     country = db.relationship('Country', backref='quizzes')
 
-    def __repr__(self):
-        return "<Quizevent id=%d country_id=%s>" % (self.id, self.country_id)
+#     def __repr__(self):
+#         return "<Quizevent id=%d country_id=%s>" % (self.id, self.country_id)
 
 
 
