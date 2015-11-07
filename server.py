@@ -30,7 +30,7 @@ app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
 #Defin the login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_message = None
+login_manager.login_message = 0
 login_manager.login_view = "/"
 @login_manager.user_loader
 def user_loader(userid):
@@ -166,11 +166,40 @@ def grade_quiz():
 
 
 @app.route('/small_data')
-def show_small_data():
-    """Show a graph of how users are doing on quizzes"""
-    print "You're in small data!"
+def get_sdata():
+    """Show a graph of how users are doing on quizzes."""
     
-    return render_template("small_data.html")
+    #Get current_user-level data
+    user_id = 1
+    print user_id
+
+    user_scores = {}
+
+    continents = db.session.query(Continent.name).all()
+    for i in continents:
+        continent = i.name
+        title = continent + " Scores"
+        number_quizzes = Quizevent.query.filter(Quizevent.user_id == user_id, 
+            Quizevent.continent_name == continent).count()
+        sum_score = 0
+        quiz_scores_tuple = (db.session.query(Quizevent.score).filter
+            (Quizevent.user_id == user_id, Quizevent.continent_name == continent)
+            .all())
+        for i in quiz_scores_tuple:
+            score = i.score
+            sum_score += score
+        if sum_score != 0:
+            avg_score = sum_score / number_quizzes
+            print "Your average score for {} quizzes is {}".format(continent, avg_score)
+        else:
+            print "\n You haven't taken any quizzes about {} yet!".format(continent)
+            avg_score = None
+        user_scores[continent] = avg_score
+
+        for continent, score in user_scores.items():
+            print continent, score
+
+        # return render_template("small_data.html", user_scores=user_scores)
 
 
 ##############################################################################
@@ -238,9 +267,9 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # #Use the DebugToolbar
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
-    app.run(debug=True)
+    # app.run(debug=True)
     
 
 

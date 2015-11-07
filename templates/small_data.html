@@ -2,10 +2,25 @@
 {% extends 'base.html' %}
 
 {% block body %}
+<br>
+<br>
+<div class="panel panel-primary">
+    <h2>The World of Athena Users</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><span class="badge">14</span>Cras justo odio</li>
+    </ul>
+</div>
+<br>
 
 <br>
-<br>
-<img src="/static/img/athena.png" 
+<div class="panel panel-success">
+    <h2>Your World</h2>
+    <ul class="list-group">
+        {% for continent,score in user_scores.items() %}
+                <li class="list-group-item"><span class="badge">{{ score }}</span>{{ continent }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
 
 {% endblock %}
