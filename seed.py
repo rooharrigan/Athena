@@ -41,7 +41,7 @@ countries_to_exclude = ["Hong Kong", "Macau", "Reunion", "Saint Helena, Ascensio
 
 def get_continents():
     """Seeds database manually with the 7-continent model."""
-    continents = ['North America', 'South America', 'Africa', 'Europe', 'Asia', 'Oceania', 'Antarctica', 'Caribbean', 'Central America']
+    continents = ['North America', 'South America', 'Africa', 'Europe', 'Asia', 'Oceania', 'Antarctica', 'Caribbean']
     for i in continents:
         print i
         continent = Continent(name=i)
@@ -121,7 +121,7 @@ def get_countries(r, region):
         demonym = country_dict["demonym"]
         subregion = country_dict["subregion"]
         if region == "Americas":
-            if subregion == "Northern America":
+            if subregion == "Northern America" or subregion == "Central America":
                 new_region = "North America"
             else:
                 new_region = subregion

@@ -121,7 +121,7 @@ def generate_quiz():
     country_name = (request.args.get("country")).title()
     capital = get_country_capital(country_name)
     
-    wrong1, wrong2, wrong3 = make_wrong_answers(country_name)
+    wrong1, wrong2, wrong3 = make_wrong_capitals(country_name)
     answers = (capital, wrong1, wrong2, wrong3)
 
     #Randomize into four answers and pass to the user
@@ -141,7 +141,11 @@ def grade_quiz():
     """Grade the quiz and update the database with a quizevent"""
     guess = request.form.get("button")
     country_name = request.form.get("country_name")
+    print "\n Country name: "
+    print country_name
     right_answer = get_country_capital(country_name)
+    print "\n right answer: "
+    print right_answer
     #Grade the quiz
     if guess == right_answer:
         print "That's correct!"
@@ -235,36 +239,28 @@ def get_all_scores():
 
 
 
-def make_wrong_answers(country_name):
-    """Generates wrong answers for the capital quiz question"""
-    #Count the number of countries in table
-    answer_ids = []
-    answers = []
+def make_wrong_capitals(country_name):
+    """Generates wrong answers for the capital quiz question. Returns as a set."""
+    wrong_answers = set()
 
-    #Get the right answer's id
+    #Make the right answer's country object
     country_object = Country.query.filter(Country.country_name == country_name).first()
-    right_id = country_object.id
-    answer_ids.append(right_id)
 
-    #Pick random id's and make wrong answers from the same continent
+    #Make country objects for wrong answers from same continent
     continent = country_object.continent_name
-    number_of_countries = Country.query.filter(Country.continent_name == continent).count()
-    print number_of_countries
+    list_of_country_objects = Country.query.filter(Country.continent_name == continent, Country.country_name != country_name).all()
+    index_of_countries = len(list_of_country_objects) - 1
 
-    wrong_id = randint(1, number_of_countries)
-    while len(answer_ids) < 4:
-        if wrong_id in answer_ids:
-            wrong_id = randint(1, number_of_countries)
+    wrong_index = randint(0, index_of_countries)
+    while len(wrong_answers) < 3:
+        if (list_of_country_objects[wrong_index]).capital in wrong_answers:
+            wrong_index = randint(0, index_of_countries)
         else:
-            answer_ids.append(wrong_id)
-    else: 
-        answer_ids = answer_ids[1:]
-        for i in answer_ids:
-            country_object = db.session.query(Country.capital).filter(Country.id == i, Country.continent_name == continent).first()
-            print country_object
-            answer = country_object.capital
-            answers.append(answer)
-        return answers
+            country_object = list_of_country_objects[wrong_index]
+            wrong_answers.add(country_object.capital)
+        print "\n \n  answers"
+    print wrong_answers
+    return wrong_answers
 
 
 def add_quizevent(country_name):
