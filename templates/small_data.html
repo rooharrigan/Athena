@@ -5,9 +5,12 @@
 <br>
 <br>
 <div class="panel panel-primary">
-    <h2>The World of Athena Users</h2>
+    <h2>Athena's World</h2>
+    <h5>How other users are scoring</h5>
     <ul class="list-group">
-      <li class="list-group-item"><span class="badge">14</span>Cras justo odio</li>
+        {% for continent, score in all_scores.iteritems() %}
+            <li class="list-group-item"><span class="badge">{{ score }}</span>{{ continent }}</li>
+        {% endfor %}
     </ul>
 </div>
 <br>
@@ -16,10 +19,10 @@
 <div class="panel panel-success">
     <h2>Your World</h2>
     <ul class="list-group">
-        {% for continent,score in user_scores.items() %}
+        {% for continent,score in user_scores.iteritems() %}
                 <li class="list-group-item"><span class="badge">{{ score }}</span>{{ continent }}</li>
         {% endfor %}
-    </ul>
+
 </div>
 
 

@@ -166,18 +166,16 @@ def grade_quiz():
 
 
 @app.route('/small_data')
-def get_sdata():
+def get_user_scores():
     """Show a graph of how users are doing on quizzes."""
     
     #Get current_user-level data
-    user_id = 1
-    print user_id
+    user_id = current_user.id
 
     user_scores = {}
 
-    continents = db.session.query(Continent.name).all()
-    for i in continents:
-        continent = i.name
+    continents = get_continents()
+    for continent in continents:
         title = continent + " Scores"
         number_quizzes = Quizevent.query.filter(Quizevent.user_id == user_id, 
             Quizevent.continent_name == continent).count()
@@ -196,28 +194,63 @@ def get_sdata():
             avg_score = None
         user_scores[continent] = avg_score
 
-        for continent, score in user_scores.items():
-            print continent, score
+    print "\n \n Your scores: "
+    for continent, score in user_scores.iteritems():
+        print continent, score
 
-        # return render_template("small_data.html", user_scores=user_scores)
+    all_scores = get_all_scores()
+
+    return render_template("small_data.html", user_scores=user_scores, all_scores=all_scores)
 
 
 ##############################################################################
 #Static Functions
 
+def get_all_scores():
+    all_scores = {}
+    continents = get_continents()
+    for continent in continents:
+        title = continent + "Scores"
+        number_quizzes = (Quizevent.query.filter(Quizevent.continent_name ==
+         continent).count())
+
+        sum_score = 0
+        quiz_scores_tuple = (db.session.query(Quizevent.score).filter
+            (Quizevent.continent_name == continent).all())
+        for i in quiz_scores_tuple:
+            score = i.score
+            sum_score += score
+        if sum_score != 0:
+            avg_score = sum_score/ number_quizzes
+            print "The average score for {} quizzes is {}".format(continent, avg_score)
+        else:
+            print "\n No one has taken any quizzes about {} yet.".format(continent)
+            avg_score = None
+        all_scores[continent] = avg_score
+
+    for continent, score in all_scores.iteritems():
+        print continent, score
+
+    return all_scores
+
+
+
 def make_wrong_answers(country_name):
     """Generates wrong answers for the capital quiz question"""
     #Count the number of countries in table
-    number_of_countries = Country.query.count()     #192 seeded as of October 30, 2015
     answer_ids = []
     answers = []
 
     #Get the right answer's id
-    country_object = db.session.query(Country.id).filter(Country.country_name == country_name).first()
+    country_object = Country.query.filter(Country.country_name == country_name).first()
     right_id = country_object.id
     answer_ids.append(right_id)
 
-    #Pick random id's and make wrong answer ids
+    #Pick random id's and make wrong answers from the same continent
+    continent = country_object.continent_name
+    number_of_countries = Country.query.filter(Country.continent_name == continent).count()
+    print number_of_countries
+
     wrong_id = randint(1, number_of_countries)
     while len(answer_ids) < 4:
         if wrong_id in answer_ids:
@@ -227,11 +260,11 @@ def make_wrong_answers(country_name):
     else: 
         answer_ids = answer_ids[1:]
         for i in answer_ids:
-            country_object = db.session.query(Country.capital).filter(Country.id == i).first()
+            country_object = db.session.query(Country.capital).filter(Country.id == i, Country.continent_name == continent).first()
+            print country_object
             answer = country_object.capital
             answers.append(answer)
         return answers
-
 
 
 def add_quizevent(country_name):
@@ -260,6 +293,15 @@ def get_country_capital(country_name):
         print "Couldn't find the capital of" + country_name
 
 
+def get_continents():
+    continents = set()
+    continent_list = Continent.query.filter(Continent.name != "Antarctica").all()
+    for i in continent_list:
+            continent = i.name
+            continents.add(continent)
+    return continents
+
+
 ##############################################################################
 #Helper Functions
 
@@ -267,9 +309,9 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # #Use the DebugToolbar
-    # DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
 
-    # app.run(debug=True)
+    app.run(debug=True)
     
 
 
