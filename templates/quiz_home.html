@@ -2,7 +2,9 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
+<style>
+  #map { position:relative; top:0; bottom:0; left:5%; width:90%; height:600px; }
+</style>
 <br>
 <br>
 <div class="container-fluid">
@@ -16,10 +18,27 @@
               <button type="submit" class="btn btn-default">Capitals!</button>
           </form>
         </div>
-      </form>
     </div>
     </div>
 </div>
+    <!-- Mapbox here: -->
+    <div id="map"></div>
 
+<!-- Javascript here -->
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoicmhhcnJpZ2FuIiwiYSI6ImNpZ3NsOWc2aTA0d2Z0aGtuMXNpYXExdzAifQ.JzGvYuWXyu-Q_-z5IqYhGw';
+
+var map = L.mapbox.map('map', 'rharrigan.o4d41l5g', {
+    zoomControl: false
+  }).setView([33, 14], 2);
+
+// Disable drag and zoom handlers.
+map.dragging.disable();
+map.touchZoom.disable();
+map.doubleClickZoom.disable();
+map.scrollWheelZoom.disable();
+
+
+</script>
 
 {% endblock %}
