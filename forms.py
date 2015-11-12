@@ -31,7 +31,7 @@ class Unique(object):
 
 #Email/password signup form
 class LoginForm(Form):
-    email = TextField('Email', validators=[
+    login_email = TextField('Email', validators=[
         InputRequired(), 
         Email()])
     password = PasswordField('Password', validators=[
@@ -39,7 +39,7 @@ class LoginForm(Form):
 
 
 class SignupForm(LoginForm):
-    email = TextField('Email', validators=[
+    signup_email = TextField('Email', validators=[
         InputRequired(), 
         Email(), 
         Unique(User, User.email, message="You've already got an account. Login.")

@@ -27,50 +27,49 @@ from compliments import compliments
 app = Flask(__name__)
 app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
 ##############################################################################
-#Defin the login manager
+#Define the login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_message = 0
 login_manager.login_view = "/"
+
 @login_manager.user_loader
 def user_loader(userid):
     return User.query.filter(User.id == userid).first()
 
 
 #App Routes
-@app.route('/login-signup-form', methods=(["GET"]))
-def show_form():
-    print "we're in the login-signup form"
-    signup_form = SignupForm()
-    login_form = LoginForm()
-    return render_template("login.html", signup_form=signup_form, login_form=login_form)
-
-
 @app.route('/signup', methods=(["POST"]))
 def signup():
     """Process the signup form, check if the user already exists, and if not create them."""
     print "we're in the signup action"
-    form = SignupForm(request.form)
-    if form.validate_on_submit():
-        password = str(form.password.data)
-        user = User(email=form.email.data, password=password)
+    signup_form = SignupForm(request.form)
+
+    if signup_form.validate_on_submit():
+        password = str(signup_form.password.data)
+        user = User(email=signup_form.signup_email.data, password=password)
         db.session.add(user)
         db.session.commit()
         login_user(user, remember=True)
         return redirect("/home")
     else:
-        flash("Please enter a valid email.")
         print "not valid on submission"
-        return redirect("/login-signup-form")
+        return redirect("/")
+
+#Ajax call from index.html, return Fail and write an if statement in JS to show an error.
 
 
 @app.route('/login', methods=(["POST"]))
 def login():
     """Process the login form.  Check that password and username are right and store user in session"""
-    form = LoginForm(request.form)
-    if form.validate_on_submit():
-        password = str(form.password.data)
-        user = User.query.filter(User.email == form.email.data).first()
+    print "\n IN LOGIN ROUTE"
+    login_form = LoginForm(request.form)
+    print login_form
+    print login_form.validate_on_submit()
+    if login_form.validate_on_submit():
+        print "\n \n IN FORM VALIDATE"
+        password = str(login_form.password.data)
+        user = User.query.filter(User.email == login_form.login_email.data).first()
         if user:
             if user.check_password(password):
                 print "\nValid user!"
@@ -82,8 +81,8 @@ def login():
         else:
             print "\nInvalid email"
             flash("Username or password incorrect")
-            return redirect("/login-signup-form")
-    return redirect("/login-signup-form")        
+            return redirect("/")
+    return redirect("/")        
 
 
 @app.route('/logout', methods=(["GET", "POST"]))
@@ -94,12 +93,16 @@ def logout():
 
 @app.route('/')
 def index():
-    """Landing page with Santorini.  Modal window should go here."""
-    return render_template("index.html")
+    """Landing page with Santorini.  Login modal window is here."""
+    print "we're in the login-signup form"
+    signup_form = SignupForm()
+    login_form = LoginForm()
+
+    return render_template("index.html", signup_form=signup_form, login_form=login_form)
 
 
 @app.route('/home')
-@login_required
+@login_required 
 def choose_quizes():
     """Place to choose what you want to learn about"""
 
@@ -121,7 +124,7 @@ def generate_quiz():
     country_name = (request.args.get("country")).title()
     capital = get_country_capital(country_name)
     
-    wrong1, wrong2, wrong3 = make_wrong_capitals(country_name)
+    wrong1, wrong2, wrong3 = make_wrong_capitals(country_name)   #failing at make wrong answers
     answers = (capital, wrong1, wrong2, wrong3)
 
     #Randomize into four answers and pass to the user

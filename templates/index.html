@@ -1,10 +1,134 @@
-{% extends 'base.html' %}
+<html>
+<head>
+    <meta charset=utf-8 />
+    <!-- Bootstrap: Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
-{% block body %}
+    <!-- Bootstrap: Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
 
-<div id="img-container">
-   <img src="/static/img/santorini2.jpg" class="img-responsive" alt="Responsive image">
+    <!-- Bootstrap: Latest compiled and minified JavaScript, jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+<!-- jQuery validate plugin -->
+    <link rel="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js">
+
+    <!-- My CSS Styling -->
+    <link rel="stylesheet" href="/static/css/logsign.css">
+</head>
+
+
+<body>
+<!-- Modal Start Button -->
+<div class="col-med-2 col-offset-2 centered">
+ <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#logsignModal">Get Started</button>
 </div>
 
+<!-- Modal Signup/Login -->
+<div class="modal fade" id="logsignModal" tabindex="-1" role="dialog" aria-labelledby="logsignModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+      <div class="modal-body">
+        <!-- signup  -->
+      <div class="col-sm-6">
+        <h2> Sign up! </h2>
+          <form action="/signup" id="signup-form" method="POST">
+              {{ signup_form.csrf_token }}
+            <dl>
+              {{ signup_form.signup_email.label }} {{ signup_form.signup_email(placeholder="yourname@gmail.com") }}
+              <span id="signup-email-error"></span>
+              <br>
+              {{ signup_form.password.label }} {{ signup_form.password }}
+              <br>
+              <br>
+              <dd><input class="btn btn-default" type="submit" id="signup-button" value="Signup">
+            </dl>
+          </form>
+        </div>
 
-{% endblock %}
+        <!-- login -->
+        <div class="col-sm-6">
+        <h2> Log in! </h2>
+          <form action="/login" id="login-form" method="POST">
+              {{ login_form.csrf_token }}
+            <dl>
+              {{ login_form.login_email.label }} {{ login_form.login_email(placeholder="yourname@gmail.com") }}
+              <span id="login-email-error"></span>
+              <br>
+              {{ login_form.password.label }} {{ login_form.password }}
+              <br>
+              <br>
+              <dd>
+                  <input class="btn btn-default" type="submit" value="Login">
+            </dl>
+          </form>
+        </div>
+      </div> <!-- close modal body -->
+      <div class="modal-footer">
+      </div><!--  close modal footer -->
+    </div> <!-- close modal container -->
+  </div>
+</div>
+    <div id="img-container">
+       <img src="/static/img/santorini2.jpg" class="img-responsive" alt="Responsive image">
+    </div>
+
+<!-- JavaScript Goes Here: -->
+<script>
+    function isPassword(password) {
+        var hasNumber = /\d/;
+
+        if ((password.length > 6) && hasNumber.test(password)) {
+            console.log("password check!");
+            return true;
+        }
+        else {
+            console.log("not a valid password");
+            return false;
+        }
+    };
+
+    function isEmail(email) {
+        var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+        console.log(pattern.test(email))
+        return pattern.test(email);
+    }
+
+    function checkEmailError(e) {
+        var email = e.currentTarget.value;
+        console.log(email);
+        var error = $("#signup-error");
+        
+        if (isEmail(email)) {
+            console.log("not apple, but valid");
+            error.html('<img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Check_green.png">');
+        }
+        else if (email === 'apple') {
+            console.log('it is apple');
+            error.html('<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xta1/v/t1.0-1/p160x160/11403085_879608642074874_2542371107974928751_n.jpg?oh=48608a8a1d4f0a44fdd7bdaf179d85c6&oe=56BF4753&__gda__=1456315005_59b9eef44d870d7f2484e5fa9fb7047c">');
+        }
+        else {
+            console.log("it's not a valid email");
+            error.html('<img src="./static/img/grumpycat.ico">');
+        }      
+    };
+
+    //     var email = "#signup_email"
+
+
+    // var error = $("#signup-error");
+
+    $('#signup_email').change(checkEmailError);
+    $('#login_email').change(checkEmailError);
+
+
+</script>
+
+
+
+</body>
+</html>
