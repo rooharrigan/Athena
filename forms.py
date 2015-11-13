@@ -31,18 +31,30 @@ class Unique(object):
 
 #Email/password signup form
 class LoginForm(Form):
-    login_email = TextField('Email', validators=[
+    email = TextField('Email', id="login-email", validators=[
         InputRequired(), 
         Email()])
-    password = PasswordField('Password', validators=[
+    password = PasswordField('Password', id="login-password", validators=[
         InputRequired()])
 
 
-class SignupForm(LoginForm):
-    signup_email = TextField('Email', validators=[
+class SignupForm(Form):
+    email = TextField('Email', id="signup-email", validators=[
         InputRequired(), 
         Email(), 
         Unique(User, User.email, message="You've already got an account. Login.")
         ])
+    password = PasswordField('Password', id="signup-password", validators=[
+        InputRequired()])
+
+
+#Super uncool. I wanted to set Signfup form to inherit from LoginForm and only
+#use the Unique method as the one difference. However, when these forms get
+#created in the DOM, they get THE SAME HTML ID (because the id is created by
+#by wtforms for you. WTF. That's useless because it confuses Ajax completely). And
+#I couldn't think of a way to have the id parameter dynamically udpate based on
+#the variable name of the form being instatiated. So eff it. I made two forms. ;()
+
+
 
 

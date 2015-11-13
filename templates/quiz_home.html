@@ -2,9 +2,6 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<style>
-  #map { position:relative; top:0; bottom:0; left:5%; width:90%; height:600px; }
-</style>
 <br>
 <br>
 <div class="container-fluid">
@@ -21,24 +18,37 @@
     </div>
     </div>
 </div>
-    <!-- Mapbox here: -->
+
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 90%; }
+    </style>
+
+  <div class="col-xs-12 col-s-8 col-s-offset-2 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
     <div id="map"></div>
+  </div>
 
-<!-- Javascript here -->
-<script>
-L.mapbox.accessToken = 'pk.eyJ1IjoicmhhcnJpZ2FuIiwiYSI6ImNpZ3NsOWc2aTA0d2Z0aGtuMXNpYXExdzAifQ.JzGvYuWXyu-Q_-z5IqYhGw';
+<!-- Javascript Goes Here -->
+    <script type="text/javascript">
+      var colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
+      var map;
+      function initMap() {
+       map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 14.7146287, lng: 7.8468339},
+          zoom: 2,
+          mapTypeId: google.maps.MapTypeId.SATELLITE,
+          disableDoubleClickZoom: true,
+          draggable: false,
+          scrollwheel: false,
+          panControl: false,
+          zoomControl: false
+        });
 
-var map = L.mapbox.map('map', 'rharrigan.o4d41l5g', {
-    zoomControl: false
-  }).setView([33, 14], 2);
 
-// Disable drag and zoom handlers.
-map.dragging.disable();
-map.touchZoom.disable();
-map.doubleClickZoom.disable();
-map.scrollWheelZoom.disable();
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqdoBXhy4GVe3YCNExyClPO2KwD1yIfA4&callback=initMap">
+    </script>
 
-
-</script>
 
 {% endblock %}

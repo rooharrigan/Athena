@@ -39,13 +39,14 @@
           <form action="/signup" id="signup-form" method="POST">
               {{ signup_form.csrf_token }}
             <dl>
-              {{ signup_form.signup_email.label }} {{ signup_form.signup_email(placeholder="yourname@gmail.com") }}
+              {{ signup_form.email.label }} {{ signup_form.email(placeholder="yourname@gmail.com") }}
               <span id="signup-email-error"></span>
               <br>
               {{ signup_form.password.label }} {{ signup_form.password }}
+              <span id="signup-password-error"></span>
               <br>
               <br>
-              <dd><input class="btn btn-default" type="submit" id="signup-button" value="Signup">
+              <dd><input class="btn btn-default" type="submit" id="signup-button" value="Signup" disabled="disabled">
             </dl>
           </form>
         </div>
@@ -56,14 +57,15 @@
           <form action="/login" id="login-form" method="POST">
               {{ login_form.csrf_token }}
             <dl>
-              {{ login_form.login_email.label }} {{ login_form.login_email(placeholder="yourname@gmail.com") }}
+              {{ login_form.email.label }} {{ login_form.email(placeholder="yourname@gmail.com") }}
               <span id="login-email-error"></span>
               <br>
               {{ login_form.password.label }} {{ login_form.password }}
+              <span id="login-password-error"></span>
               <br>
               <br>
               <dd>
-                  <input class="btn btn-default" type="submit" value="Login">
+              <input class="btn btn-default" type="submit" value="Login" id="login-button" disabled="disabled">
             </dl>
           </form>
         </div>
@@ -82,7 +84,7 @@
     function isPassword(password) {
         var hasNumber = /\d/;
 
-        if ((password.length > 6) && hasNumber.test(password)) {
+        if ((password.length > 5) && hasNumber.test(password)) {
             console.log("password check!");
             return true;
         }
@@ -90,40 +92,107 @@
             console.log("not a valid password");
             return false;
         }
-    };
+    }
+
+    function checkPassword(e) {
+        var password = e.currentTarget.value;
+        console.log(password)
+
+        // Grab the right DOM error to update 
+        if (e.currentTarget.id === "signup-password") {
+            var error = $('#signup-password-error');
+            var email = $('#signup-email').val();
+            var button = $('#signup-button');
+        }
+        
+        else if (e.currentTarget.id === "login-password") {
+            var error = $('#login-password-error');
+            var email = $('#login-email').val();
+            var button = $('#login-button');
+        }
+
+        else {
+            console.log("not grabbing the span error elements.");
+        }
+
+        // Check password and display checks
+        if (isPassword(password)) {
+            console.log(isPassword(password));
+            error.html('<img src="/static/img/greencheck.ico">');
+            console.log(email);
+            if (isEmail(email) === true) {
+                enableButton(button);
+            }
+        }
+        else {
+            console.log("it's not a valid password");
+            error.html('<img src="./static/img/redx.png">');
+            disableButton(button);
+        } 
+
+    }
 
     function isEmail(email) {
         var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
-        console.log(pattern.test(email))
+        console.log(pattern.test(email));
         return pattern.test(email);
     }
 
     function checkEmailError(e) {
         var email = e.currentTarget.value;
         console.log(email);
-        var error = $("#signup-error");
-        
+        console.log(e.currentTarget.id);
+
+        // Get the right error span on the page
+        if (e.currentTarget.id === "signup-email") {
+            var button = $("#signup-button");
+            var error = $("#signup-email-error");
+            var password = $("#signup-password").val();
+        }
+        else if (e.currentTarget.id === "login-email") {
+            var button = $("#login-button");
+            var error = $("#login-email-error");
+            var password = $("#login-password").val();
+        }
+        else {
+            console.log("not grabbing the span error elements.");
+        }
+
+        // Check if the email is right format
         if (isEmail(email)) {
             console.log("not apple, but valid");
-            error.html('<img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Check_green.png">');
+            error.html('<img src="/static/img/greencheck.ico">');
+            if (isPassword(password) === true) {
+                enableButton(button);
+            }
         }
         else if (email === 'apple') {
             console.log('it is apple');
             error.html('<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xta1/v/t1.0-1/p160x160/11403085_879608642074874_2542371107974928751_n.jpg?oh=48608a8a1d4f0a44fdd7bdaf179d85c6&oe=56BF4753&__gda__=1456315005_59b9eef44d870d7f2484e5fa9fb7047c">');
+            disableButton(button);
         }
         else {
             console.log("it's not a valid email");
-            error.html('<img src="./static/img/grumpycat.ico">');
-        }      
-    };
+            error.html('<img src="./static/img/redx.png">');
+            disableButton(button);
 
-    //     var email = "#signup_email"
+        }  
+    }
+
+    function enableButton(button) {
+        button.attr("disabled", false);
+    }
+
+    function disableButton(button) {
+        button.attr("disabled", "disabled");
+    }
 
 
-    // var error = $("#signup-error");
+    $('#signup-email').change(checkEmailError);
+    $('#login-email').change(checkEmailError);
 
-    $('#signup_email').change(checkEmailError);
-    $('#login_email').change(checkEmailError);
+    $('#signup-password').change(checkPassword);
+    $('#login-password').change(checkPassword);
 
 
 </script>

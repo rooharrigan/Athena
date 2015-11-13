@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Map[]>
+<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
+
+<Parameters>
+  <Parameter name="attribution"><![CDATA[http://thematicmapping.org/downloads/world_borders.php]]></Parameter>
+  <Parameter name="center">-70.6641,6.6646,2</Parameter>
+  <Parameter name="format">pbf</Parameter>
+  <Parameter name="json"><![CDATA[{"vector_layers":[{"id":"TM_WORLD_BORDERS_SIMPL-0_3","description":"Country borders","fields":{"FIPS":"String","ISO2":"String","ISO3":"String","UN":"Number","NAME":"String","AREA":"Number","POP2005":"Number","REGION":"Number","SUBREGION":"Number","LON":"Number","LAT":"Number"}}]}]]></Parameter>
+  <Parameter name="maxzoom">7</Parameter>
+  <Parameter name="minzoom">0</Parameter>
+  <Parameter name="name"><![CDATA[Country borders]]></Parameter>
+</Parameters>
+
+
+<Layer name="TM_WORLD_BORDERS_SIMPL-0_3"
+  buffer-size="36"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    
+    <Datasource>
+       <Parameter name="file"><![CDATA[/Users/rooharrigan/Downloads/TM_WORLD_BORDERS_SIMPL-0.3/TM_WORLD_BORDERS_SIMPL-0.3.shp]]></Parameter>
+       <Parameter name="type"><![CDATA[shape]]></Parameter>
+    </Datasource>
+  </Layer>
+
+</Map>

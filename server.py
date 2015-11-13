@@ -47,7 +47,7 @@ def signup():
 
     if signup_form.validate_on_submit():
         password = str(signup_form.password.data)
-        user = User(email=signup_form.signup_email.data, password=password)
+        user = User(email=signup_form.email.data, password=password)
         db.session.add(user)
         db.session.commit()
         login_user(user, remember=True)
@@ -69,7 +69,7 @@ def login():
     if login_form.validate_on_submit():
         print "\n \n IN FORM VALIDATE"
         password = str(login_form.password.data)
-        user = User.query.filter(User.email == login_form.login_email.data).first()
+        user = User.query.filter(User.email == login_form.email.data).first()
         if user:
             if user.check_password(password):
                 print "\nValid user!"
