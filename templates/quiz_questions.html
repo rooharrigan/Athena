@@ -1,6 +1,7 @@
 <!-- Generates the multiple-choice quiz -->
 {% extends 'base.html' %}
 
+
 {% block body %}
 
 <br>
@@ -8,38 +9,151 @@
 <div class="container-fluid">
     <div class="row">
     <div class="col-xs-12 col-md-9 col-lg-9">
-        <h3>What is the capital of {{ country_name }}?</h3>
-        <br>
-        <br>
         <div>
-          <form action="/quiz_score" method='POST'>
+          <form action="/quiz_score" id="quiz-answers" method='POST'>
+            <h3>What is the capital of {{ country_name }}?</h3>
             <input type="hidden" name="country_name" value="{{country_name}}"> 
-            <label><input type="radio" name="button" value="{{answer1}}">    {{ answer1 }}</label><br>
-            <label><input type="radio" name="button" value="{{answer2}}">    {{ answer2 }}</label><br>
-            <label><input type="radio" name="button" value="{{answer3}}">    {{ answer3 }}</label><br>
-            <label><input type="radio" name="button" value="{{answer4}}">    {{ answer4 }}</label><br>
+            <label><input type="radio" name="cap-button" value="{{cap1}}">  {{ cap1 }}</label><br>
+            <label><input type="radio" name="cap-button" value="{{cap2}}">  {{ cap2 }}</label><br>
+            <label><input type="radio" name="cap-button" value="{{cap3}}">  {{ cap3 }}</label><br>
+            <label><input type="radio" name="cap-button" value="{{cap4}}">  {{ cap4 }}</label><br>
             <br>
-            <br>
-              <button type="submit" class="btn btn-default">Grade my quiz</button>
+
+            <h3>Which demonym is used for our friends from {{ country_name }}?</h3>
+            <label><input type="radio" name="dem-button" value="{{dem1}}">  {{ dem1 }}</label><br>
+            <label><input type="radio" name="dem-button" value="{{dem2}}">  {{ dem2 }}</label><br>
+            <label><input type="radio" name="dem-button" value="{{dem3}}">  {{ dem3 }}</label><br>
+            <label><input type="radio" name="dem-button" value="{{dem4}}">  {{ dem4 }}</label><br>
+
+            <h3>Find {{ country_name }} on the map: </h3>
+            <div id="map-canvas"></div>
+
+            <div id="submission-error"></div>
+              <button type="submit" class="btn btn-default" id="submit-quiz">Grade my quiz</button>
           </form>
         </div>
 
-
-
-      </form>
     </div>
     </div>
 </div>
 
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=visualization&amp;sensor=false&amp;">
+    </script>
+
+    <style type="text/css">
+      #map-canvas {
+        height: 600px;
+        width: 850px;
+      }
+    </style>
+
+    <script type="text/javascript">
+      var colors = ['#28398c', '#7f0e1b', '#3c0593', '#bfa201', 'e59304'];
+      var map;
+
+      function initialize() {
+        var myOptions = {
+          zoom: 2,
+          center: new google.maps.LatLng(30.7937696,7.2889625),
+          disableDefaultUI: true,
+          mapTypeControl: false,
+          zoomControl: false,
+          scaleControl: false,
+          scrollwheel: false,
+          panControl: false,
+          disableDoubleClickZoom: true,
+          draggable: false,
+          maxZoom: 2,
+          minZoom: 2,
+          labels: false,
+          mapTypeId: google.maps.MapTypeId.SATELLITE
+        };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+            myOptions);
+
+        // Initialize JSONP request
+        var script = document.createElement('script');
+        var url = ['https://www.googleapis.com/fusiontables/v1/query?'];
+        url.push('sql=');
+        var query = 'SELECT Name, geometry FROM ' +
+            // '1MxmNwQ67Doekao1xTAV9vyNEOoX0lKf8z_B3bJez';
+            '1zn8cjdD6qlAFI7ALMEnwn89g50weLi1D-bAGSZw';
+        var encodedQuery = encodeURIComponent(query);
+        url.push(encodedQuery);
+        url.push('&callback=drawMap');
+        url.push('&key=AIzaSyArBza-WmBsVVMllOO16L14IsOrd0yWVxE');
+        script.src = url.join('');
+        var body = document.getElementsByTagName('body')[0];
+        body.appendChild(script);           
+      }
+
+// make a script div with the url created above
+
+      function drawMap(data) {
+        console.log(data);
+        var rows = data['rows'];
+        for (var i in rows) {
+          if (rows[i][0] != 'Antarctica') {
+            var newCoordinates = [];
+            var geometries = rows[i][1]['geometries'];
+            if (geometries) {
+              for (var j in geometries) {
+                newCoordinates.push(constructNewCoordinates(geometries[j]));
+              }
+            } else {
+              newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
+            }
+            var randomnumber = Math.floor(Math.random() * 4);
+            var country = new google.maps.Polygon({
+              paths: newCoordinates,
+              strokeColor: colors[randomnumber],
+              strokeOpacity: 0,
+              strokeWeight: 1,
+              fillColor: colors[randomnumber],
+              fillOpacity: 0.3,
+              roo: "hello"
+            });
+            google.maps.event.addListener(country, 'mouseover', function() {
+              this.setOptions({fillOpacity: 1});
+            });
+            google.maps.event.addListener(country, 'mouseout', function() {
+              this.setOptions({fillOpacity: 0.3});
+            });
+            google.maps.event.addListener(country, 'click', function() {
+                alert(this.roo);
+            }); 
+            country.setMap(map);
+          }
+        }
+      }
+
+      function constructNewCoordinates(polygon) {
+        var newCoordinates = [];
+        var coordinates = polygon['coordinates'][0];
+        for (var i in coordinates) {
+          newCoordinates.push(
+              new google.maps.LatLng(coordinates[i][1], coordinates[i][0]));
+        }
+        return newCoordinates;
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+
 
 <script>
-function
-do nothing
+// var countChecked = function() {
+//     var n = $( "input:checked" ).length;
+//         $("#submission-error").test( "Only" n + (n ===1 ? " is": "are" ) + "answered." );
+//     console.log(n);
+// };
+// // console.log(countChecked());
 
-funtion from below
-$.post("\route", "button1", functon(){})
+// $( "input[type=radio]" ).on("click", countChecked );
 
-$(button1).on(click,funciont)
+
+// $("quiz-answers").submit(countChecked());
 
 </script>
 

@@ -102,8 +102,6 @@ class Quizevent(db.Model):
     continent = db.relationship("Continent", backref='quizzes')
 
 
-
-
 ##############################################################################
 # Helper functions
 

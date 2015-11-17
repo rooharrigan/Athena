@@ -56,7 +56,19 @@ def signup():
         print "not valid on submission"
         return redirect("/")
 
-#Ajax call from index.html, return Fail and write an if statement in JS to show an error.
+# TODO: Ajax call from index.html, return Fail and write an if statement in JS to show an error.
+# @app.route('/check_email', methods=["POST"])
+# def check_unique_email():
+#     """Handles Ajax call from signup form to check whether email entered is already in the database."""
+#     email = request.form.get("signup-email")        #is it ID or Name of element?
+#     if User.query.filter(User.email == email).first():
+#         print "That email already has an account."
+#         response = "That email already has an account."
+#     else:
+#         print "Unique user! Go ahead."
+#         response = "Email passes all requirements."
+
+#     return response
 
 
 @app.route('/login', methods=(["POST"]))
@@ -109,57 +121,98 @@ def choose_quizes():
     return render_template("quiz_home.html")
 
 
-@app.route('/cap-quiz')
-def get_quiz_questions():
+@app.route('/country')
+def get_country_questions():
     """Choose country you want to learn about."""
 
     return render_template("quiz_country.html")
 
 
-@app.route('/quiz')
+@app.route('/country_quiz')
 def generate_quiz():
-    """Makes the capital quiz question. Queries database for the right answer,
+    """Makes the country-level quiz questions. Queries database for the right answer,
     users make_wrong_answers for the other three."""
-    #Get the country, right capital and three wrong capitals from the database
+
+    #Get the country and all the right answers
     country_name = (request.args.get("country")).title()
-    capital = get_country_capital(country_name)
-    
-    wrong1, wrong2, wrong3 = make_wrong_capitals(country_name)   #failing at make wrong answers
-    answers = (capital, wrong1, wrong2, wrong3)
+    country_obj = Country.query.filter(Country.country_name == country_name).first()
+    capital, demonym, primary_langs = get_right_answers(country_obj)
+    print capital
+    print demonym
+    print primary_langs
+    print type(primary_langs)
+
+    #Make the wrong answers
+    wrongcap1, wrongcap2, wrongcap3 = make_wrong_capitals(country_obj)
+    cap_answers = (capital, wrongcap1, wrongcap2, wrongcap3)
+
+    wrong_dems = make_wrong_demonyms(country_name, demonym)
+    wrongdem1, wrongdem2, wrongdem3 = wrong_dems[:3]
+    dem_answers = (demonym, wrongdem1, wrongdem2, wrongdem3)
 
     #Randomize into four answers and pass to the user
-    answer1, answer2, answer3, answer4 = sample(answers, 4)
+    cap1, cap2, cap3, cap4 = sample(cap_answers, 4)
+    dem1, dem2, dem3, dem4 = sample(dem_answers, 4)
 
     return render_template('quiz_questions.html', 
         country_name=country_name, 
-        answer1=answer1, 
-        answer2=answer2,
-        answer3=answer3,
-        answer4=answer4,
+        cap1=cap1, 
+        cap2=cap2,
+        cap3=cap3,
+        cap4=cap4,
+        dem1=dem1,
+        dem2=dem2,
+        dem3=dem3,
+        dem4=dem4
         )
+
+
+@app.route('/continent')
+def get_continent_questions():
+    """Choose continent you want to learn about."""
+
+    return render_template("quiz_continent.html")
 
 
 @app.route('/quiz_score', methods=['POST'])
 def grade_quiz():
     """Grade the quiz and update the database with a quizevent"""
-    guess = request.form.get("button")
+    #Get right answers
     country_name = request.form.get("country_name")
+    country_obj = Country.query.filter(Country.country_name == country_name).first()
+    capital, demonym, primary_langs = get_right_answers(country_obj)
+
+    #Get guesses
+    cap_guess = request.form.get("cap-button")
+    dem_guess = request.form.get("dem-button")
+    print "Guesses: "
+    print cap_guess, dem_guess
+
+    #Print right answers:
     print "\n Country name: "
     print country_name
-    right_answer = get_country_capital(country_name)
-    print "\n right answer: "
-    print right_answer
-    #Grade the quiz
-    if guess == right_answer:
-        print "That's correct!"
-        score = 100
-    else:
-        print "That's incorrect!"
-        score = 0
+    print "\n right answers: "
+    print capital, demonym
+
+    #Grade quiz
+    score_num = 0
+    score_denom = 2.0
+
+    if cap_guess == capital:
+        print "Right capital"
+        score_num += 1.0
+        print score_num
+    if dem_guess == demonym:
+        print "right demonym"
+        score_num += 1.0
+        print score_num
+
+    #Calculate score
+    score = 100 * (score_num / score_denom)
+    score = int(score)
 
     #Grab components of the quizevent and store it in the database
     user_id = current_user.id
-    country_obj = Country.query.filter(Country.country_name == country_name).first()
     country_id = country_obj.id
     continent_name = country_obj.continent_name
 
@@ -214,13 +267,18 @@ def get_user_scores():
 #Static Functions
 
 def get_all_scores():
+    """Gets scores for the Athena's World display in Small Data route. 
+    Returns a dictionary."""
     all_scores = {}
     continents = get_continents()
+
+    #For each continent
     for continent in continents:
         title = continent + "Scores"
         number_quizzes = (Quizevent.query.filter(Quizevent.continent_name ==
          continent).count())
 
+        #Get sum of scores / number of scores, store in dictionary
         sum_score = 0
         quiz_scores_tuple = (db.session.query(Quizevent.score).filter
             (Quizevent.continent_name == continent).all())
@@ -241,19 +299,17 @@ def get_all_scores():
     return all_scores
 
 
-
-def make_wrong_capitals(country_name):
+def make_wrong_capitals(country_obj):
     """Generates wrong answers for the capital quiz question. Returns as a set."""
     wrong_answers = set()
 
-    #Make the right answer's country object
-    country_object = Country.query.filter(Country.country_name == country_name).first()
-
-    #Make country objects for wrong answers from same continent
-    continent = country_object.continent_name
+    #Get country components from country object
+    country_name = country_obj.country_name
+    continent = country_obj.continent_name
     list_of_country_objects = Country.query.filter(Country.continent_name == continent, Country.country_name != country_name).all()
     index_of_countries = len(list_of_country_objects) - 1
 
+    #Make a set with 3 unique wrong answers. Check against the right answer
     wrong_index = randint(0, index_of_countries)
     while len(wrong_answers) < 3:
         if (list_of_country_objects[wrong_index]).capital in wrong_answers:
@@ -261,8 +317,63 @@ def make_wrong_capitals(country_name):
         else:
             country_object = list_of_country_objects[wrong_index]
             wrong_answers.add(country_object.capital)
-        print "\n \n  answers"
     print wrong_answers
+    return wrong_answers
+
+
+def make_langs(country_name):
+    """Generates all four answers for the primary language quiz question, 
+    including the right answer. Returns as a set."""
+    langs = set()
+
+    #Make country objects for wrong answers from same continent
+    country_obj = Country.query.filter(Country.country_name == country_name).first()
+    right_langs = country_obj.languages
+    langs.add(right_langs)
+
+    continent = country_obj.continent_name
+    nearby_countries = Country.query.filter(Country.continent_name == continent, Country.country_name != country_name).all()
+    top_index = len(nearby_countries) - 1
+    print top_index
+
+    while len(langs) < 4:
+        index = randint(0, top_index)
+        wrong_lang = (nearby_countries[index]).languages
+        langs.add(wrong_lang)
+
+    print langs
+    return langs
+
+
+def make_wrong_demonyms(country_name, demonym):
+    """Generates 4 wrong answers for the demonym question, and compares against
+    right demonym. Could return a list of 3 or 4 answers."""
+    options = set()
+    wrong_answers = []
+
+    if country_name[-1] in ['a', 'e', 'i', 'o', 'y']:
+        print "first if"
+        options.add(country_name[:-1] + 'an')
+        options.add(country_name[:-1] + 'ian')
+        options.add(country_name[:-1] + 'i')
+        options.add(country_name[:-1] + 'en')
+    elif country_name[-1] == 'n':
+        print "second if"
+        options.add(country_name[:-1] + 'ian')
+        options.add(country_name + 'i')
+        options.add(country_name + 'ean')
+        options.add(country_name + 'ese')
+    else:
+        print "else"
+        options.add(country_name + 'an')
+        options.add(country_name + 'si')
+        options.add(country_name + 'sian')
+        options.add(country_name + 'i')
+
+    for i in options:
+        if i != demonym:
+            wrong_answers.append(i)
+
     return wrong_answers
 
 
@@ -281,15 +392,19 @@ def add_quizevent(country_name):
     print new_quiz
 
 
-def get_country_capital(country_name):
-    """Given a country name string, returns the country's capital or error message."""
-    country_obj = Country.query.filter(Country.country_name == country_name).first()
+def get_right_answers(country_obj):
+    """Given a country object, returns the country's right answers for the  quiz."""
     capital = country_obj.capital
-    if capital:
-        print capital
-        return capital
+    demonym = country_obj.demonym
+    primary_langs = country_obj.languages                #returns as a set
+    print type(primary_langs)
+
+    if primary_langs:
+        print capital, demonym, primary_langs
+        answers = (capital, demonym, primary_langs)
+        return answers
     else:
-        print "Couldn't find the capital of" + country_name
+        print "Couldn't find all answers for" + country_name
 
 
 def get_continents():
@@ -311,7 +426,6 @@ if __name__ == "__main__":
     DebugToolbarExtension(app)
 
     app.run(debug=True)
-    
 
 
 
