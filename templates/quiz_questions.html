@@ -37,6 +37,7 @@
     </div>
 </div>
 
+
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=visualization&amp;sensor=false&amp;">
     </script>
 
@@ -50,6 +51,15 @@
     <script type="text/javascript">
       var colors = ['#28398c', '#7f0e1b', '#3c0593', '#bfa201', 'e59304'];
       var map;
+      var continents = {
+        "Africa": [-1.8399833,19.6104447,3],
+        "Asia": [41.4467768,97.3057572,3],
+        "Europe": [53.5957118,16.0948197,4],
+        "North America": [48.6364795,-106.2489303,3],
+        "South America": [-28.9938057,-61.073149,3],
+        "Caribbean": [18.9528706,-70.6125321,5],
+        "Oceania": [-25.2141728,138.4530368,4]
+      };
 
       function initialize() {
         var myOptions = {
@@ -77,7 +87,6 @@
         var url = ['https://www.googleapis.com/fusiontables/v1/query?'];
         url.push('sql=');
         var query = 'SELECT Name, geometry FROM ' +
-            // '1MxmNwQ67Doekao1xTAV9vyNEOoX0lKf8z_B3bJez';
             '1zn8cjdD6qlAFI7ALMEnwn89g50weLi1D-bAGSZw';
         var encodedQuery = encodeURIComponent(query);
         url.push(encodedQuery);
@@ -95,6 +104,9 @@
         var rows = data['rows'];
         for (var i in rows) {
           if (rows[i][0] != 'Antarctica') {
+            var countryName = rows[i][0]
+            console.log("Country name: ")
+            console.log(countryName)
             var newCoordinates = [];
             var geometries = rows[i][1]['geometries'];
             if (geometries) {
@@ -112,8 +124,9 @@
               strokeWeight: 1,
               fillColor: colors[randomnumber],
               fillOpacity: 0.3,
-              roo: "hello"
+              name: countryName
             });
+
             google.maps.event.addListener(country, 'mouseover', function() {
               this.setOptions({fillOpacity: 1});
             });
@@ -121,7 +134,7 @@
               this.setOptions({fillOpacity: 0.3});
             });
             google.maps.event.addListener(country, 'click', function() {
-                alert(this.roo);
+                this.setOptions({fillOpacity: 1});
             }); 
             country.setMap(map);
           }

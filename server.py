@@ -137,8 +137,7 @@ def generate_quiz():
     country_name = (request.args.get("country")).title()
     country_obj = Country.query.filter(Country.country_name == country_name).first()
     capital, demonym, primary_langs = get_right_answers(country_obj)
-    print capital
-    print demonym
+
     print primary_langs
     print type(primary_langs)
 
