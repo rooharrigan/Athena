@@ -27,7 +27,7 @@ from compliments import compliments
 app = Flask(__name__)
 app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
 ##############################################################################
-#Define the login manager
+#Login/Signup Settings
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_message = 0
@@ -113,6 +113,9 @@ def index():
     return render_template("index.html", signup_form=signup_form, login_form=login_form)
 
 
+##############################################################################
+#Quiz Routes
+
 @app.route('/home')
 @login_required 
 def choose_quizes():
@@ -149,10 +152,12 @@ def generate_quiz():
     wrong_dems = make_wrong_demonyms(country_name, demonym)
     wrongdem1, wrongdem2, wrongdem3 = wrong_dems[:3]
     dem_answers = (demonym, wrongdem1, wrongdem2, wrongdem3)
+    lang_answers = make_langs(country_name)
 
     #Randomize into four answers and pass to the user
     cap1, cap2, cap3, cap4 = sample(cap_answers, 4)
     dem1, dem2, dem3, dem4 = sample(dem_answers, 4)
+    lang1, lang2, lang3, lang4 = sample(lang_answers, 4)
 
     return render_template('quiz_questions.html', 
         country_name=country_name, 
@@ -164,7 +169,11 @@ def generate_quiz():
         dem1=dem1,
         dem2=dem2,
         dem3=dem3,
-        dem4=dem4
+        dem4=dem4,
+        lang1=lang1,
+        lang2=lang2,
+        lang3=lang3,
+        lang4=lang4
         )
 
 
@@ -186,19 +195,26 @@ def grade_quiz():
     #Get guesses
     cap_guess = request.form.get("cap-button")
     dem_guess = request.form.get("dem-button")
+    lang_guess = request.form.get("lang-button")
+    print "\n\n\n\n\n  LANGUAGE GUESS"
+    print lang_guess
+
+    print "Right Answer: "
+    print primary_langs
+
     geo_guess = request.form.get("map-guess")
     print "Guesses: "
-    print cap_guess, dem_guess, geo_guess
+    print cap_guess, dem_guess, lang_guess, geo_guess
 
     #Print right answers:
     print "\n Country name: "
     print country_name
     print "\n right answers: "
-    print capital, demonym, country_name
+    print capital, demonym, primary_langs, country_name
 
     #Grade quiz
     score_num = 0
-    score_denom = 3.0
+    score_denom = 4.0
 
     if cap_guess == capital:
         print "Right capital"
@@ -208,14 +224,18 @@ def grade_quiz():
         print "right demonym"
         score_num += 1.0
         print score_num
+    if lang_guess == primary_langs:
+        print "right langs"
+        score_num += 1.0
+        print score_num
     if geo_guess == country_name:
         print "right geo guess"
         score_num += 1.0
         print score_num
 
+
     #Calculate score
-    score = 100 * (score_num / score_denom)
-    score = int(score)
+    score = int(100 * (score_num / score_denom))
 
     #Grab components of the quizevent and store it in the database
     user_id = current_user.id
@@ -335,6 +355,8 @@ def make_langs(country_name):
     #Make country objects for wrong answers from same continent
     country_obj = Country.query.filter(Country.country_name == country_name).first()
     right_langs = country_obj.languages
+    right_langs = str(right_langs)
+    right_langs = translate(right_langs, None, '{"}')
     langs.add(right_langs)
 
     continent = country_obj.continent_name
@@ -345,9 +367,12 @@ def make_langs(country_name):
     while len(langs) < 4:
         index = randint(0, top_index)
         wrong_lang = (nearby_countries[index]).languages
+        wrong_lang = str(wrong_lang)
+        wrong_lang = translate(wrong_lang, None, '{"}')
+        print wrong_lang
         langs.add(wrong_lang)
 
-    print langs
+
     return langs
 
 
@@ -402,7 +427,8 @@ def get_right_answers(country_obj):
     """Given a country object, returns the country's right answers for the  quiz."""
     capital = country_obj.capital
     demonym = country_obj.demonym
-    primary_langs = country_obj.languages                #returns as a set
+    primary_langs = str(country_obj.languages)
+    primary_langs = translate(primary_langs, None, '{"}')
     print type(primary_langs)
 
     if primary_langs:

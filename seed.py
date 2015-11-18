@@ -152,7 +152,7 @@ def get_countries(r, region):
 def make_iso_lang_dict():
     """Builds an ISO 2-character language code dictionary."""
     iso_langs = {}
-    iso_txt = open("iso_codes.txt")
+    iso_txt = open("static/txt/iso_codes.txt")
     for line in iso_txt:
         line = line.strip()
         line = line.split("|")

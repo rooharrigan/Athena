@@ -7,10 +7,11 @@ compliments = (
     "Nailed it.",
     "Classic.",
     "Strong ethic.",
-    "Flippin' flapjacks, Batman!",
+    "Holy flapjacks, Batman!",
     "Hot like fire.",
     "You're grrrrreeat!",
-    "Sharpest tool in the shed == you.",
+    "You're a poetic, noble land mermaid.",
+    "You are a talented, brilliant, powerful musk ox.",
     "Bingo!",
-    "Fistbump from Joel."
+    "Daps, homie. Daps."
 )

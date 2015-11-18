@@ -25,6 +25,12 @@
             <label><input type="radio" name="dem-button" value="{{dem3}}">  {{ dem3 }}</label><br>
             <label><input type="radio" name="dem-button" value="{{dem4}}">  {{ dem4 }}</label><br>
 
+            <h3>Which are {{ country_name }}'s primary languages?</h3>
+            <label><input type="radio" name="lang-button" value="{{lang1}}">  {{ lang1 }}</label><br>
+            <label><input type="radio" name="lang-button" value="{{lang2}}">  {{ lang2 }}</label><br>
+            <label><input type="radio" name="lang-button" value="{{lang3}}">  {{ lang3 }}</label><br>
+            <label><input type="radio" name="lang-button" value="{{lang4}}">  {{ lang4 }}</label><br>
+
             <h3>Find {{ country_name }} on the map: </h3>
 
             <div id="map-canvas"></div>
@@ -148,7 +154,6 @@
                     this.setOptions({fillOpacity: 0.3})
                     currentPolygon = null
                     console.log(currentPolygon)
-                    validateForm(currentPolygon);
                 }
                 else {
                     // To select new polygon and unselect old one
@@ -162,12 +167,9 @@
                     this.setOptions({fillOpacity: 1})
                     currentPolygon = this;
                     console.log("Current polygon: ");
-                    validateForm(currentPolygon);
+                    console.log(currentPolygon.name);
                 }
-                console.log(currentPolygon.name);
                 $("#map-guess").val(currentPolygon.name);
-                console.log("Print the value")
-                console.log($("#map-guess").val());
                 validateForm(currentPolygon);
             });   
             country.setMap(map);
@@ -191,13 +193,14 @@
 
 <script>
 // Prevent form submission before all three questions are answered
+// TODO: Make this actually validate the form based on the current polygon, behaving oddly right now when checking all three.
 function validateForm (currentPolygon) {
     var cap = $('input[name="cap-button"]:checked').val();
     var dem = $('input[name="dem-button"]:checked').val();
-    var geo = currentPolygon;
-    console.log
-    console.log( cap, dem , geo);
-    if (cap && dem && geo) {
+    console.log(currentPolygon);
+    console.log("This is the validating function");
+    console.log( cap, dem, currentPolygon );
+    if (cap && dem && currentPolygon !== null) {
       $("#submit-quiz").attr("disabled", false);
   }
 }
