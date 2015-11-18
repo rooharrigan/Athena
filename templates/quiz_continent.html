@@ -1,0 +1,26 @@
+<!-- Gathers the country from the user -->
+{% extends 'base.html' %}
+
+{% block body %}
+
+<br>
+<br>
+
+<div class="container-fluid">
+<div class="row">
+  <div class="col-xs-12 col-md-8 col-lg-8">
+    <h3> Which continent would you like to learn about? </h3>
+    <form action="/continent_quiz">
+    <div class="input-group">
+      <input type="text" class="form-control" name="continent" id="continent" placeholder="Enter a continent">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Quiz me!</button>
+      </span>
+    </div><!-- /input-group -->
+    </form>
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+</div><!-- container fluid -->
+
+
+{% endblock %}

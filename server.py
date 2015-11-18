@@ -137,6 +137,7 @@ def generate_quiz():
     country_name = (request.args.get("country")).title()
     country_obj = Country.query.filter(Country.country_name == country_name).first()
     capital, demonym, primary_langs = get_right_answers(country_obj)
+    continent = country_obj.continent_name
 
     print primary_langs
     print type(primary_langs)
@@ -155,6 +156,7 @@ def generate_quiz():
 
     return render_template('quiz_questions.html', 
         country_name=country_name, 
+        continent=continent,
         cap1=cap1, 
         cap2=cap2,
         cap3=cap3,
@@ -184,18 +186,19 @@ def grade_quiz():
     #Get guesses
     cap_guess = request.form.get("cap-button")
     dem_guess = request.form.get("dem-button")
+    geo_guess = request.form.get("map-guess")
     print "Guesses: "
-    print cap_guess, dem_guess
+    print cap_guess, dem_guess, geo_guess
 
     #Print right answers:
     print "\n Country name: "
     print country_name
     print "\n right answers: "
-    print capital, demonym
+    print capital, demonym, country_name
 
     #Grade quiz
     score_num = 0
-    score_denom = 2.0
+    score_denom = 3.0
 
     if cap_guess == capital:
         print "Right capital"
@@ -203,6 +206,10 @@ def grade_quiz():
         print score_num
     if dem_guess == demonym:
         print "right demonym"
+        score_num += 1.0
+        print score_num
+    if geo_guess == country_name:
+        print "right geo guess"
         score_num += 1.0
         print score_num
 

@@ -26,10 +26,12 @@
             <label><input type="radio" name="dem-button" value="{{dem4}}">  {{ dem4 }}</label><br>
 
             <h3>Find {{ country_name }} on the map: </h3>
+
             <div id="map-canvas"></div>
+            <input type="hidden" name="map-guess" id="map-guess"></input>
 
             <div id="submission-error"></div>
-              <button type="submit" class="btn btn-default" id="submit-quiz">Grade my quiz</button>
+              <button type="submit" class="btn btn-default" disabled="disabled" id="submit-quiz">Grade my quiz</button>
           </form>
         </div>
 
@@ -43,17 +45,18 @@
 
     <style type="text/css">
       #map-canvas {
-        height: 600px;
-        width: 850px;
+        height: 700px;
+        width: 1000px;
       }
     </style>
 
     <script type="text/javascript">
-      var colors = ['#28398c', '#7f0e1b', '#3c0593', '#bfa201', 'e59304'];
+      var colors = ['#ff1a1a', '#ff531a', "#ffff33", "#cc3300", "#800040"];
       var map;
+      var thisContinent = '{{ continent }}';
       var continents = {
         "Africa": [-1.8399833,19.6104447,3],
-        "Asia": [41.4467768,97.3057572,3],
+        "Asia": [31.750743,64.5728469,3],
         "Europe": [53.5957118,16.0948197,4],
         "North America": [48.6364795,-106.2489303,3],
         "South America": [-28.9938057,-61.073149,3],
@@ -61,20 +64,24 @@
         "Oceania": [-25.2141728,138.4530368,4]
       };
 
+      var lat = continents[thisContinent][0];
+      console.log(lat);
+      var lon = continents[thisContinent][1];
+      console.log(lon);
+
       function initialize() {
         var myOptions = {
-          zoom: 2,
-          center: new google.maps.LatLng(30.7937696,7.2889625),
+          zoom: continents[thisContinent][2],
+          center: new google.maps.LatLng((continents[thisContinent][0]), (continents[thisContinent][1])),
           disableDefaultUI: true,
           mapTypeControl: false,
-          zoomControl: false,
+          zoomControl: true,
           scaleControl: false,
           scrollwheel: false,
           panControl: false,
           disableDoubleClickZoom: true,
-          draggable: false,
-          maxZoom: 2,
           minZoom: 2,
+          draggable: true,
           labels: false,
           mapTypeId: google.maps.MapTypeId.SATELLITE
         };
@@ -104,16 +111,15 @@
         var rows = data['rows'];
         for (var i in rows) {
           if (rows[i][0] != 'Antarctica') {
-            var countryName = rows[i][0]
-            console.log("Country name: ")
-            console.log(countryName)
+            var countryName = rows[i][0];
             var newCoordinates = [];
             var geometries = rows[i][1]['geometries'];
             if (geometries) {
               for (var j in geometries) {
                 newCoordinates.push(constructNewCoordinates(geometries[j]));
               }
-            } else {
+            } 
+            else {
               newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
             }
             var randomnumber = Math.floor(Math.random() * 4);
@@ -124,18 +130,46 @@
               strokeWeight: 1,
               fillColor: colors[randomnumber],
               fillOpacity: 0.3,
-              name: countryName
+              name: countryName,
             });
 
+            var currentPolygon = null;
             google.maps.event.addListener(country, 'mouseover', function() {
               this.setOptions({fillOpacity: 1});
             });
             google.maps.event.addListener(country, 'mouseout', function() {
-              this.setOptions({fillOpacity: 0.3});
+                if (currentPolygon !== this) {
+                    this.setOptions({fillOpacity: 0.3})
+                }
             });
             google.maps.event.addListener(country, 'click', function() {
-                this.setOptions({fillOpacity: 1});
-            }); 
+                // To unselect a polygon
+                if (currentPolygon === this) {
+                    this.setOptions({fillOpacity: 0.3})
+                    currentPolygon = null
+                    console.log(currentPolygon)
+                    validateForm(currentPolygon);
+                }
+                else {
+                    // To select new polygon and unselect old one
+                    if (currentPolygon) {
+                        console.log("Old polygon: ")
+                        oldPolygon = currentPolygon
+                        oldPolygon.setOptions({fillOpacity: 0.3})
+                        console.log(oldPolygon.name)
+                    }
+                    // To select your first polygon
+                    this.setOptions({fillOpacity: 1})
+                    currentPolygon = this;
+                    console.log("Current polygon: ");
+                    validateForm(currentPolygon);
+                }
+                console.log(currentPolygon.name);
+                $("#map-guess").val(currentPolygon.name);
+                console.log("Print the value")
+                console.log($("#map-guess").val());
+                validateForm(currentPolygon);
+            });   
             country.setMap(map);
           }
         }
@@ -156,17 +190,19 @@
 
 
 <script>
-// var countChecked = function() {
-//     var n = $( "input:checked" ).length;
-//         $("#submission-error").test( "Only" n + (n ===1 ? " is": "are" ) + "answered." );
-//     console.log(n);
-// };
-// // console.log(countChecked());
+// Prevent form submission before all three questions are answered
+function validateForm (currentPolygon) {
+    var cap = $('input[name="cap-button"]:checked').val();
+    var dem = $('input[name="dem-button"]:checked').val();
+    var geo = currentPolygon;
+    console.log
+    console.log( cap, dem , geo);
+    if (cap && dem && geo) {
+      $("#submit-quiz").attr("disabled", false);
+  }
+}
 
-// $( "input[type=radio]" ).on("click", countChecked );
 
-
-// $("quiz-answers").submit(countChecked());
 
 </script>
 
