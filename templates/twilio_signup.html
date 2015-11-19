@@ -11,9 +11,10 @@
         <h3>Want to learn a capital a day?</h3>
         <p>Enter your phone number and we'll text you a quiz question 
             every morning</p>
-        <div>
-            <input type="text" name="phone-number" id="twilio">Your digits: </input>
-        </div>
+        <form action="/twilio_signup" method="POST" name="twilio" id="twilio">
+            Your digits: <input type="text" name="phone-number" id="phone-number"></input>
+            <input class="btn btn-default" type="submit" id="twilio-submit" value="Get crackin'">
+        </form>
 
     </div><!-- close column -->
 </div><!-- close row -->

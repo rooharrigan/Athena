@@ -20,7 +20,8 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String, nullable=False)
-    password_hash = db.Column(db.String, nullable=False)    
+    password_hash = db.Column(db.String, nullable=False)
+    phone_number = db.Column(db.Integer, nullable=True)    
     #Inheriting from UserMixin gives you defaults of is_authenticated(), is_active(), is_anonymous(), and get_id() functions required by Flask-Login
 
     def __init__(self, email, password):

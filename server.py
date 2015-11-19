@@ -3,7 +3,7 @@
 making changes will run the server for this game with the debugger on."""
 
 ##############################################################################
-#Externals
+#Flask
 from flask import Flask, request, render_template, session, redirect, url_for, escape, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
@@ -25,14 +25,13 @@ from compliments import compliments
 
 
 app = Flask(__name__)
-app.secret_key = "Get up, get up, get up, get up, it's the first of the month."
+app.secret_key = "Wake up, get up, get up, get up, it's the first of the month."
 ##############################################################################
 #Login/Signup Settings
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_message = 0
 login_manager.login_view = "/"
-
 @login_manager.user_loader
 def user_loader(userid):
     return User.query.filter(User.id == userid).first()
@@ -366,11 +365,19 @@ def make_athena_chart():
  
 
 @app.route('/twilio')
+def twilio_form():
+
+    return render_template("twilio_signup.html")
+
+
+@app.route('/twilio_signup', methods=['POST'])
 def twilio_signup():
+    number = request.form.get("phone-number")
+    current_user.phone_number = number
+    db.session.commit()
 
-    
     return render_template("base.html")
-
+    
 
 ##############################################################################
 #Static Functions
