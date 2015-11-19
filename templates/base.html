@@ -11,13 +11,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
-  <!-- Mapbox: JavaScript and Stylesheet -->
-  <script src='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js'></script>
-  <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
-  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.0.2/leaflet-pip.js'></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery.js"></script>
 
-<!--   Modal Window Styling -->
-   <link rel="stylesheet" href="/static/css/logsign.css">
+    <!-- Charts.js -->
+    <script src=
+      "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js">
+    </script>
+
+    <!--   Modal Window Styling -->
+    <link rel="stylesheet" href="/static/css/logsign.css">
 
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/owl_fav.ico') }}">
@@ -44,6 +47,7 @@
       <ul class="nav navbar-nav">
         {%if current_user.is_authenticated %}
         <li><a href="/small_data">Small Data</a></li>
+        <li><a href="/twilio">Daily Quiz</a><li>
         {% endif %}
       </ul>
        <ul class="nav navbar-nav navbar-right">
@@ -66,7 +70,9 @@
 
 <!-- Main Content -->
 {% block body %}
+<div class="container">
  When a metric becomes a target, it ceases to be a good metric.
+</div>
 {% endblock %}
 
 

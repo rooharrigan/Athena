@@ -4,7 +4,7 @@ making changes will run the server for this game with the debugger on."""
 
 ##############################################################################
 #Externals
-from flask import Flask, request, render_template, session, redirect, url_for, escape, flash
+from flask import Flask, request, render_template, session, redirect, url_for, escape, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
 #Login Checks and Forms
@@ -254,12 +254,131 @@ def grade_quiz():
 @app.route('/small_data')
 def get_user_scores():
     """Show a graph of how users are doing on quizzes."""
+
+    #Get Current User's scores
+    user_scores = get_user_scores(current_user)
+    print "\n \n Your scores: "
+    for continent, score in user_scores.iteritems():
+        print continent, score
+
+    #Get Athena scores
+    all_scores = get_all_scores()
+    print "\n \n Athena scores: "
+    print all_scores
+
+    return render_template("small_data.html", user_scores=user_scores, all_scores=all_scores)
+
+@app.route('/user_data.json')
+def make_user_chart():
+    """Creates user scores data for chart.js display"""
+
+    user_scores = get_user_scores(current_user)
+    userData = {
+        'continents': [{
+            "value": user_scores["North America"],
+            "color": "#ff1a1a",
+            "highlight": "#33adff",
+            "label": "North America"
+        },
+        {
+            "value": user_scores["South America"],
+            "color": "#ff531a",
+            "highlight": "#33adff",
+            "label": "South America"
+        },
+        {
+            "value": user_scores["Africa"],
+            "color": "#ffff33",
+            "highlight": "#33adff",
+            "label": "Africa"
+        },
+        {
+            "value": user_scores["Europe"],
+            "color": "#cc3300",
+            "highlight": "#33adff",
+            "label": "Europe"
+        },
+        {
+            "value": user_scores["Asia"],
+            "color": "#800040",
+            "highlight": "#33adff",
+            "label": "Asia"
+        },
+        {
+            "value": user_scores["Oceania"],
+            "color": "#F7464A",
+            "highlight": "#33adff",
+            "label": "Oceania"
+        }]
+    }
+    print "\n \n USERDATA###", userData
+
+    return jsonify(userData)
+ 
+
+@app.route('/athena_data.json')
+def make_athena_chart():
+    """Creates athena scores data for chart.js display"""
+
+    all_scores = get_all_scores()
+    print "We're in the athena_data route \n \n \n \n Here's north america: "
+    print all_scores["North America"]
+    athenaData = {
+        'continents': [{
+            "value": all_scores["North America"],
+            "color": "#ff1a1a",
+            "highlight": "#33adff",
+            "label": "North America"
+        },
+        {
+            "value": all_scores["South America"],
+            "color": "#ff531a",
+            "highlight": "#33adff",
+            "label": "South America"
+        },
+        {
+            "value": all_scores["Africa"],
+            "color": "#ffff33",
+            "highlight": "#33adff",
+            "label": "Africa"
+        },
+        {
+            "value": all_scores["Europe"],
+            "color": "#cc3300",
+            "highlight": "#33adff",
+            "label": "Europe"
+        },
+        {
+            "value": all_scores["Asia"],
+            "color": "#800040",
+            "highlight": "#33adff",
+            "label": "Asia"
+        },
+        {
+            "value": all_scores["Oceania"],
+            "color": "#F7464A",
+            "highlight": "#33adff",
+            "label": "Oceania"
+        }]
+    }
+
+    return jsonify(athenaData)
+ 
+
+@app.route('/twilio')
+def twilio_signup():
+
     
-    #Get current_user-level data
+    return render_template("base.html")
+
+
+##############################################################################
+#Static Functions
+
+def get_user_scores(current_user):
+    """Gets all scores for User display in Small Data route."""
     user_id = current_user.id
-
     user_scores = {}
-
     continents = get_continents()
     for continent in continents:
         title = continent + " Scores"
@@ -279,18 +398,7 @@ def get_user_scores():
             print "\n You haven't taken any quizzes about {} yet!".format(continent)
             avg_score = None
         user_scores[continent] = avg_score
-
-    print "\n \n Your scores: "
-    for continent, score in user_scores.iteritems():
-        print continent, score
-
-    all_scores = get_all_scores()
-
-    return render_template("small_data.html", user_scores=user_scores, all_scores=all_scores)
-
-
-##############################################################################
-#Static Functions
+    return user_scores
 
 def get_all_scores():
     """Gets scores for the Athena's World display in Small Data route. 
@@ -358,6 +466,8 @@ def make_langs(country_name):
     right_langs = str(right_langs)
     right_langs = translate(right_langs, None, '{"}')
     langs.add(right_langs)
+    if country_obj.continent_name == "Caribbean":
+        langs.add("English, Spanish")
 
     continent = country_obj.continent_name
     nearby_countries = Country.query.filter(Country.continent_name == continent, Country.country_name != country_name).all()
@@ -369,8 +479,9 @@ def make_langs(country_name):
         wrong_lang = (nearby_countries[index]).languages
         wrong_lang = str(wrong_lang)
         wrong_lang = translate(wrong_lang, None, '{"}')
-        print wrong_lang
         langs.add(wrong_lang)
+        print langs
+        print len(langs)
 
 
     return langs
