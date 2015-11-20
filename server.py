@@ -17,11 +17,14 @@ import bcrypt
 from pprint import pprint
 from string import translate, lower
 from random import randint, sample
-
+import os
 #Internals
-from model import connect_to_db, db, User, Continent, Country, Quizevent
+from model import connect_to_db, db, User, Continent, Country, Quizevent, Capquiz
 from forms import SignupForm, LoginForm
 from compliments import compliments
+#Twilio
+from twilio.rest import TwilioRestClient
+import twilio.twiml
 
 
 app = Flask(__name__)
@@ -241,7 +244,7 @@ def grade_quiz():
     country_id = country_obj.id
     continent_name = country_obj.continent_name
 
-    quizevent = Quizevent(user_id=user_id, country_id=country_id, continent_name=continent_name, score=score)
+    quizevent = Quizevent(user_id=user_id, country_id=country_id, continent_name=continent_name, score=score, quiz_type='full')
     db.session.add(quizevent)
     db.session.commit()
 
@@ -371,16 +374,135 @@ def twilio_form():
 
 
 @app.route('/twilio_signup', methods=['POST'])
-def twilio_signup():
-    number = request.form.get("phone-number")
-    current_user.phone_number = number
+def t():
+    """Confirm signup and sends a quiz question."""
+    client = TwilioRestClient()
+    twilio_number = os.environ.get("TWILIO_NUMBER")
+
+    # Store new number in database and send signup confirmation message
+    if current_user.phone_number == None:
+        number = request.form.get("phone-number")
+        current_user.phone_number = number
+        number = "+1" + number                  ##TODO remove when +1 is fixed
+        print number
+        db.session.commit()
+
+        message_welcome = client.messages.create(to=number, 
+                from_=twilio_number,
+                body="Ahoy! Thanks for signing up for my capitals quiz.")
+
+    #Make Quiz
+    index = randint(1, 194)
+    country_obj = Country.query.filter(Country.id == index).first()
+    country = country_obj.country_name
+    country_id = country_obj.id
+    continent = country_obj.continent_name
+    cap_answers = make_cap_question(country_obj)
+    cap1, cap2, cap3, cap4 = sample(cap_answers, 4)
+
+    message_string = """
+        What is the capital of {}?
+        A: {}
+        B: {}
+        C: {}
+        D: {}
+        """.format(country, cap1, cap2, cap3, cap4)
+    print message_string
+
+    # Send Quiz Question
+    number = current_user.phone_number
+    number = "+1" + number                      #TODO REmove this when +! number is fixed
+    message_quiz = client.messages.create(to=number, 
+            from_=twilio_number,
+            body=message_string)
+
+    #Create currentcapQuiz event
+    user_id = current_user.id
+    capquiz = Capquiz(user_id=user_id, country_id=country_id, A=cap1, B=cap2, C=cap3, D=cap4)
+    db.session.add(capquiz)
     db.session.commit()
 
-    return render_template("base.html")
-    
+    return redirect("/twilio")
+
+
+@app.route("/twilio_response", methods=['GET', 'POST'])
+def twilio_response():
+    """Grades the quiz, stores the score in the database in Quizevents table,
+    and tells user their score."""
+
+    #Who texted Athena?
+    user_number = request.values.get('From', None)
+    user_number = user_number[2:]   #TODO remove this when the +1 fixed
+    user_obj = User.query.filter(User.phone_number == user_number).first()
+    print "\n User ID"
+    user_id = user_obj.id
+
+    #Get their current capquiz object
+    capquiz_obj = Capquiz.query.filter(Capquiz.user_id == user_id).first()
+    if capquiz_obj == None:
+        message_string = "Sorry, you only get one guess. Enjoy tomorrow's quiz!"
+    else:
+        country_id = capquiz_obj.country_id
+        country_obj = Country.query.filter(Country.id == country_id).first()
+        continent_name = country_obj.continent_name
+
+        #Compare user guess to the right answer
+        guess = request.values.get('Body', None)
+        print "\n \n \n  WHAT ROO TEXTED BACK: "
+        print guess
+
+        if guess == 'A':
+            guess = capquiz_obj.A
+        if guess == 'B':
+            guess = capquiz_obj.B
+        if guess == 'C':
+            guess = capquiz_obj.C
+        if guess == 'D':
+            guess = capquiz_obj.D
+
+        capital = country_obj.capital
+        print "This is your guess: "
+        print guess
+        print "this is the right answer: "
+        print capital
+
+        if guess == capital:
+            print "SCORE IS 100!"
+            score = 100
+        else:
+            print "SCORE IS 0"
+            score = 0
+
+        quiz_type = 'caps'
+        #Add to the overall Quizevents table
+        quizevent = Quizevent(user_id=user_id, country_id=country_id, continent_name=continent_name, score=score, quiz_type=quiz_type)
+        db.session.add(quizevent)
+
+        #Clear out capquiz row for current_user_id before response
+        db.session.delete(capquiz_obj)
+        db.session.commit()
+
+        #Text message score back to user
+        message_string = "Here is your score: {}".format(score)
+
+    resp = twilio.twiml.Response()
+    resp.message(message_string)
+    return str(resp)    
+
 
 ##############################################################################
 #Static Functions
+
+def make_cap_question(country_obj):
+    #Get the country and all the right answers
+    capital = country_obj.capital
+
+    #Make answers
+    wrongcap1, wrongcap2, wrongcap3 = make_wrong_capitals(country_obj)
+    cap_answers = (capital, wrongcap1, wrongcap2, wrongcap3)
+
+    return cap_answers
+
 
 def get_user_scores(current_user):
     """Gets all scores for User display in Small Data route."""

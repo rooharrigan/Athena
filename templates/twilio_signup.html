@@ -7,14 +7,24 @@
 <br>
 <br>
 <div class="row">
-    <div class="col-xs-12 col-md-9 col-lg-9">
-        <h3>Want to learn a capital a day?</h3>
-        <p>Enter your phone number and we'll text you a quiz question 
-            every morning</p>
-        <form action="/twilio_signup" method="POST" name="twilio" id="twilio">
-            Your digits: <input type="text" name="phone-number" id="phone-number"></input>
-            <input class="btn btn-default" type="submit" id="twilio-submit" value="Get crackin'">
+    <div class="col-xs-12 col-md-9 col-lg-9 col-xs-offset-1 col-s-offset-1 col-md-offset-2">
+        {%if current_user.phone_number %}
+        <h3>Keep learning!</h3>
+        <p>Click here to grab another quiz question.</p>
+        <form action="/twilio_signup" method="POST" name="twilio-quizme" id="twilio-quizme">
+            <input class="btn btn-default" type="submit" id="twilio-quizme" value="Please sir, may I have another?">
         </form>
+
+        {% else %}        
+        <h3>Want to learn a capital a day?</h3>
+        <p>Enter your phone number and we'll text you a question 
+            every morning</p>
+        <form action="/twilio_signup" method="POST" name="twilio-signup" id="twilio-signup"> 
+            <input type="text" name="phone-number" id="phone-number" placeholder="ex: 4155551234"></input>
+            <input class="btn btn-default" type="submit" id="twilio-submit" value="Get cracking">
+        </form>
+        {% endif %}
+
 
     </div><!-- close column -->
 </div><!-- close row -->

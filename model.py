@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String, nullable=False)
     password_hash = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.Integer, nullable=True)    
+    phone_number = db.Column(db.String(12), nullable=True)    
     #Inheriting from UserMixin gives you defaults of is_authenticated(), is_active(), is_anonymous(), and get_id() functions required by Flask-Login
 
     def __init__(self, email, password):
@@ -86,6 +86,22 @@ class Country(db.Model):
     def __repr__(self):
         return "<Country country_name=%s>" % (self.country_name)
 
+class Capquiz(db.Model):
+    """Stores the current caps quiz for each user. Only one per user allowed."""
+
+    __tablename__ = "capquizzes"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, nullable=False)
+    country_id = db.Column(db.Integer, db.ForeignKey('countries.id'))
+    A = db.Column(db.String, nullable=False)
+    B = db.Column(db.String, nullable=False)
+    C = db.Column(db.String, nullable=False)
+    D = db.Column(db.String, nullable=False)
+    
+    def __repr__(self):
+        return "<capQuiz user_id=%s>" % (self.user_id)
+
 
 class Quizevent(db.Model):
     """Stores individual quiz event information."""
@@ -97,6 +113,7 @@ class Quizevent(db.Model):
     country_id = db.Column(db.Integer, db.ForeignKey('countries.id'))
     continent_name = db.Column(db.String, db.ForeignKey('continents.name'))
     score = db.Column(db.Integer, nullable=True)
+    quiz_type = db.Column(db.String(4), nullable=True)
 
     user = db.relationship('User', backref='quizzes')
     country = db.relationship('Country', backref='quizzes')
@@ -120,7 +137,6 @@ if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
 
-    # So that we can use Flask-SQLAlchemy, we'll make a Flask app
     from server import app
     connect_to_db(app)
     print "Connected to DB."
