@@ -7,13 +7,31 @@
 <br>
 <br>
 <div class="row">
-    <div class="col-xs-12 col-md-9 col-lg-9 col-xs-offset-1 col-s-offset-1 col-md-offset-2">
-        {%if current_user.phone_number %}
-        <h3>Keep learning!</h3>
-        <p>Click here to grab another quiz question.</p>
-        <form action="/twilio_signup" method="POST" name="twilio-quizme" id="twilio-quizme">
-            <input class="btn btn-default" type="submit" id="twilio-quizme" value="Please sir, may I have another?">
-        </form>
+    <div class="col-xs-5 col-md-5 col-lg-5 col-xs-offset-1">
+      {%if current_user.phone_number %}
+            <h3>Keep learning!</h3>
+            <p>Click here to grab another quiz question.</p>
+            <form action="/twilio_signup" method="POST" name="twilio-quizme" id="twilio-quizme">
+                <input class="btn btn-default" type="submit" id="twilio-quizme" value="Please sir, may I have another?">
+            </form>
+        <br>
+        <br>
+        <div class="col-xs-6 col-md-9">
+            <h5>Your quiz scores by continent.</h5>
+            <ul class="list-group">
+                {% for continent,score in user_scores.iteritems() %}
+                        <li class="list-group-item"><span class="badge">{{ score }}</span>{{ continent }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-6 col-lg-6 col-offset-6">
+            <h3>>Your World</h3>
+            <div class="userChart">
+                <canvas id="user-cap-scores" width="200" height="200"></canvas>
+            </div>
+    </div>
 
         {% else %}        
         <h3>Want to learn a capital a day?</h3>
@@ -28,5 +46,21 @@
 
     </div><!-- close column -->
 </div><!-- close row -->
+
+<script>
+var ctx2 = $("#user-cap-scores").get(0).getContext("2d");
+var options = { 
+    responsive: true,
+    scaleShowLabelBackdrop : true,
+    segmentStrokeColor: "#000000"
+     };
+
+ $.get("/capquiz_data.json", function (data) {
+     var userChart = new Chart(ctx2).PolarArea(data.continents, options);
+ });
+
+
+
+</script>
 
 {% endblock %}

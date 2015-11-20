@@ -254,11 +254,11 @@ def grade_quiz():
 
 
 @app.route('/small_data')
-def get_user_scores():
+def show_small_data():
     """Show a graph of how users are doing on quizzes."""
 
     #Get Current User's scores
-    user_scores = get_user_scores(current_user)
+    user_scores = get_user_scores(current_user, 'full')
     print "\n \n Your scores: "
     for continent, score in user_scores.iteritems():
         print continent, score
@@ -270,11 +270,63 @@ def get_user_scores():
 
     return render_template("small_data.html", user_scores=user_scores, all_scores=all_scores)
 
+
+@app.route('/capquiz_data.json')
+def make_capquiz_chart():
+    """Creates user scores data for chart.js display"""
+
+    quiz_type = 'caps'
+    user_scores = get_user_scores(current_user, quiz_type)
+    userData = {
+        'continents': [{
+            "value": user_scores["North America"],
+            "color": "#ff1a1a",
+            "highlight": "#33adff",
+            "label": "North America"
+        },
+        {
+            "value": user_scores["South America"],
+            "color": "#ff531a",
+            "highlight": "#33adff",
+            "label": "South America"
+        },
+        {
+            "value": user_scores["Africa"],
+            "color": "#ffff33",
+            "highlight": "#33adff",
+            "label": "Africa"
+        },
+        {
+            "value": user_scores["Europe"],
+            "color": "#cc3300",
+            "highlight": "#33adff",
+            "label": "Europe"
+        },
+        {
+            "value": user_scores["Asia"],
+            "color": "#800040",
+            "highlight": "#33adff",
+            "label": "Asia"
+        },
+        {
+            "value": user_scores["Oceania"],
+            "color": "#F7464A",
+            "highlight": "#33adff",
+            "label": "Oceania"
+        }]
+    }
+    print "\n \n USERDATA###", userData
+
+    return jsonify(userData)
+ 
+
+
 @app.route('/user_data.json')
 def make_user_chart():
     """Creates user scores data for chart.js display"""
 
-    user_scores = get_user_scores(current_user)
+    quiz_type = 'full'
+    user_scores = get_user_scores(current_user, quiz_type)
     userData = {
         'continents': [{
             "value": user_scores["North America"],
@@ -323,8 +375,7 @@ def make_athena_chart():
     """Creates athena scores data for chart.js display"""
 
     all_scores = get_all_scores()
-    print "We're in the athena_data route \n \n \n \n Here's north america: "
-    print all_scores["North America"]
+
     athenaData = {
         'continents': [{
             "value": all_scores["North America"],
@@ -369,8 +420,15 @@ def make_athena_chart():
 
 @app.route('/twilio')
 def twilio_form():
+    """Shows the Twilio phone signup. If signed up, shows a chart of scores and
+    opportunity to get a new score."""
+    #Get Current User's scores
+    user_scores = get_user_scores(current_user, 'caps')
+    print "\n \n Your scores: "
+    for continent, score in user_scores.iteritems():
+        print continent, score
 
-    return render_template("twilio_signup.html")
+    return render_template("twilio_signup.html", user_scores=user_scores)
 
 
 @app.route('/twilio_signup', methods=['POST'])
@@ -504,18 +562,20 @@ def make_cap_question(country_obj):
     return cap_answers
 
 
-def get_user_scores(current_user):
-    """Gets all scores for User display in Small Data route."""
+def get_user_scores(current_user, quiz_type):
+    """Gets all scores per quiz type for current user, feeds 'full' quiz chart in 
+    Small Data route and 'caps' quiz chart in Daily Quiz route.
+    Returns a dictionary."""
     user_id = current_user.id
     user_scores = {}
     continents = get_continents()
     for continent in continents:
         title = continent + " Scores"
         number_quizzes = Quizevent.query.filter(Quizevent.user_id == user_id, 
-            Quizevent.continent_name == continent).count()
+            Quizevent.continent_name == continent, Quizevent.quiz_type == quiz_type).count()
         sum_score = 0
         quiz_scores_tuple = (db.session.query(Quizevent.score).filter
-            (Quizevent.user_id == user_id, Quizevent.continent_name == continent)
+            (Quizevent.user_id == user_id, Quizevent.continent_name == continent, Quizevent.quiz_type == quiz_type)
             .all())
         for i in quiz_scores_tuple:
             score = i.score
@@ -530,8 +590,8 @@ def get_user_scores(current_user):
     return user_scores
 
 def get_all_scores():
-    """Gets scores for the Athena's World display in Small Data route. 
-    Returns a dictionary."""
+    """Gets 'full' quiz scores for the all users of Athena's World, feeds chart
+    in Small Data route. Returns a dictionary."""
     all_scores = {}
     continents = get_continents()
 
