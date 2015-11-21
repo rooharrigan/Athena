@@ -20,6 +20,8 @@
 
 
 <body>
+
+<section id="get-started" class="intro-section">
 <!-- Modal Start Button -->
 <div class="col-med-2 col-offset-2 centered">
  <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#logsignModal">Get Started</button>
@@ -78,6 +80,20 @@
     <div id="img-container">
        <img src="/static/img/santorini2.jpg" class="img-responsive" alt="Responsive image">
     </div>
+    <div>
+      <a class="btn btn-default page-scroll" href="#about">Click me to scroll down</a>
+    </div>
+
+</section> <!-- close get-started section -->
+
+
+<section id="about">
+
+    <div id="img-container">
+       <img src="/static/img/santorini2.jpg" class="img-responsive" alt="Responsive image">
+    </div>
+
+</section> <!--  close about section -->
 
 <!-- JavaScript Goes Here: -->
 <script>
@@ -192,9 +208,10 @@
 
     $('#signup-password').change(checkPassword);
     $('#login-password').change(checkPassword);
-
-
 </script>
+
+<script src="js/scrolling-nav.js"></script>
+<script src="js/jquery.easing.min.js"></script>
 
 
 
