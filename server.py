@@ -126,20 +126,36 @@ def choose_quizes():
     return render_template("quiz_home.html")
 
 
-@app.route('/country')
+@app.route('/country', methods=['POST'])
 def get_country_questions():
     """Choose country you want to learn about."""
+    #for continent posted:
+    #grab a random country from that continent
+    #render a quiz about that country
 
     return render_template("quiz_country.html")
 
+@app.route('/continent', methods=['GET', 'POST'])
+def get_continent():
+    """Continent."""
+    print "We hit the continent route"
+    continent = request.args.get("continent")
+    country_list = db.session.query(Country).filter(Country.continent_name == continent).all()
+    country = sample(country_list, 1)[0]
+    country = country.country_name
+    print country
+    return country
 
-@app.route('/country_quiz')
-def generate_quiz():
+
+
+@app.route('/country_quiz/<country_name>')
+def generate_quiz(country_name):
     """Makes the country-level quiz questions. Queries database for the right answer,
     users make_wrong_answers for the other three."""
 
     #Get the country and all the right answers
-    country_name = (request.args.get("country")).title()
+    # country_name1 = (request.args.get("country")).title()
+    country_name = country_name
     country_obj = Country.query.filter(Country.country_name == country_name).first()
     capital, demonym, primary_langs = get_right_answers(country_obj)
     continent = country_obj.continent_name
@@ -275,7 +291,7 @@ def show_small_data():
 def make_capquiz_chart():
     """Creates user scores data for chart.js display"""
 
-    quiz_type = 'caps'
+    quiz_type = 'caps' 
     user_scores = get_user_scores(current_user, quiz_type)
     userData = {
         'continents': [{

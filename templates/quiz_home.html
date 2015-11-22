@@ -7,14 +7,9 @@
 <div class="container-fluid">
     <div class="row">
     <div class="col-xs-12 col-md-9 col-lg-9">
-        <h3>What do you want to learn about?</h3>
+        <h3>Choose a continent</h3>
+        <!-- TODO: Add a way to choose a specific country -->
         <br>
-        <br>
-        <div>
-          <form action="/country">
-              <button type="submit" class="btn btn-default">Countries!</button>
-          </form>
-        </div>
     </div>
     </div>
 </div>
@@ -37,10 +32,14 @@
         height: 600px;
         width: 900px;
       }
+/*      hacky way to disable the close-out x*/
+      img[src="https://maps.gstatic.com/mapfiles/api-3/images/mapcnt6.png"] {
+          display: none;
+      }
     </style>
 
     <script type="text/javascript">
-      var colors = ['#ff1a1a', '#ff531a', "#ffff33", "#cc3300", "#800040"];
+      var color = '#FFAA00';
       var map;
 
       function initialize() {
@@ -50,13 +49,13 @@
            mapTypeId: google.maps.MapTypeId.SATELLITE,
            disableDefaultUI: true,
            mapTypeControl: false,
-           zoomControl: true,
+           zoomControl: false,
            scaleControl: false,
            scrollwheel: false,
            panControl: false,
            disableDoubleClickZoom: true,
            minZoom: 2,
-           draggable: true,
+           draggable: false,
            labels: true
          };
 
@@ -95,26 +94,33 @@
             else {
               newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
             }
-            var randomnumber = Math.floor(Math.random() * 4);
             var continent = new google.maps.Polygon({
               paths: newCoordinates,
-              strokeColor: colors[randomnumber],
+              strokeColor: color,
               strokeOpacity: 0,
               strokeWeight: 0,
-              fillColor: colors[randomnumber],
+              fillColor: color,
               fillOpacity: 0.0,
               name: continentName,
             });
-
             var currentPolygon = null;
             var contCenters = {
               "Africa": {lat: -1.8399833, lng: 19.6104447},
-              "Asia": {lat: 31.750743, lng: 64.5728469},
+              "Asia": {lat: 48.5933476, lng: 75.5923786},
               "Europe": {lat: 53.5957118, lng: 16.0948197},
               "North America": {lat: 48.6364795, lng: -106.2489303},
               "South America": {lat: -28.9938057, lng: -61.073149},
               "Caribbean": {lat: 18.9528706, lng: -70.6125321},
               "Oceania": {lat: -25.2141728, lng: 138.4530368}
+            };
+            var image = {
+                url: 'static/img/smallstar.png',
+                size: new google.maps.Size(32, 32),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(0, 32)
+            };
+            var shape = {
+              type: 'poly'
             };
             google.maps.event.addListener(continent, 'mouseover', function() {
               this.setOptions({fillOpacity: 0.3});
@@ -143,24 +149,35 @@
                     console.log("Current polygon: ");
                     console.log(currentPolygon.name);
                     var contLatLong = contCenters[currentPolygon.name];
-                    marker = new google.maps.Marker({
+                    var contentString = '<h3>' + ' * ' + currentPolygon.name + '</h3>'
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString,
+                        buttons: {close: {visible: false}},
+                      });
+                    var marker = new google.maps.Marker({
                       map: map,
                       draggble: false,
-                      animation: google.maps.Animation.DROP,
-                      position: contLatLong
+                      position: contLatLong,
+                      icon: image,
+                      shape: shape
                     });
-                    marker.addListener('click', function () {
-                      marker.setMap(null)
-                      // TODO: Unclick on the marker deselects the current polygon
-                      // TODO: Show flag/marker with icon drop-in
-                      // if (currentPOlygon === this) {
-                      //   currentPolygon = null
-                      // }
-                    });
+                    infowindow.open(map, marker);
                 }
-                $("#map-guess").val(currentPolygon.name);
             });   
             continent.setMap(map);
+
+            // Use ajax to submit continent polygon info hiding in the form
+            google.maps.event.addListener(continent, 'dblclick', function() {
+              var continent = currentPolygon.name;
+              $.ajax({
+                url: '/continent',
+                data: {continent: continent},
+                type: 'GET',
+                success: function(country_name) {
+                  window.location = '/country_quiz/' + country_name
+                }
+              })
+            });
           }
         }
       }
