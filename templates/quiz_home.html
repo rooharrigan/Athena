@@ -84,7 +84,7 @@
         var rows = data['rows'];
         for (var i in rows) {
           if (rows[i][0] != 'Antarctica') {
-            var countryName = rows[i][0];
+            var continentName = rows[i][0];
             var newCoordinates = [];
             var geometries = rows[i][1]['geometries'];
             if (geometries) {
@@ -96,50 +96,71 @@
               newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
             }
             var randomnumber = Math.floor(Math.random() * 4);
-            var country = new google.maps.Polygon({
+            var continent = new google.maps.Polygon({
               paths: newCoordinates,
               strokeColor: colors[randomnumber],
               strokeOpacity: 0,
               strokeWeight: 0,
               fillColor: colors[randomnumber],
               fillOpacity: 0.0,
-              name: countryName,
+              name: continentName,
             });
 
             var currentPolygon = null;
-            google.maps.event.addListener(country, 'mouseover', function() {
-              this.setOptions({fillOpacity: 0.5});
+            var contCenters = {
+              "Africa": {lat: -1.8399833, lng: 19.6104447},
+              "Asia": {lat: 31.750743, lng: 64.5728469},
+              "Europe": {lat: 53.5957118, lng: 16.0948197},
+              "North America": {lat: 48.6364795, lng: -106.2489303},
+              "South America": {lat: -28.9938057, lng: -61.073149},
+              "Caribbean": {lat: 18.9528706, lng: -70.6125321},
+              "Oceania": {lat: -25.2141728, lng: 138.4530368}
+            };
+            google.maps.event.addListener(continent, 'mouseover', function() {
+              this.setOptions({fillOpacity: 0.3});
             });
-            google.maps.event.addListener(country, 'mouseout', function() {
+            google.maps.event.addListener(continent, 'mouseout', function() {
                 if (currentPolygon !== this) {
                     this.setOptions({fillOpacity: 0})
                 }
             });
-            google.maps.event.addListener(country, 'click', function() {
-                // To unselect a polygon
+            google.maps.event.addListener(continent, 'click', function() {
+                // To deselect a polygon
                 if (currentPolygon === this) {
-                    this.setOptions({fillOpacity: 0.3})
                     currentPolygon = null
                     console.log(currentPolygon)
                 }
                 else {
-                    // To select new polygon and unselect old one
+                    // To select new polygon and deselect old one
                     if (currentPolygon) {
                         console.log("Old polygon: ")
                         oldPolygon = currentPolygon
-                        oldPolygon.setOptions({fillOpacity: 0.3})
+                        oldPolygon.setOptions({fillOpacity: 0})
                         console.log(oldPolygon.name)
                     }
                     // To select your first polygon
-                    this.setOptions({fillOpacity: 1})
                     currentPolygon = this;
                     console.log("Current polygon: ");
                     console.log(currentPolygon.name);
+                    var contLatLong = contCenters[currentPolygon.name];
+                    marker = new google.maps.Marker({
+                      map: map,
+                      draggble: false,
+                      animation: google.maps.Animation.DROP,
+                      position: contLatLong
+                    });
+                    marker.addListener('click', function () {
+                      marker.setMap(null)
+                      // TODO: Unclick on the marker deselects the current polygon
+                      // TODO: Show flag/marker with icon drop-in
+                      // if (currentPOlygon === this) {
+                      //   currentPolygon = null
+                      // }
+                    });
                 }
                 $("#map-guess").val(currentPolygon.name);
-                validateForm(currentPolygon);
             });   
-            country.setMap(map);
+            continent.setMap(map);
           }
         }
       }
@@ -157,20 +178,5 @@
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 
-
-<script>
-// Prevent form submission before all three questions are answered
-// TODO: Make this actually validate the form based on the current polygon, behaving oddly right now when checking all three.
-function validateForm (currentPolygon) {
-    var cap = $('input[name="cap-button"]:checked').val();
-    var dem = $('input[name="dem-button"]:checked').val();
-    console.log(currentPolygon);
-    console.log("This is the validating function");
-    console.log( cap, dem, currentPolygon );
-    if (cap && dem && currentPolygon !== null) {
-      $("#submit-quiz").attr("disabled", false);
-  }
-}
-</script>
 
 {% endblock %}
