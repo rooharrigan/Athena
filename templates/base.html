@@ -1,17 +1,29 @@
 <html>
 <head>
     <meta charset=utf-8 />
+    <title> Athena</title>
+
     <!-- Bootstrap: Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
     <!-- Bootstrap: Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
 
-    <!-- Bootstrap: Latest compiled and minified JavaScript -->
+    <!-- Bootstrap: Latest compiled and minified JavaScript, jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/twitter-bootstrap/twitter-bootstrap-v2/docs/assets/js/bootstrap-collapse.js"></script>
 
-    <!-- jQuery -->
+    <!-- Custom Bootstrap Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+    <!-- My CSS Styling -->
+    <link href="/static/css/Athena.css" rel="stylesheet" >
+
+    <!-- jQuery validate plugin -->
+    <link rel="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js">
     <script src="https://code.jquery.com/jquery.js"></script>
 
     <!-- Charts.js -->
@@ -23,50 +35,47 @@
     <link rel="stylesheet" href="/static/css/logsign.css">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/owl_fav.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/owl3.png') }}">
 </head>
 
-<body>
+<body id="base-body">
 <!-- Navbar (appears after sign-in) -->
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    
+<div class="container-fluid" id="base-background">
+  <div class="row">
+    <div class="col-xs-12">
+  <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+  
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-main-collapse" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" id="Athena-logo" href="/home">Athena</a>
+      <a class="navbar-brand" class="navbar" id="Athena-logo" href="/home">Athena</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         {%if current_user.is_authenticated %}
-        <li><a href="/small_data">Small Data</a></li>
-        <li><a href="/twilio">Daily Quiz</a><li>
+        <li><a class="navbar" href="/small_data">Small Data</a></li>
+        <li><a class="navbar" href="/twilio">Daily Quiz</a><li>
         {% endif %}
       </ul>
        <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated %}
-          <a href="/logout" type="logout" id="login"><button class="btn btn-default">Logout</button></a>
+          <li><a class="navbar" href="/logout" type="logout" id="login">Logout</a>
+          </li>
         {% endif %}
 
         </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+      </div>
+    </nav>
+    </div><!-- col -->
+  </div><!--row-->
 
-
-<!-- Show flashed messages -->
-  {% with messages = get_flashed_messages() %}
-      {% for message in messages %}
-          <div class="alert alert-warning">{{ message }}</div>
-      {% endfor %}
-  {% endwith %}
 
 <!-- Main Content -->
 {% block body %}
@@ -75,6 +84,6 @@
 </div>
 {% endblock %}
 
-
+</div><!-- /.container-fluid -->
 </body>
 </html>

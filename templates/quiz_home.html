@@ -2,25 +2,27 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<br>
-<br>
-<div class="container-fluid">
     <div class="row">
     <div class="col-xs-12 col-md-9 col-lg-9">
+        <br>
+        <br>
+        <br>
         <h3>Choose a continent</h3>
         <!-- TODO: Add a way to choose a specific country -->
         <br>
     </div>
     </div>
-</div>
+
 
 <!-- Continents Map -->
+<div class="row">
   <div class="col-xs-12 col-s-8 col-s-offset-2 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
     <form id="continents-submission">  
     <div id="map-canvas"></div>
     <input type="hidden" name="map-guess" id="map-guess"></input>
     </form>
   </div>
+</div><!--  close row -->
 
 
 <!-- Map JavaScript -->
@@ -30,7 +32,9 @@
     <style type="text/css">
       #map-canvas {
         height: 600px;
-        width: 900px;
+        width: 100%;
+        border-size: 3px;
+        border-style: solid;
       }
 /*      hacky way to disable the close-out x*/
       img[src="https://maps.gstatic.com/mapfiles/api-3/images/mapcnt6.png"] {
@@ -149,10 +153,11 @@
                     console.log("Current polygon: ");
                     console.log(currentPolygon.name);
                     var contLatLong = contCenters[currentPolygon.name];
-                    var contentString = '<h3>' + ' * ' + currentPolygon.name + '</h3>'
+                    var contentString = '<span class="country-header">' + ">  " + currentPolygon.name + '</span>'
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString,
                         buttons: {close: {visible: false}},
+
                       });
                     var marker = new google.maps.Marker({
                       map: map,

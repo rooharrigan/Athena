@@ -94,7 +94,6 @@ def login():
                 flash("Username or password incorrect")
         else:
             print "\nInvalid email"
-            flash("Username or password incorrect")
             return redirect("/")
     return redirect("/")        
 

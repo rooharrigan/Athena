@@ -1,6 +1,7 @@
-<html>
+<html lang="en">
 <head>
-    <meta charset=utf-8 />
+    <meta charset="utf-8" />
+    <title> Athena: Open your world </title>
     <!-- Bootstrap: Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
@@ -10,8 +11,10 @@
     <!-- Bootstrap: Latest compiled and minified JavaScript, jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/twitter-bootstrap/twitter-bootstrap-v2/docs/assets/js/bootstrap-collapse.js"></script>
 
-    <!-- Bootstrap: Athena custom CSS (borrowed from Grayscale) -->
+
+    <!-- Bootstrap: base Grayscale theme -->
     <link href="static/css/grayscale.css" rel="stylesheet">
 
     <!-- Custom Bootstrap Fonts -->
@@ -20,88 +23,192 @@
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 
     <!-- jQuery validate plugin -->
-    <link rel="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js">
+<!--     <link rel="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"> -->
 
     <!-- My CSS Styling -->
-    <link rel="stylesheet" href="/static/css/logsign.css">
+    <link rel="stylesheet" href="/static/css/Athena.css">
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/owl3.png') }}">
 </head>
 
 
-<body>
-<section id="get-started" class="intro-section">
-  
-<!-- Modal Start Button -->
-<div class="col-med-2 col-offset-2 centered">
- <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#logsignModal">Get Started</button>
-</div>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">
+                <i class="fa fa-play-circle"></i>  <span class="light">Athena</span>
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+            <ul class="nav navbar-nav">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+                <li>
+                    <a type="submit" class="btn" data-toggle="modal" data-target="#logsignModal">Get Started</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#hear-the-tale">Read The Story</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#contact-roo">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
 
 <!-- Modal Signup/Login -->
 <div class="modal fade" id="logsignModal" tabindex="-1" role="dialog" aria-labelledby="logsignModalLabel">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-content modal-backdrop">
+        <div class="modal-header">
+          <br>
+          <br>
+          <div class="col-sm-5" class=".form-group">
+            <h3 class=".form-group" class="logsign-header"> Sign up </h3>
+          </div>
+          <div class="col-sm-5 col-sm-offset-1" class=".form-group">
+            <h3 class=".form-group" class="logsign-header"> Log in </h3>
+          </div>
+          <div class="col-sm-1" class=".form-group">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+
         </div>
       <div class="modal-body">
         <!-- signup  -->
-      <div class="col-sm-6">
-        <h2> Sign up! </h2>
-          <form action="/signup" id="signup-form" method="POST">
-              {{ signup_form.csrf_token }}
-            <dl>
-              {{ signup_form.email.label }} {{ signup_form.email(placeholder="yourname@gmail.com") }}
-              <span id="signup-email-error"></span>
-              <br>
-              {{ signup_form.password.label }} {{ signup_form.password }}
-              <span id="signup-password-error"></span>
-              <br>
-              <br>
-              <dd><input class="btn btn-default" type="submit" id="signup-button" value="Signup" disabled="disabled">
-            </dl>
-          </form>
-        </div>
+        <div class="col-sm-5 col-sm-offset-1">
+            <form action="/signup" id="signup-form" method="POST" class=".form-group">
+                {{ signup_form.csrf_token }}
+              <dl>
+                {{ signup_form.email(placeholder="you@mail.com", class="modal-form-class") }}
+                <span id="signup-email-error"></span>
+                <br>
+                <br>
+                {{ signup_form.password(placeholder="password", class="modal-form-class") }}
+                <span id="signup-password-error"></span>
+                <br>
+                <br>
+                <dd><input class="btn btn-default" type="submit" id="signup-button" value="Signup" disabled="disabled" class=".form-group">
+              </dl>
+            </form>
+          </div>
 
-        <!-- login -->
-        <div class="col-sm-6">
-        <h2> Log in! </h2>
-          <form action="/login" id="login-form" method="POST">
-              {{ login_form.csrf_token }}
-            <dl>
-              {{ login_form.email.label }} {{ login_form.email(placeholder="yourname@gmail.com") }}
-              <span id="login-email-error"></span>
-              <br>
-              {{ login_form.password.label }} {{ login_form.password }}
-              <span id="login-password-error"></span>
-              <br>
-              <br>
-              <dd>
-              <input class="btn btn-default" type="submit" id="login-button" value="Login" disabled="disabled">
-            </dl>
-          </form>
-        </div>
+          <!-- login -->
+          <div class="col-sm-5 col-sm-offset-1">
+            <form action="/login" id="login-form" method="POST" class=".form-group">
+                {{ login_form.csrf_token }}
+              <dl>
+                {{ login_form.email(placeholder="you@mail.com", class="modal-form-class") }}
+                <span id="login-email-error"></span>
+                <br>
+                <br>
+                {{ login_form.password(placeholder="password", class="modal-form-class") }}
+                <span id="login-password-error"></span>
+                <br>
+                <br>
+                <dd>
+                <input class="btn btn-default" type="submit" id="login-button" value="Login" disabled="disabled" class=".form-group">
+              </dl>
+            </form>
+          </div>
       </div> <!-- close modal body -->
-      <div class="modal-footer">
-      </div><!--  close modal footer -->
     </div> <!-- close modal container -->
   </div>
 </div>
-    <div id="img-container">
-       <img src="/static/img/santorini2.jpg" class="img-responsive" alt="Responsive image">
+
+    <!-- Intro Header -->
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">Open Your World</h1>
+                        <p class="intro-text">
+                            <br>
+                            <br>
+                        </p>
+                        <a href="#hear-the-tale" class="btn btn-circle page-scroll"><i class="fa fa-angle-double-down animated"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+<!-- Tale Section -->
+<section id="hear-the-tale" class="container content-section text-center">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <h2>About Athena</h2>
+            <p> . . . </p>
+            <p>The goddess Athena was born from the head of her father, fully clothed in a suit of armor. This project was made much the same way. 
+            <br>Stack: postgreSQL, Python/Flask, JavaScript/jQuery/Ajax & Bootstrap
+
+            <p>This site was created by hacking an open-source theme:
+                <a class="change-blue" href="http://startbootstrap.com/template-overviews/grayscale/">Grayscale</a> 
+            <p>
+                <img src="/static/img/athena3.jpg">
+            </p>
+        </div>
     </div>
     <div>
-      <a class="btn btn-default page-scroll" href="#about">Click me to scroll down</a>
+    <div>
+</section>
+
+
+<!-- Contact Section -->
+<section id="contact-roo" class="container content-section text-center">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <h2>See Roo Other Places</h2>
+            <br>
+            <p> . . . </p>
+            <p>
+                <img src="/static/img/owl2.png">
+            <br>
+            <br>
+            <p><a class="change-blue" href="mailto:harrigan.roo@gmail.com">harrigan.roo@gmail.com</a></p>
+            <ul class="list-inline banner-social-buttons">
+                <li>
+                    <a href="https://twitter.com/roo_harrigan" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                </li>
+                <li>
+                    <a href="https://github.com/rooharrigan" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                </li>
+                <li>
+                    <a href="https://medium.com/@roo_harrigan" class="btn btn-default btn-lg"><i class="fa fa-google-plus fa-fw"></i> <span class="network-name">Medium</span></a>
+                </li>
+            </ul>
+        </div>
     </div>
+</section>
 
-</section> <!-- close get-started section -->
-
-
-<section id="about">
-
-    <div id="img-container">
-       <img src="/static/img/santorini2.jpg" class="img-responsive" alt="Responsive image">
+<br>
+<br>
+<br>
+<!-- Footer -->
+<footer>
+    <div class="container text-center">
+        <p id="copyright-footer">Copyright &copy; <span class="change-blue">Roobermelon 2015</span></p>
     </div>
+</footer>
 
-</section> <!--  close about section -->
+
+
 
 <!-- JavaScript Goes Here: -->
 <script>
@@ -218,8 +325,8 @@
     $('#login-password').change(checkPassword);
 </script>
 
-<script src="js/scrolling-nav.js"></script>
-<script src="js/jquery.easing.min.js"></script>
+
+<script src="js/grayscale.js"></script>
 
 
 

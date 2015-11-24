@@ -1,1 +1,116 @@
-/*Placeholder for CSS on top of bootstrap*/
+/*Athena CSS on top of bootstrap*/
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      color: white;
+}
+
+h3 {
+    /*text-transform: uppercase;*/
+    font-family: Montserrat, "Helvetica-Neue", Helvetica, Arial, sans-serif;
+    color: black;
+}
+
+label {
+    color: #2f3c3d;
+}
+
+.navbar {
+    font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serf;
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: black;
+}
+
+.modal-header {
+    height: 100px;
+    background-color: black;
+    opacity: 0.8;
+    text-align: center;
+}
+
+.modal-body {
+    background-color: black;
+    opacity: 0.8;
+    height: 200px;
+
+}
+
+.logsign {
+    text-align: center
+}
+
+.modal-backdrop {
+    opacity: 100%;
+    background-color: black;
+}
+
+#logsign-header {
+    background-color: black;
+    color: black;
+}
+
+.modal-form-class {
+    color: black;
+    opacity: 1;
+}
+
+.intro {
+    background: url("/static/img/santorini2.jpg");
+}
+
+.btn-default {
+    border: 1px solid #00ACD3;
+    color: #00ACD3;
+}
+
+#base-body {
+    background-color: cream;
+    background-image: url("/static/img/subtle_white_feathers.png");
+    height: 1000px;
+}
+
+.change-blue {
+    color: #00ACD3;
+}
+
+.country-header{
+    padding-top: 20px;
+    padding-bottom: 1px;
+    color: black;
+    font-size: 14pt;
+    text-transform: uppercase;
+    font-family: Montserrat, "Helvetica-Neue", Helvetica, Arial, sans-serif;
+    text-align: center
+}
+
+#copyright-footer {
+    font-size: 9pt;
+}
+
+#quiz-submit-btn {
+    color: black;
+}
+
+.jumbotron {
+    background-color: white;
+}
+
+#quiz-scores {
+    color: black;
+    font-family: Montserrat, "Helvetica-Neue", Helvetica, Arial, sans-serif;
+
+}
+
+#Athena-logo {
+    color: #03bac4;
+}
+
+#map-canvas {
+    border-size; 3px;
+    border-style: solid;
+}

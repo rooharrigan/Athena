@@ -7,8 +7,7 @@
 <br>
 <br>
     <div class="row">
-    <div class="col-xs-12 col-md-9 col-lg-9">
-        <div>
+      <div class="col-xs-5 col-xs-offset-1">
           <form action="/quiz_score" id="quiz-answers" method='POST'>
             <h3>What is the capital of {{ country_name }}?</h3>
             <input type="hidden" name="country_name" value="{{country_name}}"> 
@@ -23,39 +22,40 @@
             <label><input type="radio" name="dem-button" value="{{dem2}}">  {{ dem2 }}</label><br>
             <label><input type="radio" name="dem-button" value="{{dem3}}">  {{ dem3 }}</label><br>
             <label><input type="radio" name="dem-button" value="{{dem4}}">  {{ dem4 }}</label><br>
+            <br>
 
             <h3>Which are {{ country_name }}'s primary languages?</h3>
             <label><input type="radio" name="lang-button" value="{{lang1}}">  {{ lang1 }}</label><br>
             <label><input type="radio" name="lang-button" value="{{lang2}}">  {{ lang2 }}</label><br>
             <label><input type="radio" name="lang-button" value="{{lang3}}">  {{ lang3 }}</label><br>
             <label><input type="radio" name="lang-button" value="{{lang4}}">  {{ lang4 }}</label><br>
+          </div> <!-- close column -->
+
+          <div class="col-xs-5">
 
             <h3>Find {{ country_name }} on the map: </h3>
-
             <div id="map-canvas"></div>
             <input type="hidden" name="map-guess" id="map-guess"></input>
 
             <div id="submission-error"></div>
-              <button type="submit" class="btn btn-default" disabled="disabled" id="submit-quiz">Grade my quiz</button>
+              <button type="submit" class="btn btn-default" id="quiz-submit-btn" id="submit-quiz">Grade my quiz</button>
           </form>
-        </div>
+         </div> <!-- close column -->
 
     </div>
-    </div>
-
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=visualization&amp;sensor=false&amp;">
     </script>
 
     <style type="text/css">
       #map-canvas {
-        height: 700px;
-        width: 1000px;
+        height: 550px;
+        width: 100%;
       }
     </style>
 
     <script type="text/javascript">
-      var colors = ['#ff1a1a', '#ff531a', "#ffff33", "#cc3300", "#800040"];
+      var colors = ['#03bac4', '#156ad3', '#5f81fc', '#81e2e1' ];
       var map;
       var thisContinent = '{{ continent }}';
       var continents = {
@@ -126,6 +126,7 @@
               newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
             }
             var randomnumber = Math.floor(Math.random() * 4);
+            console.log(randomnumber);
             var country = new google.maps.Polygon({
               paths: newCoordinates,
               strokeColor: colors[randomnumber],
@@ -167,7 +168,7 @@
                     console.log(currentPolygon.name);
                 }
                 $("#map-guess").val(currentPolygon.name);
-                validateForm(currentPolygon);
+                // validateForm(currentPolygon);
             });   
             country.setMap(map);
           }
@@ -189,8 +190,8 @@
 
 
 <script>
-// Prevent form submission before all three questions are answered
-// TODO: Make this actually validate the form based on the current polygon, behaving oddly right now when checking all three.
+Prevent form submission before all three questions are answered
+TODO: Make this actually validate the form based on the current polygon, behaving oddly right now when checking all three.
 function validateForm (currentPolygon) {
     var cap = $('input[name="cap-button"]:checked').val();
     var dem = $('input[name="dem-button"]:checked').val();
