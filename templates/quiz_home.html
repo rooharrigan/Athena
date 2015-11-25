@@ -3,20 +3,24 @@
 
 {% block body %}
     <div class="row">
-    <div class="col-xs-12 col-md-9 col-lg-9">
+      <div class="col-xs-12 col-md-9 col-lg-9">
+        <br>
+        <br>
+        <br>
+        <br>
         <br>
         <br>
         <br>
         <h3>Choose a continent</h3>
         <!-- TODO: Add a way to choose a specific country -->
         <br>
-    </div>
+      </div>
     </div>
 
 
 <!-- Continents Map -->
 <div class="row">
-  <div class="col-xs-12 col-s-8 col-s-offset-2 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+  <div class="col-xs-12 col-s-8 col-s-offset-2 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
     <form id="continents-submission">  
     <div id="map-canvas"></div>
     <input type="hidden" name="map-guess" id="map-guess"></input>
@@ -49,7 +53,7 @@
       function initialize() {
         var myOptions = {
            zoom: 2,
-           center: new google.maps.LatLng(28.8470002,17.5148026),
+           center: new google.maps.LatLng(34.3819053,5.3429276),
            mapTypeId: google.maps.MapTypeId.SATELLITE,
            disableDefaultUI: true,
            mapTypeControl: false,
@@ -154,10 +158,10 @@
                     console.log(currentPolygon.name);
                     var contLatLong = contCenters[currentPolygon.name];
                     var contentString = '<span class="country-header">' + ">  " + currentPolygon.name + '</span>'
+                    // TODO: make infowindow appear during hover, enter on single-click. Or consider drawing them with the polygons.
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString,
                         buttons: {close: {visible: false}},
-
                       });
                     var marker = new google.maps.Marker({
                       map: map,
@@ -179,7 +183,7 @@
                 data: {continent: continent},
                 type: 'GET',
                 success: function(country_name) {
-                  window.location = '/country_quiz/' + country_name
+                  window.location.assign('/country_quiz/' + country_name)
                 }
               })
             });

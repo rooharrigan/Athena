@@ -1,31 +1,69 @@
-/*Athena CSS on top of bootstrap*/
-html {
-  font-family: sans-serif;
-  -webkit-text-size-adjust: 100%;
-      -ms-text-size-adjust: 100%;
-      color: white;
-}
-
-h3 {
-    /*text-transform: uppercase;*/
-    font-family: Montserrat, "Helvetica-Neue", Helvetica, Arial, sans-serif;
-    color: black;
+/*/*Base Specs*/
+#Athena-logo {
+    color: #00ACD3;
+    margin-left: auto;
+    margin-top: 17px;
 }
 
 label {
     color: #2f3c3d;
 }
 
-.navbar {
-    font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serf;
-    position: relative;
-    min-height: 50px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    font-weight: 400;
+h3, h4 {
     color: black;
 }
 
+#base-athena-navbar {
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: black;
+    width: 100%;
+    font-size: 14px;
+    text-shadow: none;
+    letter-spacing: 1px;
+    border-radius: 0;
+    border-color: black;
+    background-color: black;
+    height: 80px;
+}
+
+#base-navbar-right{
+    margin-right: -65px;
+    margin-top: 17px;
+}
+
+#base-body {
+    background-color: whitesmoke;
+}
+
+
+/*Map Specs*/
+.country-header {
+    color: black;
+    font-style: bold;
+    font-size: 16px;
+    font-family: Montserrat;
+}
+
+
+/*Score and Small Data Specs*/
+.jumbotron {
+    background-color: white;
+}
+#quiz-scores-list {
+    color: black;
+    font-family: Montserrat;
+}
+#quiz-scores {
+    color: black;
+    font-family: Montserrat;
+}
+
+
+
+
+/*Landing Page Specs*/
 .modal-header {
     height: 100px;
     background-color: black;
@@ -44,19 +82,13 @@ label {
     text-align: center
 }
 
-.modal-backdrop {
-    opacity: 100%;
-    background-color: black;
-}
-
-#logsign-header {
-    background-color: black;
-    color: black;
-}
-
 .modal-form-class {
     color: black;
     opacity: 1;
+}
+
+.modal-backdrop {
+    opacity: 100%;
 }
 
 .intro {
@@ -68,49 +100,6 @@ label {
     color: #00ACD3;
 }
 
-#base-body {
-    background-color: cream;
-    background-image: url("/static/img/subtle_white_feathers.png");
-    height: 1000px;
-}
-
 .change-blue {
     color: #00ACD3;
-}
-
-.country-header{
-    padding-top: 20px;
-    padding-bottom: 1px;
-    color: black;
-    font-size: 14pt;
-    text-transform: uppercase;
-    font-family: Montserrat, "Helvetica-Neue", Helvetica, Arial, sans-serif;
-    text-align: center
-}
-
-#copyright-footer {
-    font-size: 9pt;
-}
-
-#quiz-submit-btn {
-    color: black;
-}
-
-.jumbotron {
-    background-color: white;
-}
-
-#quiz-scores {
-    color: black;
-    font-family: Montserrat, "Helvetica-Neue", Helvetica, Arial, sans-serif;
-
-}
-
-#Athena-logo {
-    color: #03bac4;
-}
-
-#map-canvas {
-    border-size; 3px;
-    border-style: solid;
-}
+}*/

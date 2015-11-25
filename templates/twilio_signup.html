@@ -9,17 +9,24 @@
 <div class="row">
     <br>
     <br>
-    <div class="col-xs-5 col-md-5 col-lg-5 col-xs-offset-1">
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="col-xs-12 col-md-5 col-lg-5 col-xs-offset-1">
       {%if current_user.phone_number %}
             <h3>Keep learning!</h3>
-            <p>Click here to grab another quiz question.</p>
+            <h4>Grab a quiz question on the go. Text questions powered by Twilio.</h4>
             <form action="/twilio_signup" method="POST" name="twilio-quizme" id="twilio-quizme">
-                <input class="btn btn-default" type="submit" id="twilio-quizme" value="Please sir, may I have another?">
+                <input class="btn btn-default" type="submit" id="twilio-quizme" value="Gimme another one!">
             </form>
         <br>
         <br>
-        <div class="col-xs-6 col-md-9">
-            <h5>Your quiz scores by continent.</h5>
+        <div class="col-xs-6 col-md-10">
+            <br>
+            <br>
+
+            <h3>Your quiz scores by continent.</h3>
             <ul class="list-group">
                 {% for continent,score in user_scores.iteritems() %}
                         <li class="list-group-item" id="quiz-scores"><span class="badge" id="quiz-scores">{{ score }}</span>{{ continent }}</li>
@@ -28,8 +35,8 @@
         </div>
     </div>
 
-    <div class="col-xs-6 col-md-6 col-lg-6 col-offset-6">
-            <h3>>Your World</h3>
+    <div class="col-xs-12 col-md-5 col-lg-5 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+            <h3>> Your Daily Quiz World</h3>
             <div class="userChart">
                 <canvas id="user-cap-scores" width="200" height="200"></canvas>
             </div>
@@ -54,7 +61,9 @@ var ctx2 = $("#user-cap-scores").get(0).getContext("2d");
 var options = { 
     responsive: true,
     scaleShowLabelBackdrop : true,
-    segmentStrokeColor: "#000000"
+    animateScale: true,
+    animateRotate: false,
+    animationEasing: "easeOutExpo"
      };
 
  $.get("/capquiz_data.json", function (data) {
