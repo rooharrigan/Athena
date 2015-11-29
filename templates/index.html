@@ -35,7 +35,7 @@
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse" id="navbar-collapse-Athena">
                 <i class="fa fa-bars"></i>
             </button>
             <a class="navbar-brand page-scroll" href="#page-top">
@@ -57,7 +57,7 @@
                     <a class="page-scroll" href="#contact-roo">Contact Roo</a>
                 </li>
                 <li>
-                    <a type="submit" class="btn" data-toggle="modal" data-target="#logsignModal">Get Started</a>
+                    <a type="submit" class="page-scroll btn" data-toggle="modal" data-target="#logsignModal" id="modal-submit">Get Started</a>
                 </li>
             </ul>
         </div>
@@ -74,10 +74,10 @@
           <br>
           <br>
           <div class="col-sm-5" class=".form-group">
-            <h3 class=".form-group" class="logsign-header"> Sign up </h3>
+            <h2 class=".form-group" class="logsign-header"> Sign up </h2>
           </div>
           <div class="col-sm-5 col-sm-offset-1" class=".form-group">
-            <h3 class=".form-group" class="logsign-header"> Log in </h3>
+            <h2 class=".form-group" class="logsign-header"> Log in </h2>
           </div>
           <div class="col-sm-1" class=".form-group">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -152,9 +152,9 @@
             <h2>About Athena</h2>
             <p> . . . </p>
             <p>The goddess Athena was born from the head of her father, fully clothed in a suit of armor. This project was made much the same way. 
-            <br>Stack: postgreSQL, Python/Flask, JavaScript/jQuery/Ajax & Bootstrap
+            <br>Stack: postgreSQL, Python, Flask, JavaScript, jQuery, Ajax & Bootstrap
 
-            <p>This site was created by hacking an open-source theme:
+            <p>This site was created by hacking apart an open-source theme:
                 <a class="change-blue" href="http://startbootstrap.com/template-overviews/grayscale/">Grayscale</a> 
             <p>
                 <img src="/static/img/athena3.jpg">
@@ -199,7 +199,7 @@
 <!-- Footer -->
 <footer>
     <div class="container text-center">
-        <p id="copyright-footer">Copyright &copy; <span class="change-blue">Roobermelon 2015</span></p>
+        <p id="copyright-footer">Copyright &copy; <span class="change-blue">Roo Harrigan 2015</span></p>
     </div>
 </footer>
 
@@ -207,6 +207,18 @@
 
 
 <!-- JavaScript Goes Here: -->
+
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap Plugin JavaScript for easing -->
+<script src="js/jquery.easing.min.js"></script>
+
+<!-- Google Maps API JS -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false">
+</script>
+
+
 <script>
     function isPassword(password) {
         var hasNumber = /\d/;

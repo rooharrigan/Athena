@@ -47,7 +47,7 @@
     </style>
 
     <script type="text/javascript">
-      var color = '#FFAA00';
+      var color = '#ffbb99';
       var map;
 
       function initialize() {
@@ -138,11 +138,12 @@
                     this.setOptions({fillOpacity: 0})
                 }
             });
-            google.maps.event.addListener(continent, 'click', function() {
+            google.maps.event.addListener(continent, 'mouseover', function() {
                 // To deselect a polygon
                 if (currentPolygon === this) {
                     currentPolygon = null
                     console.log(currentPolygon)
+                    infowindow.close(map, marker);
                 }
                 else {
                     // To select new polygon and deselect old one
@@ -176,7 +177,7 @@
             continent.setMap(map);
 
             // Use ajax to submit continent polygon info hiding in the form
-            google.maps.event.addListener(continent, 'dblclick', function() {
+            google.maps.event.addListener(continent, 'click', function() {
               var continent = currentPolygon.name;
               $.ajax({
                 url: '/continent',

@@ -16,8 +16,8 @@
     <div class="col-xs-12 col-md-5 col-lg-5 col-xs-offset-1">
       {%if current_user.phone_number %}
             <h3>Keep learning!</h3>
-            <h4>Grab a quiz question on the go. Text questions powered by Twilio.</h4>
-            <form action="/twilio_signup" method="POST" name="twilio-quizme" id="twilio-quizme">
+            <h4>Grab a quiz question on the go<br> with text questions powered by Twilio.</h4>
+            <form action="/dailycapquiz_question" method="POST" name="twilio-quizme" id="twilio-quizme">
                 <input class="btn btn-default" type="submit" id="twilio-quizme" value="Gimme another one!">
             </form>
         <br>
@@ -46,7 +46,7 @@
         <h3>Want to learn a capital a day?</h3>
         <p>Enter your phone number and we'll text you a question 
             every morning</p>
-        <form action="/twilio_signup" method="POST" name="twilio-signup" id="twilio-signup"> 
+        <form action="/dailycapquiz_question" method="POST" name="twilio-signup" id="twilio-signup"> 
             <input type="text" name="phone-number" id="phone-number" placeholder="ex: 4155551234"></input>
             <input class="btn btn-default" type="submit" id="twilio-submit" value="Get cracking">
         </form>

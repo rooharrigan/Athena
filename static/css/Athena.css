@@ -2,7 +2,7 @@
 #Athena-logo {
     color: #00ACD3;
     margin-left: auto;
-    margin-top: 17px;
+    margin-top: 0px;
 }
 
 label {
@@ -14,7 +14,7 @@ h3, h4 {
 }
 
 #base-athena-navbar {
-    padding: 0px;
+    padding: 1px;
     margin-left: auto;
     margin-right: auto;
     background-color: black;
@@ -25,18 +25,28 @@ h3, h4 {
     border-radius: 0;
     border-color: black;
     background-color: black;
-    height: 80px;
+    height: 60px;
 }
 
 #base-navbar-right{
     margin-right: -65px;
     margin-top: 17px;
+    padding: 10px 10px;
+    margin-top: 12px;
+    border: 1px solid whitesmoke;
+    background-color: black;
 }
 
 #base-body {
     background-color: whitesmoke;
 }
 
+#navbar-collapse-Athena {
+    padding: 10px 10px;
+    margin-top: 12px;
+    border: 1px solid whitesmoke;
+    background-color: black;
+}
 
 /*Map Specs*/
 .country-header {
@@ -46,6 +56,13 @@ h3, h4 {
     font-family: Montserrat;
 }
 
+/*Quiz Specs*/
+#quiz-submit-btn {
+    color: black;
+    font: bold;
+    border: 1px solid black;
+    margin: auto;
+}
 
 /*Score and Small Data Specs*/
 .jumbotron {
@@ -64,6 +81,18 @@ h3, h4 {
 
 
 /*Landing Page Specs*/
+#modal-submit {
+    text-align: left;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    color: white;
+}
+
 .modal-header {
     height: 100px;
     background-color: black;
@@ -73,7 +102,7 @@ h3, h4 {
 
 .modal-body {
     background-color: black;
-    opacity: 0.8;
+    opacity: 0.8; 
     height: 200px;
 
 }

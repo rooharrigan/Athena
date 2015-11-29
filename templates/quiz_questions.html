@@ -9,6 +9,8 @@
     <div class="row">
       <div class="col-xs-5 col-xs-offset-1">
           <form action="/quiz_score" id="quiz-answers" method='POST'>
+            <br>
+            <br>
             <h3>What is the capital of {{ country_name }}?</h3>
             <input type="hidden" name="country_name" value="{{country_name}}"> 
             <label><input type="radio" name="cap-button" value="{{cap1}}">  {{ cap1 }}</label><br>
@@ -32,13 +34,17 @@
           </div> <!-- close column -->
 
           <div class="col-xs-5">
-
+            <br>
+            <br>
             <h3>Find {{ country_name }} on the map: </h3>
             <div id="map-canvas"></div>
             <input type="hidden" name="map-guess" id="map-guess"></input>
-
+            <br>
             <div id="submission-error"></div>
-              <button type="submit" class="btn btn-default" id="quiz-submit-btn" id="submit-quiz">Grade my quiz</button>
+            <button type="submit" class="btn btn-default" id="quiz-submit-btn" id="submit-quiz">
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                Grade my quiz
+            </button>
           </form>
          </div> <!-- close column -->
 
@@ -49,13 +55,13 @@
 
     <style type="text/css">
       #map-canvas {
-        height: 550px;
+        height: 485px;
         width: 100%;
       }
     </style>
 
     <script type="text/javascript">
-      var colors = ['#03bac4', '#156ad3', '#5f81fc', '#81e2e1' ];
+      var colors = ['#b3ffff', '#ffff99', '#ffbb99', '#ff9999', '#99bbff' ];
       var map;
       var thisContinent = '{{ continent }}';
       var continents = {
@@ -125,7 +131,7 @@
             else {
               newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
             }
-            var randomnumber = Math.floor(Math.random() * 4);
+            var randomnumber = Math.floor(Math.random() * 5);
             console.log(randomnumber);
             var country = new google.maps.Polygon({
               paths: newCoordinates,
@@ -133,7 +139,7 @@
               strokeOpacity: 0,
               strokeWeight: 1,
               fillColor: colors[randomnumber],
-              fillOpacity: 0.3,
+              fillOpacity: 0.4,
               name: countryName,
             });
 
@@ -143,13 +149,13 @@
             });
             google.maps.event.addListener(country, 'mouseout', function() {
                 if (currentPolygon !== this) {
-                    this.setOptions({fillOpacity: 0.3})
+                    this.setOptions({fillOpacity: 0.4})
                 }
             });
             google.maps.event.addListener(country, 'click', function() {
                 // To unselect a polygon
                 if (currentPolygon === this) {
-                    this.setOptions({fillOpacity: 0.3})
+                    this.setOptions({fillOpacity: 0.4})
                     currentPolygon = null
                     console.log(currentPolygon)
                 }
@@ -158,7 +164,7 @@
                     if (currentPolygon) {
                         console.log("Old polygon: ")
                         oldPolygon = currentPolygon
-                        oldPolygon.setOptions({fillOpacity: 0.3})
+                        oldPolygon.setOptions({fillOpacity: 0.4})
                         console.log(oldPolygon.name)
                     }
                     // To select your first polygon
@@ -187,11 +193,9 @@
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 
-
-
 <script>
-Prevent form submission before all three questions are answered
-TODO: Make this actually validate the form based on the current polygon, behaving oddly right now when checking all three.
+// Prevent form submission before all three questions are answered
+// TODO: Make this actually validate the form based on the current polygon, behaving oddly right now when checking all three.
 function validateForm (currentPolygon) {
     var cap = $('input[name="cap-button"]:checked').val();
     var dem = $('input[name="dem-button"]:checked').val();
@@ -202,9 +206,6 @@ function validateForm (currentPolygon) {
       $("#submit-quiz").attr("disabled", false);
   }
 }
-
-
-
 </script>
 
 

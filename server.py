@@ -433,7 +433,7 @@ def make_athena_chart():
     return jsonify(athenaData)
  
 
-@app.route('/twilio')
+@app.route('/dailycapquiz')
 def twilio_form():
     """Shows the Twilio phone signup. If signed up, shows a chart of scores and
     opportunity to get a new score."""
@@ -446,7 +446,7 @@ def twilio_form():
     return render_template("twilio_signup.html", user_scores=user_scores)
 
 
-@app.route('/twilio_signup', methods=['POST'])
+@app.route('/dailycapquiz_question', methods=['POST'])
 def t():
     """Confirm signup and sends a quiz question."""
     client = TwilioRestClient()
@@ -468,10 +468,12 @@ def t():
     index = randint(1, 194)
     country_obj = Country.query.filter(Country.id == index).first()
     country = country_obj.country_name
+    print "\n\n" "name: " + country
     country_id = country_obj.id
     continent = country_obj.continent_name
     cap_answers = make_cap_question(country_obj)
     cap1, cap2, cap3, cap4 = sample(cap_answers, 4)
+    print "\n" + cap1, cap2, cap3, cap4
 
     message_string = """
         What is the capital of {}?
@@ -495,7 +497,7 @@ def t():
     db.session.add(capquiz)
     db.session.commit()
 
-    return redirect("/twilio")
+    return redirect("/dailycapquiz")
 
 
 @app.route("/twilio_response", methods=['GET', 'POST'])
