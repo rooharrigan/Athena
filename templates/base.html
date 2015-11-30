@@ -12,12 +12,9 @@
     <!-- Bootstrap: Latest compiled and minified JavaScript, jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-    
-    <!--     Bootstrap: can't get collapse.js -->
-    <!-- TODO: Can't get collapse to work not importing correctly -->
 
     <!-- Bootstrap: base Grayscale theme -->
-    <link href="static/css/grayscale.css" rel="stylesheet">
+    <link href="/static/css/grayscale.css" rel="stylesheet">
 
     <!-- Custom Bootstrap Fonts -->
     <link href="static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -40,9 +37,14 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/owl3.png') }}">
 </head>
 
+
+<!-- navbar changes: navbar-fixed-top
+ -->
+
+
 <body id="base-body">
 <!-- Navbar (appears after sign-in) -->
-    <nav class="navbar navbar-custom navbar-fixed-top" id="base-athena-navbar" role="navigation">
+    <nav class="navbar navbar-custom" id="base-athena-navbar" role="navigation">
       <div class="container" id="base-navbar-container">
       <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">

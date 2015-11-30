@@ -288,7 +288,7 @@ def show_small_data():
 
 @app.route('/capquiz_data.json')
 def make_capquiz_chart():
-    """Creates user scores data for chart.js display"""
+    """Creates user capitals scores data for chart.js display"""
 
     quiz_type = 'caps' 
     user_scores = get_user_scores(current_user, quiz_type)
@@ -296,37 +296,37 @@ def make_capquiz_chart():
         'continents': [{
             "value": user_scores["North America"],
             "color": "#ff1a1a",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "North America"
         },
         {
             "value": user_scores["South America"],
-            "color": "#ff531a",
-            "highlight": "#33adff",
+            "color": "#ff704d",
+            "highlight": "#66e0ff",
             "label": "South America"
         },
         {
             "value": user_scores["Africa"],
             "color": "#ffff33",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Africa"
         },
         {
             "value": user_scores["Europe"],
-            "color": "#cc3300",
-            "highlight": "#33adff",
+            "color": "#99ccff",
+            "highlight": "#66e0ff",
             "label": "Europe"
         },
         {
             "value": user_scores["Asia"],
-            "color": "#800040",
-            "highlight": "#33adff",
+            "color": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Asia"
         },
         {
             "value": user_scores["Oceania"],
             "color": "#F7464A",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Oceania"
         }]
     }
@@ -346,37 +346,37 @@ def make_user_chart():
         'continents': [{
             "value": user_scores["North America"],
             "color": "#ff1a1a",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "North America"
         },
         {
             "value": user_scores["South America"],
-            "color": "#ff531a",
-            "highlight": "#33adff",
+            "color": "#ff704d",
+            "highlight": "#66e0ff",
             "label": "South America"
         },
         {
             "value": user_scores["Africa"],
             "color": "#ffff33",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Africa"
         },
         {
             "value": user_scores["Europe"],
-            "color": "#cc3300",
-            "highlight": "#33adff",
+            "color": "#99ccff",
+            "highlight": "#66e0ff",
             "label": "Europe"
         },
         {
             "value": user_scores["Asia"],
-            "color": "#800040",
-            "highlight": "#33adff",
+            "color": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Asia"
         },
         {
             "value": user_scores["Oceania"],
             "color": "#F7464A",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Oceania"
         }]
     }
@@ -395,37 +395,37 @@ def make_athena_chart():
         'continents': [{
             "value": all_scores["North America"],
             "color": "#ff1a1a",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "North America"
         },
         {
             "value": all_scores["South America"],
-            "color": "#ff531a",
-            "highlight": "#33adff",
+            "color": "#ff704d",
+            "highlight": "#66e0ff",
             "label": "South America"
         },
         {
             "value": all_scores["Africa"],
             "color": "#ffff33",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Africa"
         },
         {
             "value": all_scores["Europe"],
-            "color": "#cc3300",
-            "highlight": "#33adff",
+            "color": "#99ccff",
+            "highlight": "#66e0ff",
             "label": "Europe"
         },
         {
             "value": all_scores["Asia"],
-            "color": "#800040",
-            "highlight": "#33adff",
+            "color": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Asia"
         },
         {
             "value": all_scores["Oceania"],
             "color": "#F7464A",
-            "highlight": "#33adff",
+            "highlight": "#66e0ff",
             "label": "Oceania"
         }]
     }

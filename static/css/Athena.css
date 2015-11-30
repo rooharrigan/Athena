@@ -1,16 +1,21 @@
 /*/*Base Specs*/
 #Athena-logo {
-    color: #00ACD3;
+    color: #66e0ff;
     margin-left: auto;
     margin-top: 0px;
 }
 
 label {
     color: #2f3c3d;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 h3, h4 {
     color: black;
+}
+
+.navbar-brand {
+    padding: 15px;
 }
 
 #base-athena-navbar {
@@ -26,16 +31,24 @@ h3, h4 {
     border-color: black;
     background-color: black;
     height: 60px;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 #base-navbar-right{
     margin-right: -65px;
-    margin-top: 17px;
+    margin-top: 20px;
     padding: 10px 10px;
     margin-top: 12px;
     border: 1px solid whitesmoke;
     background-color: black;
 }
+
+.index-bar{
+    color: white;
+}
+
 
 #base-body {
     background-color: whitesmoke;
@@ -43,9 +56,7 @@ h3, h4 {
 
 #navbar-collapse-Athena {
     padding: 10px 10px;
-    margin-top: 12px;
-    border: 1px solid whitesmoke;
-    background-color: black;
+    margin-top: 10px;
 }
 
 /*Map Specs*/
@@ -65,20 +76,43 @@ h3, h4 {
 }
 
 /*Score and Small Data Specs*/
-.jumbotron {
-    background-color: white;
+#jumbotron-id {
+    color: black !important;
 }
+
+.jumbotron p {
+     vertical-align: middle;
+}
+
+#athena-j{
+    color: black !important;
+    font-size: 34px!important;
+}
+
+#athena-p {
+    color: black !important;
+    font-size: 40px;
+}
+
+.athena-para {
+    color: black !important;
+}
+
 #quiz-scores-list {
     color: black;
     font-family: Montserrat;
 }
+
 #quiz-scores {
     color: black;
     font-family: Montserrat;
 }
 
-
-
+#score-background {
+    width: 100%;
+    height: 650px;
+    background: url("/static/img/santorini2.jpg");
+}
 
 /*Landing Page Specs*/
 #modal-submit {
@@ -90,7 +124,10 @@ h3, h4 {
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
     text-rendering: auto;
-    color: white;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    text-transform: none;
+    padding: none;
 }
 
 .modal-header {

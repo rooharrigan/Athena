@@ -3,13 +3,7 @@
 
 
 {% block body %}
-
-<br>
-<br>
 <div class="row">
-    <br>
-    <br>
-    <br>
     <br>
     <br>
     <br>
@@ -22,11 +16,10 @@
             </form>
         <br>
         <br>
+        <br>
+        <br>
+        <h3>Your quiz scores by region</h3>
         <div class="col-xs-6 col-md-10">
-            <br>
-            <br>
-
-            <h3>Your quiz scores by continent.</h3>
             <ul class="list-group">
                 {% for continent,score in user_scores.iteritems() %}
                         <li class="list-group-item" id="quiz-scores"><span class="badge" id="quiz-scores">{{ score }}</span>{{ continent }}</li>

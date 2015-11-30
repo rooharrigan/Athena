@@ -2,25 +2,23 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
-<br>
-<br>
-<div class="container-fluid">
+<div class="container-fluid" id="score-background">
+    <br>
+    <br>
     <br>
     <br>
     <br>
     <div class="row">
-    <div class="col-xs-12 col-md-9 col-lg-9">
-      <div class="jumbotron" id="jumbotron">
-       <h1> You scored {{ score }}.</h1>
-        <p> {{ nicety }} </p>
-        <p><a class="btn btn-primary btn-lg" href="/home" role="button">Play again</a></p>
-      </div> <!-- close jumbotron -->
-    </div> <!-- close column -->
+        <div class="col-xs-12 col-md-9 col-lg-9">
+          <div class="jumbotron" id="jumbotron-id">
+            <h1 style="color: black;"> You scored {{ score }}.</h1>
+            <h3> {{ nicety }} </h3>
+            <br>
+                <p><a class="btn btn-primary" href="/home" role="button">Play again</a></p>
+          </div> <!-- close jumbotron -->
+        </div> <!-- close column -->
     </div> <!-- close row -->
-</div> <!-- container fluid -->
-
-
+</div><!--  close background container -->
 
 {% endblock %}
 
