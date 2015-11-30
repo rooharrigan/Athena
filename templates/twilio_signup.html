@@ -7,7 +7,7 @@
     <br>
     <br>
     <br>
-    <div class="col-xs-12 col-md-5 col-lg-5 col-xs-offset-1">
+    <div class="col-xs-12 col-md-6 col-lg-6 col-s-offset-1 col-md-offset-1 col-lg-offset-1">
       {%if current_user.phone_number %}
             <h3>Keep learning!</h3>
             <h4>Grab a quiz question on the go<br> with text questions powered by Twilio.</h4>
@@ -22,13 +22,13 @@
         <div class="col-xs-6 col-md-10">
             <ul class="list-group">
                 {% for continent,score in user_scores.iteritems() %}
-                        <li class="list-group-item" id="quiz-scores"><span class="badge" id="quiz-scores">{{ score }}</span>{{ continent }}</li>
+                        <li class="list-group-item" id="quiz-scores-list"><span class="badge" id="quiz-scores">{{ score }}</span>{{ continent }}</li>
                 {% endfor %}
             </ul>
         </div>
     </div>
 
-    <div class="col-xs-12 col-md-5 col-lg-5 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+    <div class="col-xs-12 col-s-5 col-md-5 col-lg-5">
             <h3>> Your Daily Quiz World</h3>
             <div class="userChart">
                 <canvas id="user-cap-scores" width="200" height="200"></canvas>

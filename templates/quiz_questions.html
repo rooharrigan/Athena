@@ -59,12 +59,12 @@
     </style>
 
     <script type="text/javascript">
-      var colors = ['#b3ffff', '#ffff99', '#ffbb99', '#ff9999', '#99bbff' ];
+      var colors = ['#ff1a1a', '#ff704d', '#ffff33', '#99ccff', '#33adff','#66e0ff',',#F7464A' ];
       var map;
       var thisContinent = '{{ continent }}';
       var continents = {
         "Africa": [-1.8399833,19.6104447,3],
-        "Asia": [31.750743,64.5728469,3],
+        "Asia": [31.750743,64.5728469,3], 
         "Europe": [53.5957118,16.0948197,4],
         "North America": [48.6364795,-106.2489303,3],
         "South America": [-28.9938057,-61.073149,3],
@@ -129,7 +129,7 @@
             else {
               newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
             }
-            var randomnumber = Math.floor(Math.random() * 5);
+            var randomnumber = Math.floor(Math.random() * 7);
             console.log(randomnumber);
             var country = new google.maps.Polygon({
               paths: newCoordinates,

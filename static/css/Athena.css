@@ -14,6 +14,10 @@ h3, h4 {
     color: black;
 }
 
+.fa-navicon:before, .fa-reorder:before, .fa-bars:before {
+    content: none;
+}
+
 .navbar-brand {
     padding: 15px;
 }
@@ -49,14 +53,8 @@ h3, h4 {
     color: white;
 }
 
-
 #base-body {
     background-color: whitesmoke;
-}
-
-#navbar-collapse-Athena {
-    padding: 10px 10px;
-    margin-top: 10px;
 }
 
 /*Map Specs*/
@@ -101,17 +99,20 @@ h3, h4 {
 #quiz-scores-list {
     color: black;
     font-family: Montserrat;
+    font-size: 16px;
 }
 
 #quiz-scores {
     color: black;
     font-family: Montserrat;
+    background-color: #66e0ff;
+    font-size: 16px;
 }
 
 #score-background {
     width: 100%;
     height: 650px;
-    background: url("/static/img/santorini2.jpg");
+    background: url("/static/img/greece1.jpg");
 }
 
 /*Landing Page Specs*/
