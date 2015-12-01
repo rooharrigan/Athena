@@ -19,13 +19,21 @@ You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in
 ============================
   Technologies
 ============================
-Athena is built on a Flask server (written in Python) and uses SQL Alchemy to talk with its postgreSQL database.  The maps are built with the Google Maps API and the interactive polygon layers on top are done using Google Fusion Tables, KML files (some of which were homemade) and associated JavaScript and jQuery. The text messaging feature is built using the Twilio SMS API.
-Back-to-Front: postgreSQL, Python, Flask, Jinja, JavaScript, jQuery, Ajax, Bootstrap
+Athena is built on a Flask server (written in Python) and uses a postgreSQL database.  The maps are built with the Google Maps API and the interactive polygon layers on top are done using Google Fusion Tables, KML files (some of which were homemade) and associated JavaScript, jQuery, and Ajax. The text messaging feature is built using the Twilio SMS API. The HTML/CSS features were put together using Bootstrap, some of which are pieces from the open-source theme `Grayscale <https://startbootstrap.com/template-overviews/grayscale/>`.
+
+Pythonic goodies:
+- Brcypt: for password encryption
+- WTForms and Flask-WTF:for making and validating forms on the server-side
+- Flask-Login: for the login session and CSRF tokens
+- Jinja: for templating, and other trickery
+- SQLAlchemy and Flask-SQLAlchemy: for talking with postgreSQL
+
 
 ============================
   Features
 ============================
 Current Features
-*The landing page shows a quick bio of the app and some more ways to reach the creator, plus login and signup form in a modal window. The form performs some front-end username checking (for uniqueness) and password checking (for length greater than 5 and use of a number). There's also an easter egg in there for anyone who loves apples.
+*The landing page shows a quick bio of the app and some more ways to reach the creator, plus login and signup form in a modal window. The form does some front-end username checking (for uniqueness, using an Ajax query) and password checking (for length greater than 5 and use of a number).  There's also an easter egg in there for anyone who loves apples. After the user submits the form, the server does the same type of checking on the backend.
+*The 
 
 Future Plans
