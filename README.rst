@@ -17,7 +17,7 @@ You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in
 ============================
   Technologies
 ============================
-Athena is built on a Flask server (written in Python) and uses a postgreSQL database.  The maps are built with the Google Maps API and the interactive polygon layers on top are done using Google Fusion Tables, KML files (some of which were homemade) and associated JavaScript, jQuery, and Ajax. The text messaging feature is built using the Twilio SMS API. The score displays were made using Chart.js. The HTML/CSS was put together using Bootstrap; some pieces are borrowed from the open-source theme `Grayscale <https://startbootstrap.com/template-overviews/grayscale/>`_.
+Athena is built on a Flask server (written in Python) and uses a postgreSQL database.  The maps are built with the Google Maps API and the interactive polygon layers on top are done using Google Fusion Tables, KML files (some of which were homemade) and associated JavaScript, jQuery, and Ajax. The text messaging feature was built using the Twilio SMS API and tested using ngrok. The score displays were made using Chart.js. The HTML/CSS was put together using Bootstrap; some pieces are borrowed from the open-source theme `Grayscale <https://startbootstrap.com/template-overviews/grayscale/>`_.
 
 Pythonic goodies:
 - Brcypt: for password encryption
