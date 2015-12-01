@@ -12,8 +12,6 @@ You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in
 - Technologies
 - Features
 - Data Wrangling
-- APIs
-- Data Structure
 - Screenshots
 
 ============================
@@ -41,7 +39,15 @@ The quiz displays four questions about the country of choice, including an inter
 
 The small data page queries the database to show your scores compared to the rest of the Athena user community using polar area charts.
 
-The daily quiz page allows you to sign up for quiz questions using your phone number and request a new question with the click of a button.  It also display a polar area chart showing your scores for all capitals.
+The daily quiz page allows you to sign up for quiz questions using your phone number and request a new question to your phone with the click of a button.  It also displays a polar area chart showing your scores for all capitals.
+The dail quiz text appears to the user in this form:
+"What is the capital of Egypt?:
+   A. Cairo
+   B. Nairobi
+   C. Ouagadougou
+   D. Addis Ababa"
+Users can text back either the letter or the full name of the capital city in response. They will receive their score via text and can see an updated chart of all their scores back on the daily quiz page. 
+Users can only work on one daily quiz question at a time, and can only text in one quiz response.
 
 *Future Plans*:
 - Set up Twilio API call to run once daily on all phone numbers in the database to send a daily quiz question; investigate date/time library for timing the question.
@@ -52,3 +58,14 @@ The daily quiz page allows you to sign up for quiz questions using your phone nu
 - revamp demonym quiz question for certain countries to be trickier
 - create a continent-specific geoquiz where user has to locate all countries on the continent
 - time the quiz
+
+============================
+  Data Wrangling
+============================
+The database for most of Athena's textual information was initially seeded using a query to the Mediawiki API and careful parsing of the jsonified Infobox that we all know and love from the right-hand side of every Wikipedia page ever.  After significant experimentation and unicode issues, I switched to using the `RESTCountries API <https://restcountries.eu/>`_
+Athena uses two Google Fusion Tables of KML data to create the polygon layers you see on the maps.  The country polygons were taken from the `World Country Boundaries <https://www.google.com/fusiontables/DataSource?docid=1MxmNwQ67Doekao1xTAV9vyNEOoX0lKf8z_B3bJez>`_ table.  To my great surprise, the internet held no reasonable-looking KML data in KML or SHP form to delineate each continent, so I created those rough polygons myself in Google Maps and exported them.
+The data model for Athena is relatively straightforward: 5 tables hold user, country, continent, quizevent, and capquiz information respectively.  The capquizzes table has a unique user id constraint, so a user can only be working on a single quiz question at a time. 
+
+============================
+  Screen shots
+============================
