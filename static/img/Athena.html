@@ -1,0 +1,285 @@
+
+<!-- saved from url=(0026)http://localhost:5000/home -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link type="text/css" rel="stylesheet" href="./Athena_files/css"><style type="text/css">.gm-style .gm-style-cc span,.gm-style .gm-style-cc a,.gm-style .gm-style-mtc div{font-size:10px}</style><style type="text/css">@media print {  .gm-style .gmnoprint, .gmnoprint {    display:none  }}@media screen {  .gm-style .gmnoscreen, .gmnoscreen {    display:none  }}</style><style type="text/css">.gm-style{font-family:Roboto,Arial,sans-serif;font-size:11px;font-weight:400;text-decoration:none}.gm-style img{max-width:none}</style>
+    <meta charset="utf-8">
+    <title> Athena</title>
+
+    <!-- Bootstrap: Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="./Athena_files/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+    <!-- Bootstrap: Optional theme -->
+    <link rel="stylesheet" href="./Athena_files/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+    <!-- Bootstrap: Latest compiled and minified JavaScript, jQuery -->
+    <script src="./Athena_files/jquery.min.js"></script>
+    <script src="./Athena_files/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./Athena_files/bootstrap-collapse.js"></script>
+
+    <!-- Custom Bootstrap Fonts -->
+    <link href="./Athena_files/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="./Athena_files/css(1)" rel="stylesheet" type="text/css">
+    <link href="./Athena_files/css(2)" rel="stylesheet" type="text/css">
+
+    <!-- My CSS Styling -->
+    <link href="./Athena_files/Athena.css" rel="stylesheet">
+
+    <!-- jQuery validate plugin -->
+    <link rel="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js">
+    <script src="./Athena_files/jquery.js"></script>
+
+    <!-- Charts.js -->
+    <script src="./Athena_files/Chart.js">
+    </script>
+
+    <!--   Modal Window Styling -->
+    <link rel="stylesheet" href="./Athena_files/logsign.css">
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="http://localhost:5000/static/img/owl3.png">
+<script type="text/javascript" charset="UTF-8" src="./Athena_files/common.js"></script><script type="text/javascript" charset="UTF-8" src="./Athena_files/map.js"></script><script type="text/javascript" charset="UTF-8" src="./Athena_files/util.js"></script><script type="text/javascript" charset="UTF-8" src="./Athena_files/onion.js"></script><script type="text/javascript" charset="UTF-8" src="./Athena_files/stats.js"></script><script type="text/javascript" charset="UTF-8" src="./Athena_files/controls.js"></script><script type="text/javascript" charset="UTF-8" src="./Athena_files/geometry.js"></script><script type="text/javascript" charset="UTF-8" src="./Athena_files/poly.js"></script></head>
+
+<body id="base-body">
+<!-- Navbar (appears after sign-in) -->
+<div class="container-fluid" id="base-background">
+  <div class="row">
+    <div class="col-xs-12">
+  <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+  
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-main-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" id="Athena-logo" href="./Athena_files/Athena.html">Athena</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        
+        <li><a class="navbar" href="http://localhost:5000/small_data">Small Data</a></li>
+        <li><a class="navbar" href="http://localhost:5000/twilio">Daily Quiz</a></li><li>
+        
+      </li></ul>
+       <ul class="nav navbar-nav navbar-right">
+        
+          <li><a class="navbar" href="http://localhost:5000/logout" type="logout" id="login">Logout</a>
+          </li>
+        
+
+        </ul>
+      </div>
+    </nav>
+    </div><!-- col -->
+  </div><!--row-->
+
+
+<!-- Main Content -->
+
+    <div class="row">
+    <div class="col-xs-12 col-md-9 col-lg-9">
+        <br>
+        <br>
+        <br>
+        <h3>Choose a continent</h3>
+        <!-- TODO: Add a way to choose a specific country -->
+        <br>
+    </div>
+    </div>
+
+
+<!-- Continents Map -->
+<div class="row">
+  <div class="col-xs-12 col-s-8 col-s-offset-2 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+    <form id="continents-submission">  
+    <div id="map-canvas" style="position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"><div class="gm-style" style="position: absolute; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 100%; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 100%; z-index: 0; cursor: pointer;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1; width: 100%; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 0);"><div style="transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 100; width: 100%;"><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div aria-hidden="true" style="position: absolute; left: 0px; top: 0px; z-index: 1; visibility: inherit;"><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 430px; top: 127px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 174px; top: 127px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 430px; top: -129px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 430px; top: 383px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 686px; top: 127px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 174px; top: 383px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 174px; top: -129px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 686px; top: -129px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 686px; top: 383px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 942px; top: 127px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: -82px; top: 127px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: -82px; top: -129px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 942px; top: -129px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: -82px; top: 383px;"></div><div style="width: 256px; height: 256px; transform: translateZ(0px); position: absolute; left: 942px; top: 383px;"></div></div></div></div><div style="transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 101; width: 100%;"><div style="position: absolute; left: 0px; top: 0px; z-index: 30;"><div aria-hidden="true" style="position: absolute; left: 0px; top: 0px; z-index: 1; visibility: inherit;"><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 430px; top: 127px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 174px; top: 127px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 430px; top: -129px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 430px; top: 383px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 686px; top: 127px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 174px; top: 383px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 174px; top: -129px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 686px; top: -129px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 686px; top: 383px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 942px; top: 127px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: -82px; top: 127px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: -82px; top: -129px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 942px; top: -129px;"><canvas width="256" height="256" draggable="false" style="width: 256px; height: 256px; -webkit-user-select: none; position: absolute; left: 0px; top: 0px;"></canvas></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: -82px; top: 383px;"></div><div style="width: 256px; height: 256px; overflow: hidden; transform: translateZ(0px); position: absolute; left: 942px; top: 383px;"></div></div></div></div><div style="transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 102; width: 100%;"></div><div style="transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 103; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div aria-hidden="true" style="position: absolute; left: 0px; top: 0px; z-index: 1; visibility: inherit;"><div style="transform: translateZ(0px); position: absolute; left: 430px; top: 127px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 174px; top: 127px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(1)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 430px; top: -129px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(2)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 430px; top: 383px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(3)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 686px; top: 127px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(4)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 174px; top: 383px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(5)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 174px; top: -129px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(6)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 686px; top: -129px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(7)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 686px; top: 383px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(8)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 942px; top: 127px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(9)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: -82px; top: 127px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(9)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: -82px; top: -129px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(10)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 942px; top: -129px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(10)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: -82px; top: 383px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(11)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div><div style="transform: translateZ(0px); position: absolute; left: 942px; top: 383px; transition: opacity 200ms ease-out;"><img src="./Athena_files/kh(11)" draggable="false" alt="" style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div></div></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 2; width: 100%; height: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 3; width: 100%; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 0);"><div style="transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 104; width: 100%;"></div><div style="transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 105; width: 100%;"></div><div style="transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 106; width: 100%;"></div><div style="transform: translateZ(0px); position: absolute; left: 0px; top: 0px; z-index: 107; width: 100%;"><div style="z-index: -202; cursor: pointer; transform: translateZ(0px); display: none;"><div style="width: 30px; height: 27px; overflow: hidden; position: absolute;"><img src="./Athena_files/undo_poly.png" draggable="false" style="position: absolute; left: 0px; top: 0px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px; width: 90px; height: 27px;"></div></div></div></div></div><div style="margin-left: 5px; margin-right: 5px; z-index: 1000000; position: absolute; left: 0px; bottom: 0px;"><a target="_blank" href="https://maps.google.com/maps?ll=28.847,17.514803&z=2&t=k&hl=en-US&gl=US&mapclient=apiv3" title="Click to see this area on Google Maps" style="position: static; overflow: visible; float: none; display: inline;"><div style="width: 66px; height: 26px; cursor: pointer;"><img src="./Athena_files/google4.png" draggable="false" style="position: absolute; left: 0px; top: 0px; width: 66px; height: 26px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div></a></div><div style="padding: 15px 21px; border: 1px solid rgb(171, 171, 171); font-family: Roboto, Arial, sans-serif; color: rgb(34, 34, 34); box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px; z-index: 10000002; display: none; width: 256px; height: 148px; position: absolute; left: 330px; top: 207px; background-color: white;"><div style="padding: 0px 0px 10px; font-size: 16px;">Map Data</div><div style="font-size: 13px;">Imagery ©2015 NASA, TerraMetrics</div><div style="width: 13px; height: 13px; overflow: hidden; position: absolute; opacity: 0.7; right: 12px; top: 12px; z-index: 10000; cursor: pointer;"><img src="./Athena_files/mapcnt6.png" draggable="false" style="position: absolute; left: -2px; top: -336px; width: 59px; height: 492px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;"></div></div><div class="gmnoprint" style="z-index: 1000001; position: absolute; right: 72px; bottom: 0px; width: 171px;"><div draggable="false" class="gm-style-cc" style="-webkit-user-select: none; height: 14px; line-height: 14px;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="width: auto; height: 100%; margin-left: 1px; background-color: rgb(245, 245, 245);"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right; vertical-align: middle; display: inline-block;"><a style="color: rgb(68, 68, 68); text-decoration: none; cursor: pointer; display: none;">Map Data</a><span style="">Imagery ©2015 NASA, TerraMetrics</span></div></div></div><div class="gmnoscreen" style="position: absolute; right: 0px; bottom: 0px;"><div style="font-family: Roboto, Arial, sans-serif; font-size: 11px; color: rgb(68, 68, 68); direction: ltr; text-align: right; background-color: rgb(245, 245, 245);">Imagery ©2015 NASA, TerraMetrics</div></div><div class="gmnoprint gm-style-cc" draggable="false" style="z-index: 1000001; -webkit-user-select: none; height: 14px; line-height: 14px; position: absolute; right: 0px; bottom: 0px;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="width: auto; height: 100%; margin-left: 1px; background-color: rgb(245, 245, 245);"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right; vertical-align: middle; display: inline-block;"><a href="https://www.google.com/intl/en-US_US/help/terms_maps.html" target="_blank" style="text-decoration: none; cursor: pointer; color: rgb(68, 68, 68);">Terms of Use</a></div></div><div draggable="false" class="gm-style-cc" style="-webkit-user-select: none; height: 14px; line-height: 14px; display: none; position: absolute; right: 0px; bottom: 0px;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="width: auto; height: 100%; margin-left: 1px; background-color: rgb(245, 245, 245);"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right; vertical-align: middle; display: inline-block;"><a target="_new" title="Report errors in the road map or imagery to Google" href="https://www.google.com/maps/@28.8470002,17.5148026,2z/data=!3m1!1e3!10m1!1e1!12b1?source=apiv3&rapsrc=apiv3" style="font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); text-decoration: none; position: relative;">Report a map error</a></div></div></div></div>
+    <input type="hidden" name="map-guess" id="map-guess">
+    </form>
+  </div>
+</div><!--  close row -->
+
+
+<!-- Map JavaScript -->
+    <script type="text/javascript" src="./Athena_files/js">
+    </script>
+
+    <style type="text/css">
+      #map-canvas {
+        height: 600px;
+        width: 100%;
+        border-size: 3px;
+        border-style: solid;
+      }
+/*      hacky way to disable the close-out x*/
+      img[src="https://maps.gstatic.com/mapfiles/api-3/images/mapcnt6.png"] {
+          display: none;
+      }
+    </style>
+
+    <script type="text/javascript">
+      var color = '#FFAA00';
+      var map;
+
+      function initialize() {
+        var myOptions = {
+           zoom: 2,
+           center: new google.maps.LatLng(28.8470002,17.5148026),
+           mapTypeId: google.maps.MapTypeId.SATELLITE,
+           disableDefaultUI: true,
+           mapTypeControl: false,
+           zoomControl: false,
+           scaleControl: false,
+           scrollwheel: false,
+           panControl: false,
+           disableDoubleClickZoom: true,
+           minZoom: 2,
+           draggable: false,
+           labels: true
+         };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+            myOptions);
+
+        // Initialize JSONP request
+        var script = document.createElement('script');
+        var url = ['https://www.googleapis.com/fusiontables/v1/query?'];
+        url.push('sql=');
+        var query = 'SELECT name, geometry FROM ' +
+            '1n59-Sd9piJiAk5-R80R-uwHKWl2uz-TSYv0gi64P';
+        var encodedQuery = encodeURIComponent(query);
+        url.push(encodedQuery);
+        url.push('&callback=drawMap');
+        url.push('&key=AIzaSyArBza-WmBsVVMllOO16L14IsOrd0yWVxE');
+        script.src = url.join('');
+        var body = document.getElementsByTagName('body')[0];
+        body.appendChild(script);           
+      }
+
+// make a script div with the url created above
+      function drawMap(data) {
+        console.log(data);
+        var rows = data['rows'];
+        for (var i in rows) {
+          if (rows[i][0] != 'Antarctica') {
+            var continentName = rows[i][0];
+            var newCoordinates = [];
+            var geometries = rows[i][1]['geometries'];
+            if (geometries) {
+              for (var j in geometries) {
+                newCoordinates.push(constructNewCoordinates(geometries[j]));
+              }
+            } 
+            else {
+              newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
+            }
+            var continent = new google.maps.Polygon({
+              paths: newCoordinates,
+              strokeColor: color,
+              strokeOpacity: 0,
+              strokeWeight: 0,
+              fillColor: color,
+              fillOpacity: 0.0,
+              name: continentName,
+            });
+            var currentPolygon = null;
+            var contCenters = {
+              "Africa": {lat: -1.8399833, lng: 19.6104447},
+              "Asia": {lat: 48.5933476, lng: 75.5923786},
+              "Europe": {lat: 53.5957118, lng: 16.0948197},
+              "North America": {lat: 48.6364795, lng: -106.2489303},
+              "South America": {lat: -28.9938057, lng: -61.073149},
+              "Caribbean": {lat: 18.9528706, lng: -70.6125321},
+              "Oceania": {lat: -25.2141728, lng: 138.4530368}
+            };
+            var image = {
+                url: 'static/img/smallstar.png',
+                size: new google.maps.Size(32, 32),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(0, 32)
+            };
+            var shape = {
+              type: 'poly'
+            };
+            google.maps.event.addListener(continent, 'mouseover', function() {
+              this.setOptions({fillOpacity: 0.3});
+            });
+            google.maps.event.addListener(continent, 'mouseout', function() {
+                if (currentPolygon !== this) {
+                    this.setOptions({fillOpacity: 0})
+                }
+            });
+            google.maps.event.addListener(continent, 'click', function() {
+                // To deselect a polygon
+                if (currentPolygon === this) {
+                    currentPolygon = null
+                    console.log(currentPolygon)
+                }
+                else {
+                    // To select new polygon and deselect old one
+                    if (currentPolygon) {
+                        console.log("Old polygon: ")
+                        oldPolygon = currentPolygon
+                        oldPolygon.setOptions({fillOpacity: 0})
+                        console.log(oldPolygon.name)
+                    }
+                    // To select your first polygon
+                    currentPolygon = this;
+                    console.log("Current polygon: ");
+                    console.log(currentPolygon.name);
+                    var contLatLong = contCenters[currentPolygon.name];
+                    var contentString = '<span class="country-header">' + ">  " + currentPolygon.name + '</span>'
+                    // TODO: make infowindow appear during hover, enter on single-click. Or consider drawing them with the polygons.
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString,
+                        buttons: {close: {visible: false}},
+                      });
+                    var marker = new google.maps.Marker({
+                      map: map,
+                      draggble: false,
+                      position: contLatLong,
+                      icon: image,
+                      shape: shape
+                    });
+                    infowindow.open(map, marker);
+                }
+            });   
+            continent.setMap(map);
+
+            // Use ajax to submit continent polygon info hiding in the form
+            google.maps.event.addListener(continent, 'dblclick', function() {
+              var continent = currentPolygon.name;
+              $.ajax({
+                url: '/continent',
+                data: {continent: continent},
+                type: 'GET',
+                success: function(country_name) {
+                  window.location.assign('/country_quiz/' + country_name)
+                }
+              })
+            });
+          }
+        }
+      }
+
+
+      function constructNewCoordinates(polygon) {
+        var newCoordinates = [];
+        var coordinates = polygon['coordinates'][0];
+        for (var i in coordinates) {
+          newCoordinates.push(
+              new google.maps.LatLng(coordinates[i][1], coordinates[i][0]));
+        }
+        return newCoordinates;
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+
+
+
+</div><!-- /.container-fluid -->
+
+<script src="./Athena_files/query"></script></body></html>

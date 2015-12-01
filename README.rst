@@ -10,7 +10,8 @@ You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in
   Contents
 ============================
 - Technologies
-- Features
+- Current Features
+- Future Features
 - Data Wrangling
 - Screenshots
 
@@ -28,6 +29,7 @@ Pythonic goodies:
 
 
 ============================
+<<<<<<< HEAD
   Features
 ============================
 *Current Features*:
@@ -58,6 +60,51 @@ Users can only work on one daily quiz question at a time, and can only text in o
 - revamp demonym quiz question for certain countries to be trickier
 - create a continent-specific geoquiz where user has to locate all countries on the continent
 - time the quiz
+=======
+  Current Features
+============================
+- The landing page shows a quick bio of the app and some more ways to reach the creator, plus login and signup form in a modal window. The form does some front-end username checking (for uniqueness, using an Ajax query) and password checking (for length greater than 5 and use of a number).  There's also an easter egg in there for anyone who loves apples. After the user submits the form, the server does the same type of user/password checking on the backend.
+
+- The homepage map uses a polygon layer of the continents to display basic InfoWindows™ and navigate you to a quiz about a randomized country on the selected continent. 
+
+- The quiz displays four questions about the country of choice, including an interactive map upon which you must locate the country. Wrong answers are always concocted from the right answers for neighboring countries.
+
+- The small data page queries the database to show your scores compared to the rest of the Athena user community using polar area charts.
+
+- The daily quiz page allows you to sign up for quiz questions using your phone number and request a new question to your phone with the click of a button.  It also displays a polar area chart showing your scores for all capitals.
+  The dail quiz text appears to the user in this form:
+
+        What is the capital of Egypt?
+          A.Cairo
+          
+          B.Nairobi
+          
+          C.Ouagadougou
+          
+          D.Addis Ababa
+
+  Users can text back either the letter or the full name of the capital city in response. They will receive their score via    text and can see an updated chart of all their scores back on the daily quiz page. 
+  Users can only work on one daily quiz question at a time, and can only text in one quiz response.
+
+============================
+  Future Features
+============================
+- Set up Twilio API call to run once daily on all phone numbers in the database to send a daily quiz question; investigate date/time library for timing the question.
+
+- Improve form checking for the quiz; force user to fill out all four questions before submit button is available
+
+- Create custom map style on Googlemaps API
+
+- Fix background of base body to be prettier, stylize the Jumbotron score, consider animating the score
+
+- Fix the center circle to have downscroll animation on the landing page
+
+- Revamp demonym quiz question for certain countries to be trickier
+
+- Create a continent-specific geoquiz where user has to locate all countries on the continent
+
+- Time the quiz
+>>>>>>> 930d2068fe9c4b7f0569f4d0e78cabc406f2a179
 
 ============================
   Data Wrangling
@@ -69,3 +116,4 @@ The data model for Athena is relatively straightforward: 5 tables hold user, cou
 ============================
   Screen shots
 ============================
+Coming soon!
