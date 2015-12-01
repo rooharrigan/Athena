@@ -10,7 +10,8 @@ You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in
   Contents
 ============================
 - Technologies
-- Features
+- Current Features
+- Future Features
 - Data Wrangling
 - Screenshots
 
@@ -28,11 +29,11 @@ Pythonic goodies:
 
 
 ============================
-  Features
+  Current Features
 ============================
--The landing page shows a quick bio of the app and some more ways to reach the creator, plus login and signup form in a modal window. The form does some front-end username checking (for uniqueness, using an Ajax query) and password checking (for length greater than 5 and use of a number).  There's also an easter egg in there for anyone who loves apples. After the user submits the form, the server does the same type of user/password checking on the backend.
+- The landing page shows a quick bio of the app and some more ways to reach the creator, plus login and signup form in a modal window. The form does some front-end username checking (for uniqueness, using an Ajax query) and password checking (for length greater than 5 and use of a number).  There's also an easter egg in there for anyone who loves apples. After the user submits the form, the server does the same type of user/password checking on the backend.
 
--The homepage map uses a polygon layer of the continents to display basic InfoWindows™ and navigate you to a quiz about a randomized country on the selected continent. 
+- The homepage map uses a polygon layer of the continents to display basic InfoWindows™ and navigate you to a quiz about a randomized country on the selected continent. 
 
 - The quiz displays four questions about the country of choice, including an interactive map upon which you must locate the country. Wrong answers are always concocted from the right answers for neighboring countries.
 
@@ -53,14 +54,23 @@ The dail quiz text appears to the user in this form:
 Users can text back either the letter or the full name of the capital city in response. They will receive their score via text and can see an updated chart of all their scores back on the daily quiz page. 
 Users can only work on one daily quiz question at a time, and can only text in one quiz response.
 
-Future Plans
+============================
+  Future Features
+============================
 - Set up Twilio API call to run once daily on all phone numbers in the database to send a daily quiz question; investigate date/time library for timing the question.
+
 - Improve form checking for the quiz; force user to fill out all four questions before submit button is available
+
 - Create custom map style on Googlemaps API
+
 - Fix background of base body to be prettier, stylize the Jumbotron score, consider animating the score
+
 - Fix the center circle to have downscroll animation on the landing page
+
 - Revamp demonym quiz question for certain countries to be trickier
+
 - Create a continent-specific geoquiz where user has to locate all countries on the continent
+
 - Time the quiz
 
 ============================
