@@ -40,7 +40,7 @@ Pythonic goodies:
 - The small data page queries the database to show your scores compared to the rest of the Athena user community using polar area charts.
 
 - The daily quiz page allows you to sign up for quiz questions using your phone number and request a new question to your phone with the click of a button.  It also displays a polar area chart showing your scores for all capitals.
-The dail quiz text appears to the user in this form:
+  The dail quiz text appears to the user in this form:
 
         What is the capital of Egypt?
           A.Cairo
@@ -51,8 +51,8 @@ The dail quiz text appears to the user in this form:
           
           D.Addis Ababa
 
-Users can text back either the letter or the full name of the capital city in response. They will receive their score via text and can see an updated chart of all their scores back on the daily quiz page. 
-Users can only work on one daily quiz question at a time, and can only text in one quiz response.
+  Users can text back either the letter or the full name of the capital city in response. They will receive their score via    text and can see an updated chart of all their scores back on the daily quiz page. 
+  Users can only work on one daily quiz question at a time, and can only text in one quiz response.
 
 ============================
   Future Features
