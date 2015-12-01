@@ -4,7 +4,7 @@ Athena
 
 **Athena** is a web application that creates geo-quizzes with interactive maps. Users can focus on learning about a specific continent and compare scores with others in the Athena community.  Athena supports a secure login with password encryption, so users can safetly sign up with thier phone numbers to receive capital quiz questions via text message. Optimized for mobile, Athena users can check in on their scores from anywhere and request a quiz text.
 
-You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in/rooharrigan>`.
+You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in/rooharrigan>`_.
 
 ============================
   Contents
@@ -19,7 +19,7 @@ You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in
 ============================
   Technologies
 ============================
-Athena is built on a Flask server (written in Python) and uses a postgreSQL database.  The maps are built with the Google Maps API and the interactive polygon layers on top are done using Google Fusion Tables, KML files (some of which were homemade) and associated JavaScript, jQuery, and Ajax. The text messaging feature is built using the Twilio SMS API. The HTML/CSS features were put together using Bootstrap, some of which are pieces from the open-source theme `Grayscale <https://startbootstrap.com/template-overviews/grayscale/>`.
+Athena is built on a Flask server (written in Python) and uses a postgreSQL database.  The maps are built with the Google Maps API and the interactive polygon layers on top are done using Google Fusion Tables, KML files (some of which were homemade) and associated JavaScript, jQuery, and Ajax. The text messaging feature is built using the Twilio SMS API. The HTML/CSS features were put together using Bootstrap, some of which are pieces from the open-source theme `Grayscale <https://startbootstrap.com/template-overviews/grayscale/>`_.
 
 Pythonic goodies:
 - Brcypt: for password encryption
