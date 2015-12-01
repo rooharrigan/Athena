@@ -32,7 +32,7 @@ Pythonic goodies:
 ============================
   Features
 ============================
-*Current Features*
+*Current Features*:
 The landing page shows a quick bio of the app and some more ways to reach the creator, plus login and signup form in a modal window. The form does some front-end username checking (for uniqueness, using an Ajax query) and password checking (for length greater than 5 and use of a number).  There's also an easter egg in there for anyone who loves apples. After the user submits the form, the server does the same type of user/password checking on the backend.
 
 The homepage map uses a polygon layer of the continents to display basic InfoWindows™ and navigate you to a quiz about a randomized country on the selected continent. 
@@ -43,7 +43,7 @@ The small data page queries the database to show your scores compared to the res
 
 The daily quiz page allows you to sign up for quiz questions using your phone number and request a new question with the click of a button.  It also display a polar area chart showing your scores for all capitals.
 
-*Future Plans*
+*Future Plans*:
 - Set up Twilio API call to run once daily on all phone numbers in the database to send a daily quiz question; investigate date/time library for timing the question.
 - Improve form checking for the quiz; force user to fill out all four questions before submit button is available
 - Create custom map style on Googlemaps API
