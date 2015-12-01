@@ -71,4 +71,4 @@ The data model for Athena is relatively straightforward: 5 tables hold user, cou
 ============================
   Screen shots
 ============================
-![alt text](/static/img/Athena-landing.png "Landing Page")
+Coming soon!
