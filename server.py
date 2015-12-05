@@ -465,7 +465,9 @@ def t():
                 body="Ahoy! Thanks for signing up for my capitals quiz.")
 
     #Make Quiz
-    index = randint(1, 194)
+    index = randint(21, 60)
+    if index == 28:
+        index = 29
     country_obj = Country.query.filter(Country.id == index).first()
     country = country_obj.country_name
     print "\n\n" "name: " + country
@@ -473,6 +475,10 @@ def t():
     continent = country_obj.continent_name
     cap_answers = make_cap_question(country_obj)
     cap1, cap2, cap3, cap4 = sample(cap_answers, 4)
+    cap1 = cap1.decode('ascii', 'ignore')
+    cap2 = cap2.decode('ascii', 'ignore')
+    cap3 = cap3.decode('ascii', 'ignore')
+    cap4 = cap4.decode('ascii', 'ignore')
     print "\n" + cap1, cap2, cap3, cap4
 
     message_string = """
@@ -558,7 +564,10 @@ def twilio_response():
         db.session.commit()
 
         #Text message score back to user
-        message_string = "Here is your score: {}".format(score)
+        if score == 0:
+            message_string = "Incorrect. Study hard!"
+        if score == 100:
+            message_string = "That's correct! You are so smart."
 
     resp = twilio.twiml.Response()
     resp.message(message_string)

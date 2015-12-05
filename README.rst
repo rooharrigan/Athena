@@ -82,4 +82,19 @@ The data model for Athena is relatively straightforward: 5 tables hold user, cou
 ============================
   Screen shots
 ============================
-Coming soon!
+
+![Alt text](http://Athena/static/img/Athena-landing.png "Landing Page")
+
+![Alt text](http://Athena/static/img/Athena-landing2.png "More")
+
+![Alt text](http://Athena/static/img/Athena-login.png "Login Modal")
+
+![Alt text](http://Athena/static/img/Athena-continents.png "Choose a Continent")
+
+![Alt text](http://Athena/static/img/Athena-quiz.png "The Quiz")
+
+![Alt text](http://Athena/static/img/Athena-score.png "Score Jumbotron")
+
+![Alt text](http://Athena/static/img/Athena-small-data.png "User data visualization with chart.js")
+
+![Alt text](http://Athena/static/img/Athena-text-quiz.png "Text quiz with Twilio")
