@@ -126,49 +126,36 @@
             var shape = {
               type: 'poly'
             };
-            google.maps.event.addListener(continent, 'mouseover', function() {
-              this.setOptions({fillOpacity: 0.3});
-            });
             google.maps.event.addListener(continent, 'mouseout', function() {
-                if (currentPolygon !== this) {
-                    this.setOptions({fillOpacity: 0})
-                }
+              this.setOptions({fillOpacity: 0});
             });
             google.maps.event.addListener(continent, 'mouseover', function() {
-                // To deselect a polygon
-                if (currentPolygon === this) {
-                    currentPolygon = null
-                    console.log(currentPolygon)
-                    infowindow.close(map, marker);
-                }
-                else {
-                    // To select new polygon and deselect old one
-                    if (currentPolygon) {
-                        console.log("Old polygon: ")
-                        oldPolygon = currentPolygon
-                        oldPolygon.setOptions({fillOpacity: 0})
-                        console.log(oldPolygon.name)
-                    }
-                    // To select your first polygon
-                    currentPolygon = this;
-                    console.log("Current polygon: ");
-                    console.log(currentPolygon.name);
-                    var contLatLong = contCenters[currentPolygon.name];
-                    var contentString = '<span class="country-header">' + ">  " + currentPolygon.name + '</span>'
-                    // TODO: make infowindow appear during hover, enter on single-click. Or consider drawing them with the polygons.
-                    var infowindow = new google.maps.InfoWindow({
-                        content: contentString,
-                        buttons: {close: {visible: false}},
-                      });
-                    var marker = new google.maps.Marker({
-                      map: map,
-                      draggble: false,
-                      position: contLatLong,
-                      icon: image,
-                      shape: shape
-                    });
-                    infowindow.open(map, marker);
-                }
+
+                //Highlight the polygon on mouseover
+                this.setOptions({fillOpacity: 0.3});
+
+                // Set polygon to current polygon and store 
+                currentPolygon = this;
+                console.log("Current polygon: ");
+                console.log(currentPolygon.name);
+
+                // Check for infowindow and drop one in.
+                // TODO: Not currently checking for infowindo, they are additive
+                var contLatLong = contCenters[currentPolygon.name];
+                var contentString = '<span class="country-header">' + ">  " + currentPolygon.name + '</span>'
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString,
+                    buttons: {close: {visible: false}},
+                  });
+                var marker = new google.maps.Marker({
+                  map: map,
+                  draggble: false,
+                  position: contLatLong,
+                  icon: image,
+                  shape: shape
+                });
+                
+                infowindow.open(map, marker);
             });   
             continent.setMap(map);
 

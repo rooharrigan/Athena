@@ -1,7 +1,9 @@
 <!-- Generates the multiple-choice quiz -->
 {% extends 'base.html' %}
-
-
+<!-- 
+TODO: continue working on regex for phone number
+TODO: Make phone number text black in box
+ -->
 {% block body %}
 <div class="row">
     <br>
@@ -37,12 +39,15 @@
 
         {% else %}        
         <h3>Want to learn a capital a day?</h3>
-        <p>Enter your phone number and we'll text you a question 
-            every morning</p>
+        <h4 >Enter your phone number and we'll text you a question 
+            every morning*</h4>
         <form action="/dailycapquiz_question" method="POST" name="twilio-signup" id="twilio-signup"> 
             <input type="text" name="phone-number" id="phone-number" placeholder="ex: 4155551234"></input>
             <input class="btn btn-default" type="submit" id="twilio-submit" value="Get cracking">
+            <span id="phone-number-error"></span>
         </form>
+        <br>
+        <h4 style="font-size: 12px">*U.S phone numbers only at this time, please</h4>
         {% endif %}
 
 
@@ -50,6 +55,32 @@
 </div><!-- close row -->
 
 <script>
+// Check that phone number is correct format (U.S. only)
+function isPhoneNumber (number) {
+    var pattern = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]‌​)\s*)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)([2-9]1[02-9]‌​|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})/
+    console.log(pattern.test(number));
+    return pattern.test(number);
+}
+
+function checkPhoneNumber(e) {
+    var number = $("#phone-number").val();
+    var error = $("#phone-number-error");
+    var button = $("#twilio-submit");
+    if (isPhoneNumber(number)) {
+        console.log("valid phone number!")
+        error.html('<img src="/static/img/greencheck.ico">');
+    }
+    else {
+        console.log("not a valid phone number");
+        error.html('<img src="./static/img/redx.png">');
+        disableButton(button);
+    }
+}
+
+$('#phone-number').change(checkPhoneNumber);
+
+
+// Build chart.js visual of capital scores
 var ctx2 = $("#user-cap-scores").get(0).getContext("2d");
 var options = { 
     responsive: true,
@@ -62,8 +93,6 @@ var options = {
  $.get("/capquiz_data.json", function (data) {
      var userChart = new Chart(ctx2).PolarArea(data.continents, options);
  });
-
-
 
 </script>
 
