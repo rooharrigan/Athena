@@ -134,7 +134,8 @@ def get_country_questions():
 
 @app.route('/continent', methods=['GET', 'POST'])
 def get_continent():
-    """Continent."""
+    """Takes in continent from quiz_home.html page, finds a country, and sends the
+    country name to the success function of the Ajax call that creates the country quiz."""
     print "We hit the continent route"
     continent = request.args.get("continent")
     print continent
@@ -189,13 +190,6 @@ def generate_quiz(country_name):
         lang3=lang3,
         lang4=lang4
         )
-
-
-@app.route('/continent')
-def get_continent_questions():
-    """Choose continent you want to learn about."""
-
-    return render_template("quiz_continent.html")
 
 
 @app.route('/quiz_score', methods=['POST'])
@@ -781,7 +775,6 @@ if __name__ == "__main__":
     connect_to_db(app, os.environ.get("DATABASE_URL"))
 
     # #Use the DebugToolbar
-    db.create_all(app=app)
 
     DEBUG = "NO_DEBUG" not in os.environ
     PORT = int(os.environ.get("PORT", 5000))
