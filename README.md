@@ -85,8 +85,6 @@ The data model for Athena is relatively straightforward: 5 tables hold user, cou
 ============================
   Screen shots & Video
 ============================
-Want to watch Athena in action with the Twilio functionality? 
-Watch the screencast [here](<https://drive.google.com/open?id=0B9qrPxfhSRc0T1ZGcXNhclBIMVU>)
 
 ![Landing Page](/static/img/Athena-landing.png)
 
