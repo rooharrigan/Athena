@@ -137,6 +137,7 @@ def get_continent():
     """Continent."""
     print "We hit the continent route"
     continent = request.args.get("continent")
+    print continent
     country_list = db.session.query(Country).filter(Country.continent_name == continent).all()
     country = sample(country_list, 1)[0]
     country = country.country_name
