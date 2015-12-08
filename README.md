@@ -6,6 +6,9 @@ Athena
 
 You can learn more about the developer on [LinkedIn](https://www.linkedin.com/in/rooharrigan).
 
+Athena is partially deployed (currently without the Twilio functionality).
+Make a username and try it out [on Heroku!](<https://athena-harrigan.herokuapp.com/?>)
+
 ============================
   Contents
 ============================
@@ -80,8 +83,10 @@ Athena uses two Google Fusion Tables of KML data to create the polygon layers yo
 The data model for Athena is relatively straightforward: 5 tables hold user, country, continent, quizevent, and capquiz information respectively.  The capquizzes table has a unique user id constraint, so a user can only be working on a single quiz question at a time. 
 
 ============================
-  Screen shots
+  Screen shots & Video
 ============================
+Want to watch Athena in action with the Twilio functionality? 
+Watch the screencast [here](<https://drive.google.com/open?id=0B9qrPxfhSRc0T1ZGcXNhclBIMVU>)
 
 ![Landing Page](/static/img/Athena-landing.png)
 
