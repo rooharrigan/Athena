@@ -4,7 +4,7 @@ Athena
 
 **Athena** is a web application that creates geo-quizzes with interactive maps. You can focus on learning about a specific continent and compare scores with others in the Athena community.  Athena supports a secure login with password encryption, so you can safetly sign up with a phone number to receive capital quiz questions via text message. Optimized for mobile, you can check in on your Athena scores from anywhere and request another quiz text.
 
-You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in/rooharrigan>`_.
+You can learn more about the developer on [LinkedIn](https://www.linkedin.com/in/rooharrigan).
 
 ============================
   Contents
@@ -18,7 +18,7 @@ You can learn more about the developer on `LinkedIn <https://www.linkedin.com/in
 ============================
   Technologies
 ============================
-Athena is built on a Flask server (written in Python) and uses a postgreSQL database.  The maps are built with the Google Maps API and the interactive polygon layers on top are done using Google Fusion Tables, KML files (some of which were homemade) and associated JavaScript, jQuery, and Ajax. The text messaging feature was built using the Twilio SMS API and tested using ngrok. The score displays were made using Chart.js. The HTML/CSS was put together using Bootstrap; some pieces are borrowed from the open-source theme `Grayscale <https://startbootstrap.com/template-overviews/grayscale/>`_.
+Athena is built on a Flask server (written in Python) and uses a postgreSQL database.  The maps are built with the Google Maps API and the interactive polygon layers on top are done using Google Fusion Tables, KML files (some of which were homemade) and associated JavaScript, jQuery, and Ajax. The text messaging feature was built using the Twilio SMS API and tested using ngrok. The score displays were made using Chart.js. The HTML/CSS was put together using Bootstrap; some pieces are borrowed from the open-source theme [Grayscale](https://startbootstrap.com/template-overviews/grayscale/).
 
 Pythonic goodies:
 - Brcypt: for password encryption
@@ -75,26 +75,26 @@ Pythonic goodies:
 ============================
   Data Wrangling
 ============================
-The database for most of Athena's textual information was initially seeded using a query to the Mediawiki API and careful parsing of the jsonified Infobox that we all know and love from the right-hand side of every Wikipedia page ever.  After significant experimentation and unicode issues, I switched to using the `RESTCountries API <https://restcountries.eu/>`_
-Athena uses two Google Fusion Tables of KML data to create the polygon layers you see on the maps.  The country polygons were taken from the `World Country Boundaries <https://www.google.com/fusiontables/DataSource?docid=1MxmNwQ67Doekao1xTAV9vyNEOoX0lKf8z_B3bJez>`_ table.  To my great surprise, the internet held no reasonable-looking KML data in KML or SHP form to delineate each continent, so I created those rough polygons myself in Google Maps and exported them.
+The database for most of Athena's textual information was initially seeded using a query to the Mediawiki API and careful parsing of the jsonified Infobox that we all know and love from the right-hand side of every Wikipedia page ever.  After significant experimentation and unicode issues, I switched to using the [RESTCountries API](https://restcountries.eu/>)
+Athena uses two Google Fusion Tables of KML data to create the polygon layers you see on the maps.  The country polygons were taken from the [World Country Boundaries](<https://www.google.com/fusiontables/DataSource?docid=1MxmNwQ67Doekao1xTAV9vyNEOoX0lKf8z_B3bJez) table.  To my great surprise, the internet held no reasonable-looking KML data in KML or SHP form to delineate each continent, so I created those rough polygons myself in Google Maps and exported them.
 The data model for Athena is relatively straightforward: 5 tables hold user, country, continent, quizevent, and capquiz information respectively.  The capquizzes table has a unique user id constraint, so a user can only be working on a single quiz question at a time. 
 
 ============================
   Screen shots
 ============================
 
-![Alt text](http://Athena/static/img/Athena-landing.png "Landing Page")
+![Landing Page](/static/img/Athena-landing.png)
 
-![Alt text](http://Athena/static/img/Athena-landing2.png "More")
+![More Landing Page](/static/img/Athena-landing2.png "More")
 
-![Alt text](http://Athena/static/img/Athena-login.png "Login Modal")
+![Login Modal](/static/img/Athena-login.png)
 
-![Alt text](http://Athena/static/img/Athena-continents.png "Choose a Continent")
+![Choose a Continent](/static/img/Athena-continents.png)
 
-![Alt text](http://Athena/static/img/Athena-quiz.png "The Quiz")
+![The Quiz](/static/img/Athena-quiz.png)
 
-![Alt text](http://Athena/static/img/Athena-score.png "Score Jumbotron")
+![Score Jumbotron](/static/img/Athena-score.png)
 
-![Alt text](http://Athena/static/img/Athena-small-data.png "User data visualization with chart.js")
+![User data visualization with chart.js](/static/img/Athena-small-data.png)
 
-![Alt text](http://Athena/static/img/Athena-text-quiz.png "Text quiz with Twilio")
+![Text quiz with Twilio](/static/img/Athena-text-quiz.png)
