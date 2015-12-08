@@ -28,7 +28,7 @@ import twilio.twiml
 
 
 app = Flask(__name__)
-app.secret_key = "Wake up, get up, get up, get up, it's the first of the month."
+app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "Wake up, get up, get up, get up, it's the first of the month.")
 ##############################################################################
 #Login/Signup Settings
 login_manager = LoginManager()
@@ -778,12 +778,15 @@ def get_continents():
 #Helper Functions
 
 if __name__ == "__main__":    
-    connect_to_db(app)
+    connect_to_db(app, os.environ.get("DATABASE_URL"))
 
     # #Use the DebugToolbar
-    DebugToolbarExtension(app)
+    db.create_all(app=app)
 
-    app.run(debug=True)
+    DEBUG = "NO_DEBUG" not in os.environ
+    PORT = int(os.environ.get("PORT", 5000))
+
+    app.run(host="0.0.0.0", post=PORT, debug=DEBUG)
 
 
 
