@@ -128,11 +128,9 @@ def choose_quizes():
 @app.route('/country', methods=['POST'])
 def get_country_questions():
     """Choose country you want to learn about."""
-    #for continent posted:
-    #grab a random country from that continent
-    #render a quiz about that country
 
     return render_template("quiz_country.html")
+
 
 @app.route('/continent', methods=['GET', 'POST'])
 def get_continent():
@@ -146,14 +144,12 @@ def get_continent():
     return country
 
 
-
 @app.route('/country_quiz/<country_name>')
 def generate_quiz(country_name):
     """Makes the country-level quiz questions. Queries database for the right answer,
     users make_wrong_answers for the other three."""
 
     #Get the country and all the right answers
-    # country_name1 = (request.args.get("country")).title()
     country_name = country_name
     country_obj = Country.query.filter(Country.country_name == country_name).first()
     capital, demonym, primary_langs = get_right_answers(country_obj)
@@ -555,6 +551,7 @@ def twilio_response():
             score = 0
 
         quiz_type = 'caps'
+
         #Add to the overall Quizevents table
         quizevent = Quizevent(user_id=user_id, country_id=country_id, continent_name=continent_name, score=score, quiz_type=quiz_type)
         db.session.add(quizevent)
@@ -614,6 +611,7 @@ def get_user_scores(current_user, quiz_type):
             avg_score = None
         user_scores[continent] = avg_score
     return user_scores
+
 
 def get_all_scores():
     """Gets 'full' quiz scores for the all users of Athena's World, feeds chart
@@ -766,6 +764,7 @@ def get_right_answers(country_obj):
 
 
 def get_continents():
+    """Grabs a list of all continents straight from the database."""
     continents = set()
     continent_list = Continent.query.filter(Continent.name != "Antarctica").all()
     for i in continent_list:
