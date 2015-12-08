@@ -127,7 +127,7 @@ def connect_to_db(app, db_uri=None):
     """Connect the database to our Flask app."""
 
     # Configure to use posgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URL'] = db_uri or 'postgresql://localhost/Athena'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or 'postgresql://localhost/Athena'
     app.config['SQLALCHEMY_ECHO'] = True
 
     db.init_app(app)
