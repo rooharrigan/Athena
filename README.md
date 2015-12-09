@@ -64,11 +64,11 @@ There are many imperfections in the up-and-running application.
 - Set up Twilio API call to run once daily on all phone numbers in the database to send a daily quiz question; investigate date/time library (sidekick?) for timing the questions.
 
 - Improve form checking:
-  ** force user to fill out all four quiz questions before submit button is available
-  ** handle enter and click actions the same on all forms
-  ** change font color on phone number entry to black
-  ** improve phone number checking user queues
-  ** indicate to new users whether signup is failing due because their email 
+  - force user to fill out all four quiz questions before submit button is available
+  - handle enter and click actions the same on all forms
+  - change font color on phone number entry to black
+  - improve phone number checking user queues
+  - indicate to new users whether signup is failing due because their email 
   already has an account (check is working on back-end but fails silently on the front)
 
 - Make landing page available after user is logged in
