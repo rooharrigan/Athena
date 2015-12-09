@@ -97,7 +97,7 @@ Athena uses two Google Fusion Tables of KML data to create the polygon layers yo
 The data model for Athena is relatively straightforward: 5 tables hold user, country, continent, quizevent, and capquiz information respectively.  The capquizzes table has a unique user id constraint, so a user can only be working on a single quiz question at a time. 
 
 ============================
-  Screen shots & Video
+  Screen shots
 ============================
 
 ![Landing Page](/static/img/Athena-landing.png)
@@ -115,3 +115,5 @@ The data model for Athena is relatively straightforward: 5 tables hold user, cou
 ![User data visualization with chart.js](/static/img/Athena-small-data.png)
 
 ![Text quiz with Twilio](/static/img/Athena-text-quiz.png)
+
+![Phone quiz screenshot](/static/img/phone-screenshot.png)
