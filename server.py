@@ -448,6 +448,8 @@ def t():
 
     #For the deployed app, disable this function and reroute to error page
     if PORT != 5000:
+        print "Port isn't 5000"
+        print PORT
         return render_template("under_construction.html")
 
     print "We continued past the PORT!=5000 line."
