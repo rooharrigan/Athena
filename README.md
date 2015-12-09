@@ -59,9 +59,21 @@ Pythonic goodies:
 ============================
   Future Features
 ============================
-- Set up Twilio API call to run once daily on all phone numbers in the database to send a daily quiz question; investigate date/time library for timing the question.
+There are many imperfections in the up-and-running application.
 
-- Improve form checking for the quiz; force user to fill out all four questions before submit button is available
+- Set up Twilio API call to run once daily on all phone numbers in the database to send a daily quiz question; investigate date/time library (sidekick?) for timing the questions.
+
+- Improve form checking:
+  ** force user to fill out all four quiz questions before submit button is available
+  ** handle enter and click actions the same on all forms
+  ** change font color on phone number entry to black
+  ** improve phone number checking user queues
+  ** indicate to new users whether signup is failing due because their email 
+  already has an account (check is working on back-end but fails silently on the front)
+
+- Make landing page available after user is logged in
+
+- Make logged-in pages more mobile ready by fixing navbar collapse action
 
 - Create custom map style on Googlemaps API
 
@@ -74,6 +86,8 @@ Pythonic goodies:
 - Create a continent-specific geoquiz where user has to locate all countries on the continent
 
 - Time the quiz
+
+- Write tests! Unit, functional, selenium
 
 ============================
   Data Wrangling
