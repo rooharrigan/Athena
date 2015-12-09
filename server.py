@@ -452,60 +452,61 @@ def t():
         print PORT
         return render_template("under_construction.html")
 
-    print "We continued past the PORT!=5000 line."
-    # Store new number in database and send signup confirmation message
-    if current_user.phone_number == None:
-        number = request.form.get("phone-number")
-        current_user.phone_number = number
-        number = "+1" + number                  ##TODO remove when +1 is fixed
-        print number
-        db.session.commit()
-
-        message_welcome = client.messages.create(to=number, 
-                from_=twilio_number,
-                body="Ahoy! Thanks for signing up for my capitals quiz.")
-
-    #For the local app, make quiz
     else:
-        index = randint(21, 60)
-        if index == 28:
-            index = 29
-        country_obj = Country.query.filter(Country.id == index).first()
-        country = country_obj.country_name
-        print "\n\n" "name: " + country
-        country_id = country_obj.id
-        continent = country_obj.continent_name
-        cap_answers = make_cap_question(country_obj)
-        cap1, cap2, cap3, cap4 = sample(cap_answers, 4)
-        cap1 = cap1.decode('ascii', 'ignore')
-        cap2 = cap2.decode('ascii', 'ignore')
-        cap3 = cap3.decode('ascii', 'ignore')
-        cap4 = cap4.decode('ascii', 'ignore')
-        print "\n" + cap1, cap2, cap3, cap4
+        print "We continued past the PORT!=5000 line."
+        # Store new number in database and send signup confirmation message
+        if current_user.phone_number == None:
+            number = request.form.get("phone-number")
+            current_user.phone_number = number
+            number = "+1" + number                  ##TODO remove when +1 is fixed
+            print number
+            db.session.commit()
 
-        message_string = """
-            What is the capital of {}?
-            A: {}
-            B: {}
-            C: {}
-            D: {}
-            """.format(country, cap1, cap2, cap3, cap4)
-        print message_string
+            message_welcome = client.messages.create(to=number, 
+                    from_=twilio_number,
+                    body="Ahoy! Thanks for signing up for my capitals quiz.")
 
-        # Send Quiz Question
-        number = current_user.phone_number
-        number = "+1" + number                      #TODO REmove this when +! number is fixed
-        message_quiz = client.messages.create(to=number, 
-                from_=twilio_number,
-                body=message_string)
+        #For the local app, make quiz
+        else:
+            index = randint(21, 60)
+            if index == 28:
+                index = 29
+            country_obj = Country.query.filter(Country.id == index).first()
+            country = country_obj.country_name
+            print "\n\n" "name: " + country
+            country_id = country_obj.id
+            continent = country_obj.continent_name
+            cap_answers = make_cap_question(country_obj)
+            cap1, cap2, cap3, cap4 = sample(cap_answers, 4)
+            cap1 = cap1.decode('ascii', 'ignore')
+            cap2 = cap2.decode('ascii', 'ignore')
+            cap3 = cap3.decode('ascii', 'ignore')
+            cap4 = cap4.decode('ascii', 'ignore')
+            print "\n" + cap1, cap2, cap3, cap4
 
-        #Create currentcapQuiz event
-        user_id = current_user.id
-        capquiz = Capquiz(user_id=user_id, country_id=country_id, A=cap1, B=cap2, C=cap3, D=cap4)
-        db.session.add(capquiz)
-        db.session.commit()
+            message_string = """
+                What is the capital of {}?
+                A: {}
+                B: {}
+                C: {}
+                D: {}
+                """.format(country, cap1, cap2, cap3, cap4)
+            print message_string
 
-    return redirect("/dailycapquiz")
+            # Send Quiz Question
+            number = current_user.phone_number
+            number = "+1" + number                      #TODO REmove this when +! number is fixed
+            message_quiz = client.messages.create(to=number, 
+                    from_=twilio_number,
+                    body=message_string)
+
+            #Create currentcapQuiz event
+            user_id = current_user.id
+            capquiz = Capquiz(user_id=user_id, country_id=country_id, A=cap1, B=cap2, C=cap3, D=cap4)
+            db.session.add(capquiz)
+            db.session.commit()
+
+        return redirect("/dailycapquiz")
 
 
 @app.route("/twilio_response", methods=['GET', 'POST'])
