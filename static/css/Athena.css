@@ -115,6 +115,15 @@ h3, h4 {
     background: url("/static/img/greece1.jpg");
 }
 
+/*Daily Quiz Specs*/
+#under-construction {
+    background: url("/static/img/column.jpg");
+}
+
+#phone-number-signup {
+    background: url("/static/img/column.jpg");
+}
+
 /*Landing Page Specs*/
 #modal-submit {
     text-align: left;
